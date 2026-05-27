@@ -1,18 +1,29 @@
-name: Update Diesel Prices
+name: Update Prices and Deploy
 
 on:
   schedule:
     - cron: "0 12 * * *"   # Every day at 8am ET
-  workflow_dispatch:         # Allows manual trigger too
+  workflow_dispatch:         # Manual trigger from Actions tab
+  push:
+    branches: ["main"]       # Also deploy whenever you commit anything
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
-  update-prices:
+  update-and-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout repo
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Set up Node
@@ -30,3 +41,15 @@ jobs:
           git add prices.json
           git diff --staged --quiet || git commit -m "chore: update diesel prices $(date +%Y-%m-%d)"
           git push
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
