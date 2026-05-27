@@ -148,9 +148,90 @@ function STATE_LOOKUP_UPDATE(states) {
 const DEF_COST_PER_GAL = 0.105;            // Landing Page!C20
 const KWH_PER_GAL_EQUIV = 12;              // Years to Parity!J53 = B53*12
 const CO2_KG_PER_GAL_DIESEL = 10.21;       // EPA
-const CO2_KG_PER_KWH_GRID = 0.385;         // EIA US avg
+const DEFAULT_GRID_CO2 = 0.385;
+
+// Physical efficiencies
+const REGEN_EFFICIENCY = 0.82;
+const BATTERY_EFFICIENCY = 0.94;
+const INVERTER_EFFICIENCY = 0.96;
+
+const TOTAL_SYSTEM_EFFICIENCY =
+  REGEN_EFFICIENCY *
+  BATTERY_EFFICIENCY *
+  INVERTER_EFFICIENCY;
+
+// State-level grid intensity
+const GRID_CO2_BY_STATE = {
+  CA: 0.19, TX: 0.39, NY: 0.12, FL: 0.41,
+  IL: 0.31, WA: 0.05, OR: 0.09, MA: 0.24,
+  PA: 0.39, OH: 0.53, MI: 0.49, GA: 0.42,
+  NC: 0.36, NJ: 0.27, CO: 0.45,
+  default: 0.385
+};
 const DEFAULT_SYSTEM_PRICE = 45000;        // Years to Parity!K27
 const DEFAULT_RESIDUAL = 12000;            // Years to Parity!H78
+
+const ROUTE_PRESETS = [
+  {
+    id: "urban",
+    label: "Urban Delivery",
+    braking: "High",
+    regenMultiplier: 1.35,
+    reeferMultiplier: 1.1
+  },
+  {
+    id: "regional",
+    label: "Regional Mixed",
+    braking: "Moderate",
+    regenMultiplier: 1.0,
+    reeferMultiplier: 1.0
+  },
+  {
+    id: "highway",
+    label: "Long Haul Highway",
+    braking: "Low",
+    regenMultiplier: 0.65,
+    reeferMultiplier: 0.92
+  }
+];
+
+function calcRegenScale(
+  milesPerYear,
+  reeferHoursPerYear,
+  routePreset
+) {
+  const safeHours = Math.max(1, reeferHoursPerYear);
+
+  const milesPerHour = milesPerYear / safeHours;
+
+  const route =
+    ROUTE_PRESETS.find(r => r.id === routePreset)
+    || ROUTE_PRESETS[1];
+
+  let utilizationFactor;
+
+  if (milesPerHour < 18) {
+    utilizationFactor = 1.35;
+  } else if (milesPerHour < 35) {
+    utilizationFactor = 1.0;
+  } else {
+    utilizationFactor = 0.72;
+  }
+
+  return (
+    utilizationFactor *
+    route.regenMultiplier
+  );
+}
+
+function estimateRange(value) {
+  return {
+    low: value * 0.85,
+    expected: value,
+    high: value * 1.15
+  };
+}
+
 
 // ─── Diesel-only baseline (gal/hr) — Compressor Simulation!C21:J24 ──────────
 const DIESEL_GAL_PER_HR = {
@@ -567,7 +648,7 @@ function Toggle({ options, value, onChange }){
 }
 function InputPanel({ inputs, onChange, onStateChange }){
   const [advancedOpen, setAdvancedOpen] = useState(false);
-  const set = patch => onChange({ ...inputs, ...patch });
+  const set = patch => onChange({ .....inputs, ...patch });
   const state = STATE_LOOKUP[inputs.state];
 
   return (
@@ -947,11 +1028,11 @@ function App(){
   // When state changes, re-derive diesel price and electricity rate from state data
   function handleStateChange(code){
     const s = STATE_LOOKUP[code];
-    if(!s){ setInputs({...inputs, state:code}); return; }
+    if(!s){ setInputs({.....inputs, state:code}); return; }
     const pctPub = inputs.pctPublicCharging ?? 0.10;
     const pctDep = 1 - pctPub;
     setInputs({
-      ...inputs,
+      .....inputs,
       state: code,
       dieselPricePerGal: s.diesel + DEF_COST_PER_GAL,
       electricityPricePerKwh: s.publicKwh*pctPub + s.depotKwh*pctDep,
