@@ -1,4 +1,4 @@
-<!doctype html> 
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
@@ -8,7 +8,7 @@
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <!-- Tailwind Play CDN with custom design tokens -->
 <script src="https://cdn.tailwindcss.com"></script>
@@ -17,18 +17,20 @@
     theme: {
       extend: {
         colors: {
-          ink:    { 950:"#0d1b2a", 900:"#1a2a3a", 800:"#f8f9fa", 700:"#f1f3f5", 600:"#dee2e6" },
-          frost:  { 50:"#ffffff", 100:"#f8f9fa", 200:"#f1f3f5", 300:"#495057", 400:"#868e96" },
-          signal: { 300:"#6fcf97", 400:"#2d9e5a", 500:"#1a6b3a", 600:"#145c30", 700:"#0f4a26" },
-          ice:    { 400:"#339af0", 500:"#228be6", 600:"#1971c2" },
-          amber:  { 500:"#e67700", 600:"#d9480f" }
+          fg: {
+            950:"#05080c", 900:"#0a1018", 800:"#111a24", 700:"#18242f",
+            600:"#1f2f3d", 500:"#2a3f50"
+          },
+          snow: { 50:"#f5f8fa", 100:"#e8edf2", 200:"#cdd6df", 400:"#8a9bab", 500:"#6b7d8d" },
+          green: { 300:"#6ee7a0", 400:"#34d06a", 500:"#1ab050", 600:"#148a3e", 700:"#0e6b30" },
+          blue:  { 400:"#60b4ff", 500:"#3b9dff" },
+          amber: { 400:"#fbbf24", 500:"#f59e0b" }
         },
         fontFamily: {
-          sans:  ["Inter", "Helvetica Neue", "Arial", "sans-serif"],
-          serif: ["Georgia", "serif"],
-          mono:  ["SF Mono", "Consolas", "monospace"],
+          sans: ["Inter","system-ui","sans-serif"],
+          mono: ["DM Mono","Consolas","monospace"],
         },
-        letterSpacing: { tightest: "-0.03em" }
+        letterSpacing: { tight: "-0.025em", tighter: "-0.04em" }
       }
     }
   };
@@ -43,95 +45,80 @@
 
 <style>
   :root {
-    --bg:       #ffffff;
-    --bg-card:  #f8f9fa;
-    --bg-input: #f1f3f5;
-    --border:   #dee2e6;
-    --border-focus: #1a6b3a;
-    --text-primary:   #0d1b2a;
-    --text-secondary: #495057;
-    --text-muted:     #868e96;
-    --accent:   #1a6b3a;   /* Foregger green */
-    --accent-2: #2d9e5a;
-    --accent-light: #e8f5ee;
-    --amber:    #e67700;
+    --bg:      #05080c;
+    --bg-card: #0a1018;
+    --bg-raise:#111a24;
+    --border:  rgba(255,255,255,0.07);
+    --border-h:rgba(255,255,255,0.14);
+    --green:   #1ab050;
+    --green-l: #34d06a;
+    --text:    #e8edf2;
+    --muted:   #6b7d8d;
+    --dimmed:  #3a4f62;
   }
+  *{box-sizing:border-box}
   html,body{
-    background: var(--bg);
-    color: var(--text-primary);
-    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    margin: 0;
+    background:var(--bg); color:var(--text);
+    font-family:"Inter",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased; margin:0;
   }
-  .headline-serif { font-family: 'Georgia', serif; font-style: italic; }
-  .tabular { font-variant-numeric: tabular-nums; font-family: 'SF Mono', 'Consolas', monospace; }
+  .mono{ font-family:"DM Mono",Consolas,monospace; font-variant-numeric:tabular-nums; }
+  /* Inputs */
   .select{
     width:100%; appearance:none; -webkit-appearance:none;
-    background-color: var(--bg-input); color: var(--text-primary);
-    border: 1px solid var(--border); border-radius: 8px;
-    padding: 9px 32px 9px 12px; font-size: 13px; cursor: pointer;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%23495057' stroke-width='1.4' fill='none'/></svg>");
-    background-repeat: no-repeat; background-position: right 10px center;
-    transition: border-color 150ms ease;
+    background:var(--bg-raise); color:var(--text);
+    border:1px solid var(--border); border-radius:6px;
+    padding:9px 30px 9px 11px; font-size:13px; font-family:inherit; cursor:pointer;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%236b7d8d' stroke-width='1.5' fill='none' stroke-linecap='round'/></svg>");
+    background-repeat:no-repeat; background-position:right 10px center;
+    transition:border-color 120ms;
   }
-  .select:hover { border-color: #adb5bd; }
-  .select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(26,107,58,0.12); }
-  .select option { background: #fff; color: var(--text-primary); }
+  .select:hover{border-color:var(--border-h)}
+  .select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(26,176,80,0.15)}
+  .select option{background:#111a24;color:#e8edf2}
   .num-input{
-    width: 100%; background: var(--bg-input); color: var(--text-primary);
-    border: 1px solid var(--border); border-radius: 8px;
-    padding: 9px 12px; font-size: 13px;
-    font-variant-numeric: tabular-nums;
-    transition: border-color 150ms ease;
+    width:100%; background:var(--bg-raise); color:var(--text);
+    border:1px solid var(--border); border-radius:6px;
+    padding:9px 11px; font-size:13px; font-family:"DM Mono",monospace;
+    font-variant-numeric:tabular-nums; transition:border-color 120ms;
   }
-  .num-input:hover { border-color: #adb5bd; }
-  .num-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(26,107,58,0.12); }
-  input[type="range"] {
-    -webkit-appearance: none; appearance: none; background: transparent; height: 22px; width: 100%;
+  .num-input:hover{border-color:var(--border-h)}
+  .num-input:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(26,176,80,0.15)}
+  /* Range slider */
+  input[type="range"]{-webkit-appearance:none;appearance:none;background:transparent;height:20px;width:100%}
+  input[type="range"]::-webkit-slider-runnable-track{height:3px;background:var(--bg-raise);border-radius:2px}
+  input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none;width:15px;height:15px;margin-top:-6px;
+    background:var(--green);border-radius:50%;border:2px solid var(--bg);
+    box-shadow:0 0 0 1px var(--green);cursor:pointer;transition:transform 100ms
   }
-  input[type="range"]::-webkit-slider-runnable-track { height: 3px; background: #dee2e6; border-radius: 2px; }
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none; width: 16px; height: 16px; margin-top: -6.5px;
-    background: var(--accent); border-radius: 50%; border: 2px solid #fff;
-    box-shadow: 0 0 0 1px var(--accent); cursor: pointer;
-    transition: transform 120ms ease;
+  input[type="range"]::-webkit-slider-thumb:hover{transform:scale(1.2)}
+  /* Charts */
+  .recharts-cartesian-axis-tick-value,.recharts-legend-item-text{
+    fill:var(--muted)!important;color:var(--muted)!important;font-size:11px;font-family:"DM Mono",monospace
   }
-  input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
-  input[type="range"]::-moz-range-track { height: 3px; background: #dee2e6; border-radius: 2px; }
-  input[type="range"]::-moz-range-thumb {
-    width: 16px; height: 16px; background: var(--accent); border-radius: 50%;
-    border: 2px solid #fff; cursor: pointer;
-  }
-  .recharts-cartesian-axis-tick-value,
-  .recharts-legend-item-text {
-    fill: var(--text-muted) !important; color: var(--text-muted) !important;
-    font-size: 11px;
-  }
-  ::selection { background: rgba(26,107,58,0.2); }
-  .fade-in { opacity: 0; transform: translateY(10px); animation: fade-in 0.4s ease forwards; }
-  .fade-in-x { opacity: 0; transform: translateX(-8px); animation: fade-in-x 0.4s ease forwards 0.1s; }
-  @keyframes fade-in   { to { opacity: 1; transform: translateY(0); } }
-  @keyframes fade-in-x { to { opacity: 1; transform: translateX(0); } }
-  .stagger-1{animation-delay:0.05s} .stagger-2{animation-delay:0.10s}
-  .stagger-3{animation-delay:0.15s} .stagger-4{animation-delay:0.20s}
-  .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
-  @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.4} }
-  .input-scroll::-webkit-scrollbar { width: 5px; }
-  .input-scroll::-webkit-scrollbar-thumb { background: #dee2e6; border-radius: 3px; }
-  #boot-loader {
-    position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
-    background: #fff; z-index: 50; color: #868e96; font-size: 12px;
-    letter-spacing: 0.2em; text-transform: uppercase;
-  }
-  #boot-loader .dot {
-    width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-right: 12px;
-    animation: pulse-dot 1.2s ease-in-out infinite;
-  }
+  ::selection{background:rgba(26,176,80,0.25)}
+  /* Animations */
+  .fade-in{opacity:0;transform:translateY(8px);animation:fi 0.4s ease forwards}
+  .fade-in-x{opacity:0;transform:translateX(-6px);animation:fix 0.35s ease forwards}
+  @keyframes fi{to{opacity:1;transform:translateY(0)}}
+  @keyframes fix{to{opacity:1;transform:translateX(0)}}
+  .s1{animation-delay:.04s}.s2{animation-delay:.09s}.s3{animation-delay:.14s}.s4{animation-delay:.19s}
+  .pulse{animation:pulse 2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  /* Scrollbar */
+  .scroll::-webkit-scrollbar{width:4px}
+  .scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+  /* Boot loader */
+  #boot{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+    background:var(--bg);z-index:50;color:var(--muted);font-size:11px;letter-spacing:.2em;text-transform:uppercase}
+  #boot .dot{width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:10px;
+    animation:pulse 1s ease-in-out infinite}
 </style>
 </head>
 <body>
 
-<div id="boot-loader"><span class="dot"></span> Loading Calculator</div>
+<div id="boot"><span class="dot"></span> Loading</div>
 <div id="root"></div>
 
 <!-- ============================================================
@@ -300,6 +287,15 @@ const COOLING_MODES   = ["Maintain Ambient","Cool","Chilled","Frozen"];
 const WEIGHT_OPTIONS  = ["Unladen","Mid","Max"];
 const BRAKING_OPTIONS = ["Low","Moderate","High"];
 
+const WEATHER_MULTIPLIER = {
+  "Hot":       {"Maintain Ambient":1.55, "Cool":1.55, "Chilled":1.70, "Frozen":1.35},
+  "Warm":      {"Maintain Ambient":1.25, "Cool":1.25, "Chilled":1.30, "Frozen":1.15},
+  "Cold":      {"Maintain Ambient":1.00, "Cool":1.00, "Chilled":1.00, "Frozen":1.00},
+  "Freezing":  {"Maintain Ambient":0.85, "Cool":0.85, "Chilled":0.75, "Frozen":0.90},
+  "4 Season":  {"Maintain Ambient":1.1625,"Cool":1.1625,"Chilled":1.1875,"Frozen":1.10},
+};
+const WEATHER_OPTIONS = ["Hot","Warm","Cold","Freezing","4 Season"];
+
 const FLEET_PRESETS = [
   { label:"Pilot",      size:1   },
   { label:"Small",      size:25  },
@@ -308,14 +304,24 @@ const FLEET_PRESETS = [
 ];
 
 // ─── Calculation core ──────────────────────────────────────────────────────
-function dieselGalPerHr(len, cool){ return DIESEL_GAL_PER_HR[len][cool]; }
-function trueGalPerHr(len, cool, w, braking){ return Math.max(0, TRUE_REMAINDER_GAL_PER_HR[braking][w][len][cool]); }
-function trueKwhPerHr(len, cool, w, braking){ return trueGalPerHr(len, cool, w, braking) * KWH_PER_GAL_EQUIV; }
+function dieselGalPerHr(len, cool, weather){ return DIESEL_GAL_PER_HR[len][cool] * (WEATHER_MULTIPLIER[weather]?.[cool] ?? 1.0); }
+function trueGalPerHr(len, cool, w, braking, weather){
+  // Regen capture is fixed (vehicle physics). TRUE remainder changes with weather:
+  // remainder_weather = max(0, weatherBaseline - regen_capture)
+  // regen_capture = diesel_cold_base - true_remainder_cold
+  const coldBase = DIESEL_GAL_PER_HR[len][cool];
+  const coldRemainder = TRUE_REMAINDER_GAL_PER_HR[braking][w][len][cool];
+  const regenCapture = coldBase - coldRemainder;  // fixed regardless of weather
+  const weatherMult = WEATHER_MULTIPLIER[weather]?.[cool] ?? 1.0;
+  const weatherBaseline = coldBase * weatherMult;
+  return Math.max(0, weatherBaseline - regenCapture);
+}
+function trueKwhPerHr(len, cool, w, braking, weather){ return trueGalPerHr(len, cool, w, braking, weather) * KWH_PER_GAL_EQUIV; }
 
 function computeAnnualEnergy(i) {
-  const dieselRate = dieselGalPerHr(i.trailerLength, i.coolingMode);
-  const trueRate   = trueGalPerHr  (i.trailerLength, i.coolingMode, i.weightScenario, i.brakingScenario);
-  const kwhRate    = trueKwhPerHr  (i.trailerLength, i.coolingMode, i.weightScenario, i.brakingScenario);
+  const dieselRate = dieselGalPerHr(i.trailerLength, i.coolingMode, i.weatherSeason);
+  const trueRate   = trueGalPerHr  (i.trailerLength, i.coolingMode, i.weightScenario, i.brakingScenario, i.weatherSeason);
+  const kwhRate    = trueKwhPerHr  (i.trailerLength, i.coolingMode, i.weightScenario, i.brakingScenario, i.weatherSeason);
   const pctDiesel  = 1 - i.pctTimeElectricCharging;
   const effDiesel  = trueRate * pctDiesel;
   const dieselGal  = dieselRate * i.reeferHoursPerYear;
@@ -373,7 +379,7 @@ function buildCashFlow(i, f) {
         financing = annualLoanPayment(principal, i.interestRate, i.financingTermYears);
       } else if(i.acquisitionMode==="lease"){
         const annualLease = 14400*(1+i.salesTaxRate);
-        if(t<=i.financingTermYears) financing = annualLease;
+        financing = annualLease;  // lease runs for full horizon
       }
       if((i.acquisitionMode==="cash"||i.acquisitionMode==="financed") && t===i.financingTermYears){
         financing -= i.residualValue;
@@ -472,6 +478,7 @@ function buildInputs(over={}){
     coolingMode: over.coolingMode ?? "Cool",
     weightScenario: over.weightScenario ?? "Max",
     brakingScenario: over.brakingScenario ?? "Moderate",
+    weatherSeason: over.weatherSeason ?? "4 Season",
     reeferHoursPerYear: over.reeferHoursPerYear ?? profile.reeferHoursPerYear,
     milesPerYear: over.milesPerYear ?? profile.milesPerYear,
     dieselPricePerGal: diesel,
@@ -504,10 +511,10 @@ function SectionHeader({ num, title, subtitle }){
   return (
     <div className="mb-4 mt-2">
       <div className="flex items-baseline gap-3">
-        <span className="headline-serif text-signal-500 text-xl leading-none">{num}.</span>
-        <h3 className="text-gray-900 text-sm font-semibold">{title}</h3>
+        <span className="mono text-green-400 text-base leading-none">{num}.</span>
+        <h3 className="text-snow-100 text-sm font-medium">{title}</h3>
       </div>
-      {subtitle && <div className="text-gray-400 text-[11px] mt-1 ml-7">{subtitle}</div>}
+      {subtitle && <div className="text-snow-500 text-[11px] mt-1 ml-7">{subtitle}</div>}
     </div>
   );
 }
@@ -515,8 +522,8 @@ function SectionHeader({ num, title, subtitle }){
 function FieldLabel({ children, hint }){
   return (
     <div className="flex items-baseline justify-between mb-1.5">
-      <label className="text-[11px] uppercase tracking-wider text-gray-500">{children}</label>
-      {hint && <span className="text-[10px] text-gray-400 tabular">{hint}</span>}
+      <label className="text-[10px] uppercase tracking-wider text-snow-500">{children}</label>
+      {hint && <span className="text-[10px] text-snow-500 mono">{hint}</span>}
     </div>
   );
 }
@@ -524,7 +531,7 @@ function FieldLabel({ children, hint }){
 function NumericInput({ value, onChange, prefix, suffix, decimals=0, min, max, step }){
   return (
     <div className="relative">
-      {prefix && <span className="absolute left-3 top-1/2 -translate-y-1/2 text-frost-400 text-xs pointer-events-none">{prefix}</span>}
+      {prefix && <span className="absolute left-3 top-1/2 -translate-y-1/2 text-snow-500 text-xs pointer-events-none">{prefix}</span>}
       <input
         type="number"
         value={value}
@@ -536,25 +543,28 @@ function NumericInput({ value, onChange, prefix, suffix, decimals=0, min, max, s
         className="num-input"
         style={{ paddingLeft: prefix ? 28 : 12, paddingRight: suffix ? 36 : 12 }}
       />
-      {suffix && <span className="absolute right-3 top-1/2 -translate-y-1/2 text-frost-400 text-[11px] pointer-events-none">{suffix}</span>}
+      {suffix && <span className="absolute right-3 top-1/2 -translate-y-1/2 text-snow-500 text-[11px] pointer-events-none">{suffix}</span>}
     </div>
   );
 }
 
 function Toggle({ options, value, onChange }){
   return (
-    <div className="flex rounded-lg bg-gray-100 border border-gray-200 p-1">
+    <div className="flex rounded-md p-0.5" style={{background:"var(--bg-raise)",border:"1px solid var(--border)"}}>
       {options.map(o => (
         <button key={o.value} onClick={()=>onChange(o.value)}
-          className={`flex-1 py-1.5 text-[11px] uppercase tracking-wider rounded-md transition ${
-            value===o.value ? "bg-signal-500/15 text-signal-400 ring-1 ring-signal-500/30"
-                            : "text-gray-500 hover:text-gray-800"
-          }`}>{o.label}</button>
+          className="flex-1 py-1.5 text-[11px] uppercase tracking-wider rounded-md transition"
+          style={value===o.value
+            ? {background:"rgba(26,176,80,0.12)",color:"#34d06a",outline:"1px solid rgba(26,176,80,0.25)"}
+            : {color:"var(--muted)"}
+          }
+          onMouseEnter={e=>{ if(value!==o.value) e.target.style.color="#e8edf2"; }}
+          onMouseLeave={e=>{ if(value!==o.value) e.target.style.color="var(--muted)"; }}
+        >{o.label}</button>
       ))}
     </div>
   );
 }
-
 function InputPanel({ inputs, onChange, onStateChange }){
   const [advancedOpen, setAdvancedOpen] = useState(false);
   const set = patch => onChange({ ...inputs, ...patch });
@@ -581,11 +591,11 @@ function InputPanel({ inputs, onChange, onStateChange }){
         <div className="flex gap-2 mt-2">
           {FLEET_PRESETS.map(p => (
             <button key={p.label} onClick={()=>set({fleetSize:p.size})}
-              className={`text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md transition ${
-                inputs.fleetSize===p.size
-                  ? "bg-signal-500/15 text-signal-400 ring-1 ring-signal-500/30"
-                  : "bg-gray-50 text-gray-500 hover:text-gray-800 border border-gray-200"
-              }`}>{p.label}</button>
+              className="text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md transition"
+              style={inputs.fleetSize===p.size
+                ? {background:"rgba(26,176,80,0.12)",color:"#34d06a",outline:"1px solid rgba(26,176,80,0.25)"}
+                : {background:"var(--bg-raise)",color:"var(--muted)",border:"1px solid var(--border)"}
+              }>{p.label}</button>
           ))}
         </div>
       </div>
@@ -600,11 +610,11 @@ function InputPanel({ inputs, onChange, onStateChange }){
               const prof = DEFAULT_OPERATING_PROFILE[L];
               set({ trailerLength:L, reeferHoursPerYear:prof.reeferHoursPerYear, milesPerYear:prof.milesPerYear });
             }}
-              className={`text-[11px] py-2 rounded-md transition tabular ${
-                inputs.trailerLength===L
-                  ? "bg-signal-500/15 text-signal-400 ring-1 ring-signal-500/30"
-                  : "bg-gray-50 text-gray-600 hover:text-gray-900 border border-gray-200"
-              }`}>{L}</button>
+              className="text-[11px] py-2 rounded-md transition mono"
+              style={inputs.trailerLength===L
+                ? {background:"rgba(26,176,80,0.12)",color:"#34d06a",outline:"1px solid rgba(26,176,80,0.25)"}
+                : {background:"var(--bg-raise)",color:"var(--muted)",border:"1px solid var(--border)"}
+              }>{L}</button>
           ))}
         </div>
       </div>
@@ -620,7 +630,7 @@ function InputPanel({ inputs, onChange, onStateChange }){
         <FieldLabel>Load weight</FieldLabel>
         <Toggle options={WEIGHT_OPTIONS.map(w=>({value:w, label:w}))}
                 value={inputs.weightScenario} onChange={v=>set({weightScenario:v})} />
-        <div className="text-[10px] text-gray-400 mt-1.5 leading-snug">Heavier loads brake harder → more regen → less remainder diesel</div>
+        <div className="text-[10px] text-snow-500 mt-1.5 leading-snug">Heavier loads brake harder → more regen → less remainder diesel</div>
       </div>
 
       <div>
@@ -630,8 +640,22 @@ function InputPanel({ inputs, onChange, onStateChange }){
           {value:"Moderate", label:"Moderate"},
           {value:"High",     label:"High"},
         ]} value={inputs.brakingScenario} onChange={v=>set({brakingScenario:v})} />
-        <div className="text-[10px] text-gray-400 mt-1.5 leading-snug">
+        <div className="text-[10px] text-snow-500 mt-1.5 leading-snug">
           Low = highway · Moderate = mixed · High = urban/last-mile
+        </div>
+      </div>
+
+      <div>
+        <FieldLabel>Weather / Season</FieldLabel>
+        <select className="select" value={inputs.weatherSeason} onChange={e=>set({weatherSeason:e.target.value})}>
+          <option value="Hot">Summer / Hot — highest cooling demand</option>
+          <option value="Warm">Spring-Fall / Warm</option>
+          <option value="Cold">Winter / Cold — baseline (1.0×)</option>
+          <option value="Freezing">Winter / Freezing — lowest demand</option>
+          <option value="4 Season">4 Season average — full year</option>
+        </select>
+        <div className="text-[10px] text-snow-500 mt-1.5 leading-snug">
+          Affects reefer workload · savings constant for Hot/Warm/Cold · Freezing may clip
         </div>
       </div>
 
@@ -662,9 +686,9 @@ function InputPanel({ inputs, onChange, onStateChange }){
       </div>
 
       {/* ADVANCED */}
-      <div className="pt-2 border-t border-gray-100">
+      <div className="pt-2" style={{borderTop:"1px solid var(--border)"}}>
         <button onClick={()=>setAdvancedOpen(o=>!o)}
-          className="w-full flex items-center justify-between py-2 text-[11px] uppercase tracking-wider text-gray-400 hover:text-gray-700 transition">
+          className="w-full flex items-center justify-between py-2 text-[11px] uppercase tracking-wider text-snow-500 hover:text-snow-100 transition">
           <span>Advanced assumptions</span>
           <span className={`transform transition ${advancedOpen?"rotate-180":""}`}>▾</span>
         </button>
@@ -675,7 +699,7 @@ function InputPanel({ inputs, onChange, onStateChange }){
               <input type="range" min={0} max={1} step={0.05}
                 value={inputs.pctTimeElectricCharging}
                 onChange={e=>set({pctTimeElectricCharging:parseFloat(e.target.value)})} />
-              <div className="text-[10px] text-gray-400 mt-1">0% = pure regen · 100% = grid-only</div>
+              <div className="text-[10px] text-snow-500 mt-1">0% = pure regen · 100% = grid-only</div>
             </div>
             <div>
               <FieldLabel hint="weighted by depot/public mix">Electricity rate</FieldLabel>
@@ -716,11 +740,11 @@ function InputPanel({ inputs, onChange, onStateChange }){
 
 function StatCard({ label, value, subtext, accent, delay }){
   return (
-    <div className={`fade-in stagger-${delay} relative bg-white border border-gray-200 rounded-xl p-5 overflow-hidden shadow-sm`}>
-      <div className="absolute left-0 top-0 bottom-0 w-[3px]" style={{background:`var(--${accent}-500)`, opacity:0.7}}></div>
-      <div className="text-[10px] uppercase tracking-widest text-gray-400 mb-2">{label}</div>
-      <div className="tabular text-gray-900 text-[26px] leading-none font-semibold tracking-tight">{value}</div>
-      {subtext && <div className="text-gray-500 text-[11px] mt-2">{subtext}</div>}
+    <div className={`fade-in s${delay} relative rounded-xl p-5 overflow-hidden`} style={{background:"var(--bg-card)",border:"1px solid var(--border)"}}>
+      <div className="absolute left-0 top-0 bottom-0 w-[3px]" style={{background:accent==="signal"?"var(--green)":"#3b9dff",opacity:0.8}}></div>
+      <div className="text-[10px] uppercase tracking-widest text-snow-500 mb-2">{label}</div>
+      <div className="mono text-snow-50 text-[24px] leading-none font-semibold tracking-tight">{value}</div>
+      {subtext && <div className="text-snow-400 text-[11px] mt-2">{subtext}</div>}
     </div>
   );
 }
@@ -763,14 +787,14 @@ function CashFlowChart({ r }){
     cum: Math.round(y.cumulativeSavings),
   }));
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-5 fade-in stagger-2 shadow-sm">
+    <div className="rounded-xl p-5 fade-in s2" style={{background:"var(--bg-card)",border:"1px solid var(--border)"}}>
       <div className="flex items-baseline justify-between mb-3">
         <div>
-          <div className="text-gray-900 text-sm font-semibold">Cumulative cash flow</div>
-          <div className="text-gray-400 text-[10px] uppercase tracking-widest mt-0.5">Fleet, undiscounted</div>
+          <div className="text-snow-100 text-sm font-medium">Cumulative cash flow</div>
+          <div className="text-snow-500 text-[10px] uppercase tracking-widest mt-0.5">Fleet, undiscounted</div>
         </div>
         {r.paybackPeriodYears!=null && (
-          <div className="text-[10px] text-ice-400 tabular">Payback @ {r.paybackPeriodYears.toFixed(2)} yrs</div>
+          <div className="text-[10px] text-blue-400 mono">Payback @ {r.paybackPeriodYears.toFixed(2)} yrs</div>
         )}
       </div>
       <div style={{ height: 260 }}>
@@ -778,29 +802,29 @@ function CashFlowChart({ r }){
           <AreaChart data={data} margin={{top:10,right:10,left:0,bottom:0}}>
             <defs>
               <linearGradient id="gSignal" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#1a6b3a" stopOpacity={0.4}/>
-                <stop offset="100%" stopColor="#1a6b3a" stopOpacity={0.02}/>
+                <stop offset="0%" stopColor="#1ab050" stopOpacity={0.5}/>
+                <stop offset="100%" stopColor="#1ab050" stopOpacity={0.02}/>
               </linearGradient>
             </defs>
-            <CartesianGrid stroke="#f1f3f5" vertical={false}/>
-            <XAxis dataKey="year" stroke="#adb5bd" tickLine={false} axisLine={{stroke:"rgba(255,255,255,0.08)"}}/>
-            <YAxis stroke="#adb5bd" tickLine={false} axisLine={false}
+            <CartesianGrid stroke="rgba(255,255,255,0.04)" vertical={false}/>
+            <XAxis dataKey="year" stroke="rgba(255,255,255,0.2)" tickLine={false} axisLine={{stroke:"rgba(255,255,255,0.08)"}}/>
+            <YAxis stroke="rgba(255,255,255,0.2)" tickLine={false} axisLine={false}
                    tickFormatter={v => "$"+(v/1000).toFixed(0)+"k"} width={55}/>
             <Tooltip
               formatter={v => fmtUSD0(v)}
-              contentStyle={{background:"#fff",border:"1px solid #dee2e6",borderRadius:8,boxShadow:"0 4px 12px rgba(0,0,0,0.08)"}}
-              labelStyle={{color:"#868e96", fontSize:11}}
-              itemStyle={{color:"#0d1b2a", fontSize:12}}
+              contentStyle={{background:"#111a24",border:"1px solid rgba(255,255,255,0.1)",borderRadius:8}}
+              labelStyle={{color:"#6b7d8d",fontSize:11,fontFamily:"DM Mono,monospace"}}
+              itemStyle={{color:"#e8edf2",fontSize:12,fontFamily:"DM Mono,monospace"}}
             />
-            <ReferenceLine y={0} stroke="#dee2e6" strokeDasharray="3 3"/>
+            <ReferenceLine y={0} stroke="rgba(255,255,255,0.08)" strokeDasharray="3 3"/>
             {r.paybackPeriodYears!=null && (
               <ReferenceLine
                 x={`Yr ${Math.round(r.paybackPeriodYears)}`}
-                stroke="#3eb6ff" strokeDasharray="4 4"
-                label={{value:"Payback", fill:"#3eb6ff", fontSize:10, position:"top"}}
+                stroke="#60b4ff" strokeDasharray="4 4"
+                label={{value:"Payback", fill:"#60b4ff", fontSize:10, position:"top"}}
               />
             )}
-            <Area type="monotone" dataKey="cum" stroke="#1a6b3a" strokeWidth={2} fill="url(#gSignal)" name="Cumulative" />
+            <Area type="monotone" dataKey="cum" stroke="#1ab050" strokeWidth={2} fill="url(#gSignal)" name="Cumulative" />
           </AreaChart>
         </ResponsiveContainer>
       </div>
@@ -816,48 +840,48 @@ function SavingsBreakdownChart({ r }){
     { name:"Savings",      value: Math.round(f.fleetAnnualSavings),          color:"rgba(47,209,76,0.95)"  },
   ];
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-5 fade-in stagger-3 shadow-sm">
+    <div className="rounded-xl p-5 fade-in s3" style={{background:"var(--bg-card)",border:"1px solid var(--border)"}}>
       <div className="flex items-baseline justify-between mb-3">
         <div>
-          <div className="text-gray-900 text-sm font-semibold">Annual fleet costs vs savings</div>
-          <div className="text-gray-400 text-[10px] uppercase tracking-widest mt-0.5">Year-1 operating $</div>
+          <div className="text-snow-100 text-sm font-medium">Annual fleet costs vs savings</div>
+          <div className="text-snow-500 text-[10px] uppercase tracking-widest mt-0.5">Year-1 operating $</div>
         </div>
-        <div className="text-[10px] text-gray-500 tabular">{fmtPct(r.energy.pctFuelReduction)} fuel reduction</div>
+        <div className="text-[10px] text-snow-500 mono">{fmtPct(r.energy.pctFuelReduction)} fuel reduction</div>
       </div>
       <div style={{ height: 220 }}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} margin={{top:20,right:10,left:0,bottom:5}}>
-            <CartesianGrid stroke="#f1f3f5" vertical={false}/>
-            <XAxis dataKey="name" stroke="#868e96" tickLine={false} axisLine={{stroke:"rgba(255,255,255,0.08)"}}/>
-            <YAxis stroke="#adb5bd" tickLine={false} axisLine={false}
+            <CartesianGrid stroke="rgba(255,255,255,0.04)" vertical={false}/>
+            <XAxis dataKey="name" stroke="rgba(255,255,255,0.3)" tickLine={false} axisLine={{stroke:"rgba(255,255,255,0.08)"}}/>
+            <YAxis stroke="rgba(255,255,255,0.2)" tickLine={false} axisLine={false}
                    tickFormatter={v=>"$"+(v/1000).toFixed(0)+"k"} width={55}/>
             <Tooltip
               cursor={{fill:"rgba(255,255,255,0.04)"}}
               formatter={v=>fmtUSD0(v)}
-              contentStyle={{background:"#fff",border:"1px solid #dee2e6",borderRadius:8,boxShadow:"0 4px 12px rgba(0,0,0,0.08)"}}
-              labelStyle={{color:"#868e96", fontSize:11}}
-              itemStyle={{color:"#0d1b2a", fontSize:12}}
+              contentStyle={{background:"#111a24",border:"1px solid rgba(255,255,255,0.1)",borderRadius:8}}
+              labelStyle={{color:"#6b7d8d",fontSize:11,fontFamily:"DM Mono,monospace"}}
+              itemStyle={{color:"#e8edf2",fontSize:12,fontFamily:"DM Mono,monospace"}}
             />
             <Bar dataKey="value" radius={[4,4,0,0]}>
               {data.map((d,i)=> <Cell key={i} fill={d.color}/>)}
               <LabelList dataKey="value" position="top" formatter={v=>fmtUSD0(v)}
-                style={{fill:"#eef3f1", fontFamily:"JetBrains Mono", fontSize:11}}/>
+                style={{fill:"#e8edf2",fontFamily:"DM Mono,monospace",fontSize:11}}/>
             </Bar>
           </BarChart>
         </ResponsiveContainer>
       </div>
-      <div className="grid grid-cols-3 gap-3 mt-3 pt-3 border-t border-white/[0.04] text-center">
+      <div className="grid grid-cols-3 gap-3 mt-3 pt-3 text-center" style={{borderTop:"1px solid rgba(255,255,255,0.06)"}}>
         <div>
-          <div className="text-[10px] uppercase tracking-widest text-frost-400">Gallons saved</div>
-          <div className="tabular text-frost-50 text-base mt-1">{fmtNum(r.energy.gallonsSaved * r.inputs.fleetSize,0)}</div>
+          <div className="text-[10px] uppercase tracking-widest text-snow-500">Gallons saved</div>
+          <div className="mono text-snow-50 text-base mt-1 font-medium">{fmtNum(r.energy.gallonsSaved * r.inputs.fleetSize,0)}</div>
         </div>
         <div>
-          <div className="text-[10px] uppercase tracking-widest text-frost-400">% fuel cut</div>
-          <div className="tabular text-frost-50 text-base mt-1">{fmtPct(r.energy.pctFuelReduction,1)}</div>
+          <div className="text-[10px] uppercase tracking-widest text-snow-500">% fuel cut</div>
+          <div className="mono text-snow-50 text-base mt-1 font-medium">{fmtPct(r.energy.pctFuelReduction,1)}</div>
         </div>
         <div>
-          <div className="text-[10px] uppercase tracking-widest text-frost-400">Gal/hr saved</div>
-          <div className="tabular text-frost-50 text-base mt-1">{fmtNum(r.energy.dieselGalPerHour - r.energy.trueGalPerHour, 4)}</div>
+          <div className="text-[10px] uppercase tracking-widest text-snow-500">Gal/hr saved</div>
+          <div className="mono text-snow-50 text-base mt-1 font-medium">{fmtNum(r.energy.dieselGalPerHour - r.energy.trueGalPerHour, 4)}</div>
         </div>
       </div>
     </div>
@@ -869,23 +893,33 @@ function ResultsPanel({ r }){
   const items = [
     { label:"Annual savings per unit", value: fmtUSD0(f.totalAnnualSavings), helper: `${fmtPct(r.energy.pctFuelReduction,1)} fuel reduction` },
     { label:"Diesel gallons saved", value: fmtNum(r.energy.gallonsSaved * r.inputs.fleetSize * r.inputs.analysisHorizonYears, 0)+" gal", helper: `fleet, over ${r.inputs.analysisHorizonYears}-yr horizon` },
-    { label:"NPV (10-yr fleet)",   value: fmtUSD0(r.npv), helper: `@ ${fmtPct(r.inputs.discountRate,1)} discount` },
+    { label:`NPV (${r.inputs.analysisHorizonYears}-yr fleet)`,   value: fmtUSD0(r.npv), helper: `@ ${fmtPct(r.inputs.discountRate,1)} discount` },
     { label:"IRR",                 value: r.irr!=null ? fmtPct(r.irr,1) : "—", helper: r.irr!=null && r.irr>r.inputs.discountRate ? "exceeds discount rate" : "" },
     { label:`${r.inputs.analysisHorizonYears}-yr CO₂ avoided`,   value: `${fmtNum(r.annualCo2TonsAvoided * r.inputs.analysisHorizonYears * r.inputs.fleetSize / r.inputs.fleetSize,0)} t`, helper: `≈ ${fmtNum(r.annualCo2TonsAvoided * r.inputs.analysisHorizonYears / 4.6,0)} cars total` },
-    { label:"Upfront fleet invest", value: fmtUSD0(r.inputs.systemPrice * r.inputs.fleetSize), helper: `${r.inputs.fleetSize} × ${fmtUSD0(r.inputs.systemPrice)}` },
+    { label: r.inputs.acquisitionMode==="lease" ? "Annual lease cost" : "Upfront cash needed",
+       value: r.inputs.acquisitionMode==="lease"
+         ? fmtUSD0(14400*(1+r.inputs.salesTaxRate)*r.inputs.fleetSize)
+         : r.inputs.acquisitionMode==="financed"
+           ? fmtUSD0(r.inputs.systemPrice*(r.inputs.downPaymentPct+r.inputs.salesTaxRate)*r.inputs.fleetSize)
+           : fmtUSD0(r.inputs.systemPrice*(1+r.inputs.salesTaxRate)*r.inputs.fleetSize),
+       helper: r.inputs.acquisitionMode==="lease"
+         ? `${r.inputs.fleetSize} units × $${(14400*(1+r.inputs.salesTaxRate)).toFixed(0)}/yr`
+         : r.inputs.acquisitionMode==="financed"
+           ? `${fmtPct(r.inputs.downPaymentPct)} down + tax · full price ${fmtUSD0(r.inputs.systemPrice*r.inputs.fleetSize)}`
+           : `${r.inputs.fleetSize} × ${fmtUSD0(r.inputs.systemPrice*(1+r.inputs.salesTaxRate))} incl. tax` },
   ];
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-5 fade-in stagger-4 shadow-sm">
+    <div className="rounded-xl p-5 fade-in s4" style={{background:"var(--bg-card)",border:"1px solid var(--border)"}}>
       <div className="flex items-baseline justify-between mb-4">
-        <div className="text-gray-900 text-sm font-semibold">Secondary metrics</div>
-        <div className="text-gray-400 text-[10px] uppercase tracking-widest">Per fleet · year-1</div>
+        <div className="text-snow-100 text-sm font-medium">Secondary metrics</div>
+        <div className="text-snow-500 text-[10px] uppercase tracking-widest">Per fleet · year-1</div>
       </div>
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5">
         {items.map((it,i)=>(
           <div key={i}>
-            <div className="text-[10px] uppercase tracking-widest text-frost-400 mb-1">{it.label}</div>
-            <div className="tabular text-gray-900 text-lg leading-none font-semibold">{it.value}</div>
-            {it.helper && <div className="text-[10px] text-gray-400 mt-1">{it.helper}</div>}
+            <div className="text-[10px] uppercase tracking-widest text-snow-500 mb-1">{it.label}</div>
+            <div className="mono text-snow-50 text-lg leading-none font-semibold">{it.value}</div>
+            {it.helper && <div className="text-[10px] text-snow-500 mt-1">{it.helper}</div>}
           </div>
         ))}
       </div>
@@ -937,52 +971,52 @@ function App(){
 
   // remove the boot loader once mounted
   useEffect(() => {
-    const el = document.getElementById("boot-loader");
+    const el = document.getElementById("boot");
     if(el) el.remove();
   }, []);
 
   return (
     <main className="relative min-h-screen">
       {/* Header */}
-      <header className="border-b border-gray-200 relative z-10 bg-white">
-        <div className="max-w-[1480px] mx-auto px-6 lg:px-8 py-5 flex items-center justify-between">
+      <header className="border-b relative z-10" style={{background:"var(--bg-card)",borderColor:"var(--border)"}}>
+        <div className="max-w-[1480px] mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-baseline gap-4">
-            <div className="text-gray-900 font-bold tracking-tight text-lg flex items-center gap-2">
-              <span className="text-signal-500 pulse-dot">●</span> Foregger
+            <div className="text-snow-50 font-semibold tracking-tight text-base flex items-center gap-2">
+              <span className="text-green-400 pulse">●</span> Foregger
             </div>
-            <div className="text-gray-500 text-[11px] uppercase tracking-widest">Foregger Energy Solutions</div>
+            <div className="text-snow-500 text-[10px] uppercase tracking-widest">Foregger Energy Solutions</div>
           </div>
           
         </div>
       </header>
 
       {/* Hero */}
-      <section className="max-w-[1480px] mx-auto px-6 lg:px-8 pt-8 lg:pt-10 pb-6 relative z-10 fade-in bg-white">
+      <section className="max-w-[1480px] mx-auto px-6 lg:px-8 pt-8 lg:pt-10 pb-6 relative z-10 fade-in">
         <div className="grid grid-cols-12 gap-8 items-end">
           <div className="col-span-12 lg:col-span-8">
-            <div className="text-[11px] uppercase tracking-[0.25em] text-signal-500 mb-3 font-semibold">
+            <div className="text-[11px] uppercase tracking-[0.25em] text-green-400 mb-3 font-medium">
               TCO Calculator · v1.0
             </div>
-            <h1 className="text-[32px] lg:text-[48px] leading-[1.05] tracking-tightest text-ink-950 font-semibold">
+            <h1 className="text-[28px] lg:text-[44px] leading-[1.08] tracking-tight text-snow-50 font-semibold">
               Quantify the savings of a{" "}
-              <span className="headline-serif text-signal-500">regenerative</span>{" "}
+              <span className="italic text-green-400">regenerative</span>{" "}
               refrigeration fleet.
             </h1>
-            <p className="text-gray-500 text-base mt-4 max-w-[640px] leading-relaxed">
+            <p className="text-snow-400 text-sm mt-4 max-w-[600px] leading-relaxed">
               The FES system captures braking energy and powers the reefer unit directly —
               reducing diesel consumption, emissions, and operating cost across every
               U.S. state. Model your fleet's economics in real time.
             </p>
           </div>
           <div className="hidden lg:block lg:col-span-4 text-right">
-            <div className="text-[10px] uppercase tracking-widest text-frost-400 mb-1">Diesel prices</div>
-            <div className="text-gray-600 text-xs leading-relaxed">
-              State averages from <a className="underline decoration-frost-400/40 underline-offset-2 hover:text-signal-300"
+            <div className="text-[10px] uppercase tracking-widest text-snow-500 mb-1">Diesel prices</div>
+            <div className="text-snow-400 text-xs leading-relaxed">
+              State averages from <a className="underline underline-offset-2 decoration-snow-500/30 hover:text-green-400"
                 href="https://gasprices.aaa.com/state-gas-price-averages/" target="_blank" rel="noopener noreferrer">AAA</a>
               {" · "}
               {pricesMeta.live
-                ? <span className="text-signal-400">● Live — {pricesMeta.date}</span>
-                : <span className="text-amber-500">● Snapshot — {pricesMeta.date}</span>
+                ? <span className="text-green-400">● Live — {pricesMeta.date}</span>
+                : <span className="text-amber-400">● Snapshot — {pricesMeta.date}</span>
               }
             </div>
           </div>
@@ -990,15 +1024,15 @@ function App(){
       </section>
 
       {/* Calculator grid */}
-      <section className="max-w-[1480px] mx-auto px-6 lg:px-8 pb-20 relative z-10 bg-gray-50">
+      <section className="max-w-[1480px] mx-auto px-6 lg:px-8 pb-20 relative z-10">
         <div className="grid grid-cols-12 gap-6">
           {/* Left: Inputs */}
-          <aside className="col-span-12 lg:col-span-4 lg:sticky lg:top-6 lg:max-h-[calc(100vh-3rem)] lg:overflow-y-auto input-scroll fade-in-x bg-gray-50">
-            <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-              <div className="flex items-baseline justify-between mb-5 pb-3 border-b border-gray-100">
-                <h2 className="text-gray-900 font-semibold text-sm">Scenario inputs</h2>
-                <span className="text-[10px] uppercase tracking-widest text-frost-400 flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-signal-500 pulse-dot inline-block"></span> Live calc
+          <aside className="col-span-12 lg:col-span-4 lg:sticky lg:top-6 lg:max-h-[calc(100vh-3rem)] lg:overflow-y-auto scroll fade-in-x">
+            <div className="rounded-xl p-5" style={{background:"var(--bg-card)",border:"1px solid var(--border)"}}>
+              <div className="flex items-baseline justify-between mb-4 pb-3" style={{borderBottom:"1px solid var(--border)"}}>
+                <h2 className="text-snow-50 font-semibold text-sm">Scenario inputs</h2>
+                <span className="text-[10px] uppercase tracking-widest text-snow-500 flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-500 pulse inline-block"></span> Live
                 </span>
               </div>
               <InputPanel inputs={inputs} onChange={setInputs} onStateChange={handleStateChange} />
@@ -1013,10 +1047,10 @@ function App(){
               <SavingsBreakdownChart r={results}/>
             </div>
             <ResultsPanel r={results}/>
-            <div className="text-[10px] text-gray-400 leading-relaxed pt-2 border-t border-gray-100">
-              Calculation logic mirrors <span className="text-frost-300">FES TCO &amp; MLO Modeling.xlsx</span>{" "}
+            <div className="text-[10px] text-snow-500 leading-relaxed pt-2" style={{borderTop:"1px solid rgba(255,255,255,0.05)"}}>
+              Calculation logic mirrors <span className="text-snow-200">FES TCO &amp; MLO Modeling.xlsx</span>{" "}
               · Compressor Simulation!C21:J24 (length×cooling) and C65:J80 (length×cooling×weight)
-              · Braking scenario: {results.inputs.brakingScenario} (Regeneration Simulation sheet)
+              · Braking: {results.inputs.brakingScenario} · Weather: {results.inputs.weatherSeason} (Regeneration Simulation sheet)
               · Payback method: linear interpolation across cumulative-cashflow zero-crossing (matches Years to Parity!V96)
             </div>
           </div>
