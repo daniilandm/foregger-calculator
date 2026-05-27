@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>FES TCO Calculator — Standalone Preview</title>
+<title>Foregger Energy Solutions — TRUE TCO Calculator</title>
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -578,7 +578,7 @@ function InputPanel({ inputs, onChange, onStateChange }){
         <FieldLabel hint={state ? `${fmtUSDgal(state.diesel + DEF_COST_PER_GAL)}/gal` : ""}>State</FieldLabel>
         <select className="select" value={inputs.state} onChange={e => onStateChange(e.target.value)}>
           {STATE_DATA.map(s => (
-            <option key={s.code} value={s.code}>{s.name} — ${(s.diesel+DEF_COST_PER_GAL).toFixed(2)}/gal</option>
+            <option key={s.code} value={s.code}>{s.name}  ${(s.diesel+DEF_COST_PER_GAL).toFixed(2)}/gal</option>
           ))}
         </select>
       </div>
@@ -630,7 +630,7 @@ function InputPanel({ inputs, onChange, onStateChange }){
         <FieldLabel>Load weight</FieldLabel>
         <Toggle options={WEIGHT_OPTIONS.map(w=>({value:w, label:w}))}
                 value={inputs.weightScenario} onChange={v=>set({weightScenario:v})} />
-        <div className="text-[10px] text-snow-500 mt-1.5 leading-snug">Heavier loads brake harder → more regen → less remainder diesel</div>
+        <div className="text-[10px] text-snow-500 mt-1.5 leading-snug">Heavier loads brake harder — more regen, less remainder diesel</div>
       </div>
 
       <div>
@@ -641,7 +641,7 @@ function InputPanel({ inputs, onChange, onStateChange }){
           {value:"High",     label:"High"},
         ]} value={inputs.brakingScenario} onChange={v=>set({brakingScenario:v})} />
         <div className="text-[10px] text-snow-500 mt-1.5 leading-snug">
-          Low = highway · Moderate = mixed · High = urban/last-mile
+          Low: highway   Moderate: mixed   High: urban / last-mile
         </div>
       </div>
 
@@ -655,7 +655,7 @@ function InputPanel({ inputs, onChange, onStateChange }){
           <option value="4 Season">4 Season average — full year</option>
         </select>
         <div className="text-[10px] text-snow-500 mt-1.5 leading-snug">
-          Affects reefer workload · savings constant for Hot/Warm/Cold · Freezing may clip
+          Affects reefer workload — savings stay constant except in Freezing
         </div>
       </div>
 
@@ -669,11 +669,6 @@ function InputPanel({ inputs, onChange, onStateChange }){
         <FieldLabel>Miles / year</FieldLabel>
         <NumericInput value={inputs.milesPerYear} onChange={v=>set({milesPerYear:Math.max(0,v)})} suffix="mi" />
       </div>
-      <div>
-        <FieldLabel hint="incl. DEF surcharge">Diesel price</FieldLabel>
-        <NumericInput value={inputs.dieselPricePerGal} onChange={v=>set({dieselPricePerGal:Math.max(0,v)})} prefix="$" suffix="/gal" decimals={3} />
-      </div>
-
       {/* SECTION 5: ACQUISITION */}
       <SectionHeader num="05" title="Acquisition" />
       <div>
@@ -699,7 +694,7 @@ function InputPanel({ inputs, onChange, onStateChange }){
               <input type="range" min={0} max={1} step={0.05}
                 value={inputs.pctTimeElectricCharging}
                 onChange={e=>set({pctTimeElectricCharging:parseFloat(e.target.value)})} />
-              <div className="text-[10px] text-snow-500 mt-1">0% = pure regen · 100% = grid-only</div>
+              <div className="text-[10px] text-snow-500 mt-1">0% = pure regen   100% = grid-only</div>
             </div>
             <div>
               <FieldLabel hint="weighted by depot/public mix">Electricity rate</FieldLabel>
@@ -751,36 +746,30 @@ function StatCard({ label, value, subtext, accent, delay }){
 
 function SummaryCards({ r }){
   const f = r.financials;
+  const yr5 = r.cashflow[Math.min(5,r.inputs.analysisHorizonYears)]?.cumulativeSavings ?? 0;
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+    <div className="grid grid-cols-3 gap-3">
       <StatCard
         label="Annual fleet savings"
         value={fmtUSD0(f.fleetAnnualSavings)}
-        subtext={`${fmtUSD0(f.totalAnnualSavings)} per trailer/yr`}
+        subtext={`${fmtUSD0(f.totalAnnualSavings)}/unit/yr  ·  ${fmtUSD0(r.cumulativeSavingsAtHorizon)} over ${r.inputs.analysisHorizonYears} yrs`}
         accent="signal" delay={1}
       />
       <StatCard
-        label="Payback"
+        label="Payback period"
         value={fmtYears(r.paybackPeriodYears)}
-        subtext={r.paybackPeriodYears!=null ? "cumulative cash-flow zero-crossing" : "outside horizon"}
+        subtext={r.paybackPeriodYears!=null ? `${fmtUSD0(yr5)} cumulative at year 5` : "beyond analysis horizon"}
         accent="ice" delay={2}
-      />
-      <StatCard
-        label={`${r.inputs.analysisHorizonYears}-yr savings`}
-        value={fmtUSD0(r.cumulativeSavingsAtHorizon)}
-        subtext={`${fmtUSD0(r.cashflow[Math.min(5,r.inputs.analysisHorizonYears)]?.cumulativeSavings ?? 0)} at year 5`}
-        accent="signal" delay={3}
       />
       <StatCard
         label="CO₂ avoided / yr"
         value={`${fmtNum(r.annualCo2TonsAvoided,0)} t`}
-        subtext={`≈ ${fmtNum(r.annualCo2TonsAvoided/4.6,0)} cars off the road`}
-        accent="ice" delay={4}
+        subtext={`≈ ${fmtNum(r.annualCo2TonsAvoided/4.6,0)} cars off the road (fleet)`}
+        accent="signal" delay={3}
       />
     </div>
   );
 }
-
 function CashFlowChart({ r }){
   const data = r.cashflow.map(y => ({
     year:`Yr ${y.year}`,
@@ -995,7 +984,7 @@ function App(){
         <div className="grid grid-cols-12 gap-8 items-end">
           <div className="col-span-12 lg:col-span-8">
             <div className="text-[11px] uppercase tracking-[0.25em] text-green-400 mb-3 font-medium">
-              TCO Calculator · v1.0
+              TRUE System · TCO Calculator
             </div>
             <h1 className="text-[28px] lg:text-[44px] leading-[1.08] tracking-tight text-snow-50 font-semibold">
               Quantify the savings of a{" "}
@@ -1049,9 +1038,9 @@ function App(){
             <ResultsPanel r={results}/>
             <div className="text-[10px] text-snow-500 leading-relaxed pt-2" style={{borderTop:"1px solid rgba(255,255,255,0.05)"}}>
               Calculation logic mirrors <span className="text-snow-200">FES TCO &amp; MLO Modeling.xlsx</span>{" "}
-              · Compressor Simulation!C21:J24 (length×cooling) and C65:J80 (length×cooling×weight)
-              · Braking: {results.inputs.brakingScenario} · Weather: {results.inputs.weatherSeason} (Regeneration Simulation sheet)
-              · Payback method: linear interpolation across cumulative-cashflow zero-crossing (matches Years to Parity!V96)
+              Compressor Simulation C21:J24 (length x cooling) and C65:J80 (length x cooling x weight)
+                Braking: {results.inputs.brakingScenario}   Weather: {results.inputs.weatherSeason} (Regeneration Simulation sheet)
+                Payback method: linear interpolation across cumulative-cashflow zero-crossing (matches Years to Parity!V96)
             </div>
           </div>
         </div>
