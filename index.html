@@ -521,7 +521,7 @@ function computeIRR(cf){
 
 function computeAnnualCO2Avoided(e, fleet){
   const gross = e.gallonsSaved * CO2_KG_PER_GAL_DIESEL;
-  const grid  = e.annualKwhConsumed * CO2_KG_PER_KWH_GRID;
+  const grid  = e.annualKwhConsumed * DEFAULT_GRID_CO2;
   return ((gross - grid) * fleet) / 1000;
 }
 
@@ -648,7 +648,7 @@ function Toggle({ options, value, onChange }){
 }
 function InputPanel({ inputs, onChange, onStateChange }){
   const [advancedOpen, setAdvancedOpen] = useState(false);
-  const set = patch => onChange({ .....inputs, ...patch });
+  const set = patch => onChange({ ...inputs, ...patch });
   const state = STATE_LOOKUP[inputs.state];
 
   return (
@@ -1028,11 +1028,11 @@ function App(){
   // When state changes, re-derive diesel price and electricity rate from state data
   function handleStateChange(code){
     const s = STATE_LOOKUP[code];
-    if(!s){ setInputs({.....inputs, state:code}); return; }
+    if(!s){ setInputs({...inputs, state:code}); return; }
     const pctPub = inputs.pctPublicCharging ?? 0.10;
     const pctDep = 1 - pctPub;
     setInputs({
-      .....inputs,
+      ...inputs,
       state: code,
       dieselPricePerGal: s.diesel + DEF_COST_PER_GAL,
       electricityPricePerKwh: s.publicKwh*pctPub + s.depotKwh*pctDep,
