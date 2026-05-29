@@ -135,7 +135,7 @@ const {
 } = Recharts;
 
 // ─── State / pricing data (snapshot 2026-05-19, AAA) ────────────────────────
-const PRICES_FALLBACK = [{"code":"AL","name":"Alabama","diesel":5.225,"publicKwh":0.431,"depotKwh":0.1896},{"code":"AK","name":"Alaska","diesel":5.891,"publicKwh":0.517,"depotKwh":0.2275},{"code":"AZ","name":"Arizona","diesel":5.78,"publicKwh":0.409,"depotKwh":0.18},{"code":"AR","name":"Arkansas","diesel":5.176,"publicKwh":0.43,"depotKwh":0.1892},{"code":"CA","name":"California","diesel":7.415,"publicKwh":0.379,"depotKwh":0.1668},{"code":"CO","name":"Colorado","diesel":5.681,"publicKwh":0.338,"depotKwh":0.1487},{"code":"CT","name":"Connecticut","diesel":5.816,"publicKwh":0.371,"depotKwh":0.1632},{"code":"DE","name":"Delaware","diesel":5.515,"publicKwh":0.318,"depotKwh":0.1399},{"code":"DC","name":"District of Columbia","diesel":5.974,"publicKwh":0.349,"depotKwh":0.1536},{"code":"FL","name":"Florida","diesel":5.383,"publicKwh":0.382,"depotKwh":0.1681},{"code":"GA","name":"Georgia","diesel":5.099,"publicKwh":0.381,"depotKwh":0.1676},{"code":"HI","name":"Hawaii","diesel":7.149,"publicKwh":0.467,"depotKwh":0.2055},{"code":"ID","name":"Idaho","diesel":5.621,"publicKwh":0.421,"depotKwh":0.1852},{"code":"IL","name":"Illinois","diesel":6.078,"publicKwh":0.377,"depotKwh":0.1659},{"code":"IN","name":"Indiana","diesel":6.083,"publicKwh":0.386,"depotKwh":0.1698},{"code":"IA","name":"Iowa","diesel":5.336,"publicKwh":0.34,"depotKwh":0.1496},{"code":"KS","name":"Kansas","diesel":5.156,"publicKwh":0.252,"depotKwh":0.1109},{"code":"KY","name":"Kentucky","diesel":5.281,"publicKwh":0.416,"depotKwh":0.183},{"code":"LA","name":"Louisiana","diesel":5.065,"publicKwh":0.423,"depotKwh":0.1861},{"code":"ME","name":"Maine","diesel":5.8,"publicKwh":0.381,"depotKwh":0.1676},{"code":"MD","name":"Maryland","diesel":5.582,"publicKwh":0.28,"depotKwh":0.1232},{"code":"MA","name":"Massachusetts","diesel":5.793,"publicKwh":0.35,"depotKwh":0.154},{"code":"MI","name":"Michigan","diesel":6.123,"publicKwh":0.373,"depotKwh":0.1641},{"code":"MN","name":"Minnesota","diesel":5.379,"publicKwh":0.376,"depotKwh":0.1654},{"code":"MS","name":"Mississippi","diesel":5.07,"publicKwh":0.378,"depotKwh":0.1663},{"code":"MO","name":"Missouri","diesel":5.281,"publicKwh":0.28,"depotKwh":0.1232},{"code":"MT","name":"Montana","diesel":5.482,"publicKwh":0.428,"depotKwh":0.1883},{"code":"NE","name":"Nebraska","diesel":5.181,"publicKwh":0.283,"depotKwh":0.1245},{"code":"NV","name":"Nevada","diesel":6.155,"publicKwh":0.41,"depotKwh":0.1804},{"code":"NH","name":"New Hampshire","diesel":5.744,"publicKwh":0.435,"depotKwh":0.1914},{"code":"NJ","name":"New Jersey","diesel":5.591,"publicKwh":0.398,"depotKwh":0.1751},{"code":"NM","name":"New Mexico","diesel":5.534,"publicKwh":0.376,"depotKwh":0.1654},{"code":"NY","name":"New York","diesel":5.94,"publicKwh":0.355,"depotKwh":0.1562},{"code":"NC","name":"North Carolina","diesel":5.393,"publicKwh":0.327,"depotKwh":0.1439},{"code":"ND","name":"North Dakota","diesel":5.232,"publicKwh":0.42,"depotKwh":0.1848},{"code":"OH","name":"Ohio","diesel":6.061,"publicKwh":0.395,"depotKwh":0.1738},{"code":"OK","name":"Oklahoma","diesel":5.06,"publicKwh":0.401,"depotKwh":0.1764},{"code":"OR","name":"Oregon","diesel":6.18,"publicKwh":0.386,"depotKwh":0.1698},{"code":"PA","name":"Pennsylvania","diesel":5.931,"publicKwh":0.366,"depotKwh":0.161},{"code":"RI","name":"Rhode Island","diesel":5.565,"publicKwh":0.353,"depotKwh":0.1553},{"code":"SC","name":"South Carolina","diesel":5.272,"publicKwh":0.453,"depotKwh":0.1993},{"code":"SD","name":"South Dakota","diesel":5.159,"publicKwh":0.343,"depotKwh":0.1509},{"code":"TN","name":"Tennessee","diesel":5.188,"publicKwh":0.435,"depotKwh":0.1914},{"code":"TX","name":"Texas","diesel":5.013,"publicKwh":0.356,"depotKwh":0.1566},{"code":"UT","name":"Utah","diesel":5.643,"publicKwh":0.289,"depotKwh":0.1272},{"code":"VT","name":"Vermont","diesel":5.767,"publicKwh":0.326,"depotKwh":0.1434},{"code":"VA","name":"Virginia","diesel":5.546,"publicKwh":0.342,"depotKwh":0.1505},{"code":"WA","name":"Washington","diesel":6.776,"publicKwh":0.344,"depotKwh":0.1514},{"code":"WV","name":"West Virginia","diesel":5.767,"publicKwh":0.478,"depotKwh":0.2103},{"code":"WI","name":"Wisconsin","diesel":5.789,"publicKwh":0.423,"depotKwh":0.1861},{"code":"WY","name":"Wyoming","diesel":5.512,"publicKwh":0.385,"depotKwh":0.1694}];
+const PRICES_FALLBACK = [{"code":"AL","name":"Alabama","diesel":5.225,"publicKwh":0.431,"depotKwh":0.1896,"gridCo2":0.395},{"code":"AK","name":"Alaska","diesel":5.891,"publicKwh":0.517,"depotKwh":0.2275,"gridCo2":0.308},{"code":"AZ","name":"Arizona","diesel":5.78,"publicKwh":0.409,"depotKwh":0.18,"gridCo2":0.295},{"code":"AR","name":"Arkansas","diesel":5.176,"publicKwh":0.43,"depotKwh":0.1892,"gridCo2":0.354},{"code":"CA","name":"California","diesel":7.415,"publicKwh":0.379,"depotKwh":0.1668,"gridCo2":0.193},{"code":"CO","name":"Colorado","diesel":5.681,"publicKwh":0.338,"depotKwh":0.1487,"gridCo2":0.381},{"code":"CT","name":"Connecticut","diesel":5.816,"publicKwh":0.371,"depotKwh":0.1632,"gridCo2":0.156},{"code":"DE","name":"Delaware","diesel":5.515,"publicKwh":0.318,"depotKwh":0.1399,"gridCo2":0.395},{"code":"DC","name":"District of Columbia","diesel":5.974,"publicKwh":0.349,"depotKwh":0.1536,"gridCo2":0.298},{"code":"FL","name":"Florida","diesel":5.383,"publicKwh":0.382,"depotKwh":0.1681,"gridCo2":0.384},{"code":"GA","name":"Georgia","diesel":5.099,"publicKwh":0.381,"depotKwh":0.1676,"gridCo2":0.379},{"code":"HI","name":"Hawaii","diesel":7.149,"publicKwh":0.467,"depotKwh":0.2055,"gridCo2":0.621},{"code":"ID","name":"Idaho","diesel":5.621,"publicKwh":0.421,"depotKwh":0.1852,"gridCo2":0.088},{"code":"IL","name":"Illinois","diesel":6.078,"publicKwh":0.377,"depotKwh":0.1659,"gridCo2":0.411},{"code":"IN","name":"Indiana","diesel":6.083,"publicKwh":0.386,"depotKwh":0.1698,"gridCo2":0.523},{"code":"IA","name":"Iowa","diesel":5.336,"publicKwh":0.34,"depotKwh":0.1496,"gridCo2":0.415},{"code":"KS","name":"Kansas","diesel":5.156,"publicKwh":0.252,"depotKwh":0.1109,"gridCo2":0.476},{"code":"KY","name":"Kentucky","diesel":5.281,"publicKwh":0.416,"depotKwh":0.183,"gridCo2":0.641},{"code":"LA","name":"Louisiana","diesel":5.065,"publicKwh":0.423,"depotKwh":0.1861,"gridCo2":0.438},{"code":"ME","name":"Maine","diesel":5.8,"publicKwh":0.381,"depotKwh":0.1676,"gridCo2":0.151},{"code":"MD","name":"Maryland","diesel":5.582,"publicKwh":0.28,"depotKwh":0.1232,"gridCo2":0.298},{"code":"MA","name":"Massachusetts","diesel":5.793,"publicKwh":0.35,"depotKwh":0.154,"gridCo2":0.291},{"code":"MI","name":"Michigan","diesel":6.123,"publicKwh":0.373,"depotKwh":0.1641,"gridCo2":0.453},{"code":"MN","name":"Minnesota","diesel":5.379,"publicKwh":0.376,"depotKwh":0.1654,"gridCo2":0.423},{"code":"MS","name":"Mississippi","diesel":5.07,"publicKwh":0.378,"depotKwh":0.1663,"gridCo2":0.427},{"code":"MO","name":"Missouri","diesel":5.281,"publicKwh":0.28,"depotKwh":0.1232,"gridCo2":0.524},{"code":"MT","name":"Montana","diesel":5.482,"publicKwh":0.428,"depotKwh":0.1883,"gridCo2":0.31},{"code":"NE","name":"Nebraska","diesel":5.181,"publicKwh":0.283,"depotKwh":0.1245,"gridCo2":0.529},{"code":"NV","name":"Nevada","diesel":6.155,"publicKwh":0.41,"depotKwh":0.1804,"gridCo2":0.391},{"code":"NH","name":"New Hampshire","diesel":5.744,"publicKwh":0.435,"depotKwh":0.1914,"gridCo2":0.149},{"code":"NJ","name":"New Jersey","diesel":5.591,"publicKwh":0.398,"depotKwh":0.1751,"gridCo2":0.237},{"code":"NM","name":"New Mexico","diesel":5.534,"publicKwh":0.376,"depotKwh":0.1654,"gridCo2":0.487},{"code":"NY","name":"New York","diesel":5.94,"publicKwh":0.355,"depotKwh":0.1562,"gridCo2":0.178},{"code":"NC","name":"North Carolina","diesel":5.393,"publicKwh":0.327,"depotKwh":0.1439,"gridCo2":0.368},{"code":"ND","name":"North Dakota","diesel":5.232,"publicKwh":0.42,"depotKwh":0.1848,"gridCo2":0.545},{"code":"OH","name":"Ohio","diesel":6.061,"publicKwh":0.395,"depotKwh":0.1738,"gridCo2":0.47},{"code":"OK","name":"Oklahoma","diesel":5.06,"publicKwh":0.401,"depotKwh":0.1764,"gridCo2":0.464},{"code":"OR","name":"Oregon","diesel":6.18,"publicKwh":0.386,"depotKwh":0.1698,"gridCo2":0.103},{"code":"PA","name":"Pennsylvania","diesel":5.931,"publicKwh":0.366,"depotKwh":0.161,"gridCo2":0.339},{"code":"RI","name":"Rhode Island","diesel":5.565,"publicKwh":0.353,"depotKwh":0.1553,"gridCo2":0.242},{"code":"SC","name":"South Carolina","diesel":5.272,"publicKwh":0.453,"depotKwh":0.1993,"gridCo2":0.291},{"code":"SD","name":"South Dakota","diesel":5.159,"publicKwh":0.343,"depotKwh":0.1509,"gridCo2":0.14},{"code":"TN","name":"Tennessee","diesel":5.188,"publicKwh":0.435,"depotKwh":0.1914,"gridCo2":0.393},{"code":"TX","name":"Texas","diesel":5.013,"publicKwh":0.356,"depotKwh":0.1566,"gridCo2":0.395},{"code":"UT","name":"Utah","diesel":5.643,"publicKwh":0.289,"depotKwh":0.1272,"gridCo2":0.544},{"code":"VT","name":"Vermont","diesel":5.767,"publicKwh":0.326,"depotKwh":0.1434,"gridCo2":0.01},{"code":"VA","name":"Virginia","diesel":5.546,"publicKwh":0.342,"depotKwh":0.1505,"gridCo2":0.289},{"code":"WA","name":"Washington","diesel":6.776,"publicKwh":0.344,"depotKwh":0.1514,"gridCo2":0.074},{"code":"WV","name":"West Virginia","diesel":5.767,"publicKwh":0.478,"depotKwh":0.2103,"gridCo2":0.643},{"code":"WI","name":"Wisconsin","diesel":5.789,"publicKwh":0.423,"depotKwh":0.1861,"gridCo2":0.479},{"code":"WY","name":"Wyoming","diesel":5.512,"publicKwh":0.385,"depotKwh":0.1694,"gridCo2":0.705}];
 
 let STATE_DATA = PRICES_FALLBACK;
 
@@ -184,9 +184,9 @@ const TRUE_REMAINDER_GAL_PER_HR = {
     Mid: {
       "24ft":   { "Maintain Ambient": 0.1749,"Cool":0.4384,"Chilled":0.7579,"Frozen":1.0274 },
       "26ft":   { "Maintain Ambient": 0.1328,"Cool":0.4273,"Chilled":0.7698,"Frozen":1.0488 },
-      "28ft":   { "Maintain Ambient":-0.0790,"Cool":0.2465,"Chilled":0.6120,"Frozen":0.9140 },
+      "28ft":   { "Maintain Ambient":0,"Cool":0.2465,"Chilled":0.6120,"Frozen":0.9140 },
       "36-38ft":{ "Maintain Ambient": 0.0720,"Cool":0.4905,"Chilled":0.9650,"Frozen":1.3825 },
-      "40ft":   { "Maintain Ambient":-0.0064,"Cool":0.4431,"Chilled":0.9591,"Frozen":1.4061 },
+      "40ft":   { "Maintain Ambient":0,"Cool":0.4431,"Chilled":0.9591,"Frozen":1.4061 },
       "45ft":   { "Maintain Ambient": 0.1753,"Cool":0.6713,"Chilled":1.2518,"Frozen":1.7648 },
       "48ft":   { "Maintain Ambient": 0.1829,"Cool":0.7254,"Chilled":1.3489,"Frozen":1.8744 },
       "53ft":   { "Maintain Ambient": 0.3316,"Cool":0.9361,"Chilled":1.6241,"Frozen":2.2021 },
@@ -194,9 +194,9 @@ const TRUE_REMAINDER_GAL_PER_HR = {
     Max: {
       "24ft":   { "Maintain Ambient": 0.1480,"Cool":0.4115,"Chilled":0.7310,"Frozen":1.0005 },
       "26ft":   { "Maintain Ambient": 0.0993,"Cool":0.3938,"Chilled":0.7363,"Frozen":1.0153 },
-      "28ft":   { "Maintain Ambient":-0.1053,"Cool":0.2202,"Chilled":0.5857,"Frozen":0.8877 },
+      "28ft":   { "Maintain Ambient":0,"Cool":0.2202,"Chilled":0.5857,"Frozen":0.8877 },
       "36-38ft":{ "Maintain Ambient": 0.0475,"Cool":0.4660,"Chilled":0.9405,"Frozen":1.3580 },
-      "40ft":   { "Maintain Ambient":-0.0545,"Cool":0.3950,"Chilled":0.9110,"Frozen":1.3580 },
+      "40ft":   { "Maintain Ambient":0,"Cool":0.3950,"Chilled":0.9110,"Frozen":1.3580 },
       "45ft":   { "Maintain Ambient": 0.1437,"Cool":0.6397,"Chilled":1.2202,"Frozen":1.7332 },
       "48ft":   { "Maintain Ambient": 0.1587,"Cool":0.7012,"Chilled":1.3247,"Frozen":1.8502 },
       "53ft":   { "Maintain Ambient": 0.3316,"Cool":0.9361,"Chilled":1.6241,"Frozen":2.2021 },
@@ -216,22 +216,22 @@ const TRUE_REMAINDER_GAL_PER_HR = {
     },
     Mid: {
       "24ft":   { "Maintain Ambient": 0.0608,"Cool":0.3243,"Chilled":0.6438,"Frozen":0.9133 },
-      "26ft":   { "Maintain Ambient":-0.0178,"Cool":0.2767,"Chilled":0.6192,"Frozen":0.8982 },
-      "28ft":   { "Maintain Ambient":-0.3510,"Cool":-0.0255,"Chilled":0.3400,"Frozen":0.6420 },
-      "36-38ft":{ "Maintain Ambient":-0.2020,"Cool":0.2165,"Chilled":0.6910,"Frozen":1.1085 },
-      "40ft":   { "Maintain Ambient":-0.3429,"Cool":0.1066,"Chilled":0.6226,"Frozen":1.0696 },
-      "45ft":   { "Maintain Ambient":-0.1169,"Cool":0.3792,"Chilled":0.9597,"Frozen":1.4727 },
-      "48ft":   { "Maintain Ambient":-0.1286,"Cool":0.4139,"Chilled":1.0374,"Frozen":1.5629 },
+      "26ft":   { "Maintain Ambient":0,"Cool":0.2767,"Chilled":0.6192,"Frozen":0.8982 },
+      "28ft":   { "Maintain Ambient":0,"Cool":0,"Chilled":0.3400,"Frozen":0.6420 },
+      "36-38ft":{ "Maintain Ambient":0,"Cool":0.2165,"Chilled":0.6910,"Frozen":1.1085 },
+      "40ft":   { "Maintain Ambient":0,"Cool":0.1066,"Chilled":0.6226,"Frozen":1.0696 },
+      "45ft":   { "Maintain Ambient":0,"Cool":0.3792,"Chilled":0.9597,"Frozen":1.4727 },
+      "48ft":   { "Maintain Ambient":0,"Cool":0.4139,"Chilled":1.0374,"Frozen":1.5629 },
       "53ft":   { "Maintain Ambient": 0.0557,"Cool":0.6602,"Chilled":1.3482,"Frozen":1.9262 },
     },
     Max: {
       "24ft":   { "Maintain Ambient": 0.0205,"Cool":0.2840,"Chilled":0.6035,"Frozen":0.8730 },
-      "26ft":   { "Maintain Ambient":-0.0680,"Cool":0.2265,"Chilled":0.5690,"Frozen":0.8480 },
-      "28ft":   { "Maintain Ambient":-0.3905,"Cool":-0.0650,"Chilled":0.3005,"Frozen":0.6025 },
-      "36-38ft":{ "Maintain Ambient":-0.2388,"Cool":0.1797,"Chilled":0.6542,"Frozen":1.0717 },
-      "40ft":   { "Maintain Ambient":-0.4150,"Cool":0.0345,"Chilled":0.5505,"Frozen":0.9975 },
-      "45ft":   { "Maintain Ambient":-0.1642,"Cool":0.3318,"Chilled":0.9123,"Frozen":1.4253 },
-      "48ft":   { "Maintain Ambient":-0.1650,"Cool":0.3775,"Chilled":1.0010,"Frozen":1.5265 },
+      "26ft":   { "Maintain Ambient":0,"Cool":0.2265,"Chilled":0.5690,"Frozen":0.8480 },
+      "28ft":   { "Maintain Ambient":0,"Cool":0,"Chilled":0.3005,"Frozen":0.6025 },
+      "36-38ft":{ "Maintain Ambient":0,"Cool":0.1797,"Chilled":0.6542,"Frozen":1.0717 },
+      "40ft":   { "Maintain Ambient":0,"Cool":0.0345,"Chilled":0.5505,"Frozen":0.9975 },
+      "45ft":   { "Maintain Ambient":0,"Cool":0.3318,"Chilled":0.9123,"Frozen":1.4253 },
+      "48ft":   { "Maintain Ambient":0,"Cool":0.3775,"Chilled":1.0010,"Frozen":1.5265 },
       "53ft":   { "Maintain Ambient": 0.0557,"Cool":0.6602,"Chilled":1.3482,"Frozen":1.9262 },
     },
   },
@@ -248,24 +248,24 @@ const TRUE_REMAINDER_GAL_PER_HR = {
       "53ft":   { "Maintain Ambient":0.3541,"Cool":0.9586,"Chilled":1.6466,"Frozen":2.2246 },
     },
     Mid: {
-      "24ft":   { "Maintain Ambient":-0.0574,"Cool":0.2061,"Chilled":0.5256,"Frozen":0.7951 },
-      "26ft":   { "Maintain Ambient":-0.1842,"Cool":0.1103,"Chilled":0.4528,"Frozen":0.7318 },
-      "28ft":   { "Maintain Ambient":-0.6614,"Cool":-0.3359,"Chilled":0.0296,"Frozen":0.3316 },
-      "36-38ft":{ "Maintain Ambient":-0.5392,"Cool":-0.1207,"Chilled":0.3538,"Frozen":0.7713 },
-      "40ft":   { "Maintain Ambient":-0.7752,"Cool":-0.3257,"Chilled":0.1903,"Frozen":0.6373 },
-      "45ft":   { "Maintain Ambient":-0.4968,"Cool":-0.0008,"Chilled":0.5797,"Frozen":1.0927 },
-      "48ft":   { "Maintain Ambient":-0.5959,"Cool":-0.0534,"Chilled":0.5701,"Frozen":1.0956 },
-      "53ft":   { "Maintain Ambient":-0.4197,"Cool":0.1848,"Chilled":0.8728,"Frozen":1.4508 },
+      "24ft":   { "Maintain Ambient":0,"Cool":0.2061,"Chilled":0.5256,"Frozen":0.7951 },
+      "26ft":   { "Maintain Ambient":0,"Cool":0.1103,"Chilled":0.4528,"Frozen":0.7318 },
+      "28ft":   { "Maintain Ambient":0,"Cool":0,"Chilled":0.0296,"Frozen":0.3316 },
+      "36-38ft":{ "Maintain Ambient":0,"Cool":0,"Chilled":0.3538,"Frozen":0.7713 },
+      "40ft":   { "Maintain Ambient":0,"Cool":0,"Chilled":0.1903,"Frozen":0.6373 },
+      "45ft":   { "Maintain Ambient":0,"Cool":0,"Chilled":0.5797,"Frozen":1.0927 },
+      "48ft":   { "Maintain Ambient":0,"Cool":0,"Chilled":0.5701,"Frozen":1.0956 },
+      "53ft":   { "Maintain Ambient":0,"Cool":0.1848,"Chilled":0.8728,"Frozen":1.4508 },
     },
     Max: {
-      "24ft":   { "Maintain Ambient":-0.1116,"Cool":0.1519,"Chilled":0.4714,"Frozen":0.7409 },
-      "26ft":   { "Maintain Ambient":-0.2529,"Cool":0.0416,"Chilled":0.3841,"Frozen":0.6631 },
-      "28ft":   { "Maintain Ambient":-0.7159,"Cool":-0.3904,"Chilled":-0.0249,"Frozen":0.2771 },
-      "36-38ft":{ "Maintain Ambient":-0.5911,"Cool":-0.1726,"Chilled":0.3019,"Frozen":0.7194 },
-      "40ft":   { "Maintain Ambient":-0.8782,"Cool":-0.4287,"Chilled":0.0873,"Frozen":0.5343 },
-      "45ft":   { "Maintain Ambient":-0.5647,"Cool":-0.0687,"Chilled":0.5118,"Frozen":1.0248 },
-      "48ft":   { "Maintain Ambient":-0.6505,"Cool":-0.1080,"Chilled":0.5155,"Frozen":1.0410 },
-      "53ft":   { "Maintain Ambient":-0.4197,"Cool":0.1848,"Chilled":0.8728,"Frozen":1.4508 },
+      "24ft":   { "Maintain Ambient":0,"Cool":0.1519,"Chilled":0.4714,"Frozen":0.7409 },
+      "26ft":   { "Maintain Ambient":0,"Cool":0.0416,"Chilled":0.3841,"Frozen":0.6631 },
+      "28ft":   { "Maintain Ambient":0,"Cool":0,"Chilled":0,"Frozen":0.2771 },
+      "36-38ft":{ "Maintain Ambient":0,"Cool":0,"Chilled":0.3019,"Frozen":0.7194 },
+      "40ft":   { "Maintain Ambient":0,"Cool":0,"Chilled":0.0873,"Frozen":0.5343 },
+      "45ft":   { "Maintain Ambient":0,"Cool":0,"Chilled":0.5118,"Frozen":1.0248 },
+      "48ft":   { "Maintain Ambient":0,"Cool":0,"Chilled":0.5155,"Frozen":1.0410 },
+      "53ft":   { "Maintain Ambient":0,"Cool":0.1848,"Chilled":0.8728,"Frozen":1.4508 },
     },
   },
 };
@@ -285,7 +285,11 @@ const DEFAULT_OPERATING_PROFILE = {
 const TRAILER_LENGTHS = ["24ft","26ft","28ft","36-38ft","40ft","45ft","48ft","53ft"];
 const COOLING_MODES   = ["Maintain Ambient","Cool","Chilled","Frozen"];
 const WEIGHT_OPTIONS  = ["Unladen","Mid","Max"];
-const BRAKING_OPTIONS = ["Low","Moderate","High"];
+const ROUTE_PRESETS = [
+  { id:"urban",    label:"Urban Delivery",   desc:"City routes, frequent stops, high regen",    braking:"High",     avgMph:22 },
+  { id:"regional", label:"Regional Mixed",   desc:"Suburban/mixed routes, moderate regen",       braking:"Moderate", avgMph:38 },
+  { id:"highway",  label:"Long-haul",        desc:"Highway-dominant, few stops, lower regen",    braking:"Low",      avgMph:55 },
+];
 
 const WEATHER_MULTIPLIER = {
   "Hot":       {"Maintain Ambient":1.55, "Cool":1.55, "Chilled":1.70, "Frozen":1.35},
@@ -305,23 +309,35 @@ const FLEET_PRESETS = [
 
 // ─── Calculation core ──────────────────────────────────────────────────────
 function dieselGalPerHr(len, cool, weather){ return DIESEL_GAL_PER_HR[len][cool] * (WEATHER_MULTIPLIER[weather]?.[cool] ?? 1.0); }
-function trueGalPerHr(len, cool, w, braking, weather){
-  // Regen capture is fixed (vehicle physics). TRUE remainder changes with weather:
-  // remainder_weather = max(0, weatherBaseline - regen_capture)
-  // regen_capture = diesel_cold_base - true_remainder_cold
+// Mileage scaling: more miles/reefer-hr = more braking opportunities = more regen
+// Scale relative to each trailer's default profile (the baseline the tables were calibrated on)
+function calcRegenScale(milesPerYear, reeferHoursPerYear, trailerLength) {
+  const def = DEFAULT_OPERATING_PROFILE[trailerLength];
+  const defaultMiPerHr = def.milesPerYear / def.reeferHoursPerYear;
+  const actualMiPerHr  = milesPerYear / reeferHoursPerYear;
+  if(!isFinite(actualMiPerHr) || actualMiPerHr <= 0) return 1.0;
+  // Cap at 0.4x – 2.5x to prevent unrealistic extrapolation
+  return Math.max(0.4, Math.min(2.5, actualMiPerHr / defaultMiPerHr));
+}
+
+function trueGalPerHr(len, cool, w, braking, weather, regenScale=1.0){
+  // Regen capture scales with driving intensity (miles/reefer-hr)
   const coldBase = DIESEL_GAL_PER_HR[len][cool];
-  const coldRemainder = TRUE_REMAINDER_GAL_PER_HR[braking][w][len][cool];
-  const regenCapture = coldBase - coldRemainder;  // fixed regardless of weather
+  const coldRem  = TRUE_REMAINDER_GAL_PER_HR[braking][w][len][cool]; // already pre-clamped ≥ 0
+  const baseRegen = coldBase - coldRem;
+  // Scale regen by driving intensity, capped at baseline (can't save more than you use)
+  const scaledRegen = Math.min(baseRegen * regenScale, coldBase);
   const weatherMult = WEATHER_MULTIPLIER[weather]?.[cool] ?? 1.0;
   const weatherBaseline = coldBase * weatherMult;
-  return Math.max(0, weatherBaseline - regenCapture);
+  return Math.max(0, weatherBaseline - scaledRegen);
 }
-function trueKwhPerHr(len, cool, w, braking, weather){ return trueGalPerHr(len, cool, w, braking, weather) * KWH_PER_GAL_EQUIV; }
+
 
 function computeAnnualEnergy(i) {
+  const regenScale = calcRegenScale(i.milesPerYear, i.reeferHoursPerYear, i.trailerLength);
   const dieselRate = dieselGalPerHr(i.trailerLength, i.coolingMode, i.weatherSeason);
-  const trueRate   = trueGalPerHr  (i.trailerLength, i.coolingMode, i.weightScenario, i.brakingScenario, i.weatherSeason);
-  const kwhRate    = trueKwhPerHr  (i.trailerLength, i.coolingMode, i.weightScenario, i.brakingScenario, i.weatherSeason);
+  const trueRate   = trueGalPerHr  (i.trailerLength, i.coolingMode, i.weightScenario, i.brakingScenario, i.weatherSeason, regenScale);
+  const kwhRate    = dieselRate * KWH_PER_GAL_EQUIV; // full baseline load when grid-charging (parked = no regen)
   const pctDiesel  = 1 - i.pctTimeElectricCharging;
   const effDiesel  = trueRate * pctDiesel;
   const dieselGal  = dieselRate * i.reeferHoursPerYear;
@@ -333,6 +349,7 @@ function computeAnnualEnergy(i) {
     annualDieselGallons: dieselGal, annualTrueGallons: trueGal, annualKwhConsumed: kwhDrawn,
     gallonsSaved,
     pctFuelReduction: dieselGal > 0 ? gallonsSaved/dieselGal : 0,
+    regenScale,
   };
 }
 
@@ -381,8 +398,8 @@ function buildCashFlow(i, f) {
         const annualLease = 14400*(1+i.salesTaxRate);
         financing = annualLease;  // lease runs for full horizon
       }
-      if((i.acquisitionMode==="cash"||i.acquisitionMode==="financed") && t===i.financingTermYears){
-        financing -= i.residualValue;
+      if((i.acquisitionMode==="cash"||i.acquisitionMode==="financed") && t===i.analysisHorizonYears){
+        financing -= i.residualValue;  // asset recovered at end of project lifecycle
       }
     }
     const annual = base - withTrue - financing - upfront;
@@ -405,7 +422,8 @@ function buildCashFlow(i, f) {
   return years;
 }
 
-function computePaybackPeriod(cf){
+function computePaybackPeriod(cf, acquisitionMode){
+  if(acquisitionMode === "lease" && cf[1]?.cumulativeSavings > 0) return "immediate";
   for(let i=1; i<cf.length; i++){
     const p=cf[i-1], c=cf[i];
     if(p.cumulativeSavings<0 && c.cumulativeSavings>=0){
@@ -438,9 +456,9 @@ function computeIRR(cf){
   return null;
 }
 
-function computeAnnualCO2Avoided(e, fleet){
+function computeAnnualCO2Avoided(e, fleet, stateGridCo2){
   const gross = e.gallonsSaved * CO2_KG_PER_GAL_DIESEL;
-  const grid  = e.annualKwhConsumed * CO2_KG_PER_KWH_GRID;
+  const grid  = e.annualKwhConsumed * (stateGridCo2 ?? CO2_KG_PER_KWH_GRID);
   return ((gross - grid) * fleet) / 1000;
 }
 
@@ -448,18 +466,24 @@ function calculate(i){
   const e = computeAnnualEnergy(i);
   const f = computeAnnualFinancials(i, e);
   const cf = buildCashFlow(i, f);
-  const payback = computePaybackPeriod(cf);
+  const payback = computePaybackPeriod(cf, i.acquisitionMode);
   const irr     = computeIRR(cf);
-  const annualCo2 = computeAnnualCO2Avoided(e, i.fleetSize);
+  const stateGridCo2 = STATE_LOOKUP[i.state]?.gridCo2 ?? CO2_KG_PER_KWH_GRID;
+  const annualCo2 = computeAnnualCO2Avoided(e, i.fleetSize, stateGridCo2);
+  // Operational payback: pure savings vs upfront (no financing mixed in)
+  const operationalUpfront = i.systemPrice * (1 + i.salesTaxRate) * i.fleetSize;
+  const operationalAnnual  = f.fleetAnnualSavings;
+  const operationalPayback = operationalAnnual > 0 ? operationalUpfront / operationalAnnual : null;
+
   return {
     inputs:i, energy:e, financials:f, cashflow:cf,
     paybackPeriodYears: payback,
-    cumulativeSavings5yr: cf[5]?.cumulativeSavings ?? 0,
+    operationalPaybackYears: operationalPayback,
+    cumulativeSavings5yr: cf[Math.min(5,cf.length-1)]?.cumulativeSavings ?? 0,
     cumulativeSavingsAtHorizon: cf[Math.min(i.analysisHorizonYears, cf.length-1)]?.cumulativeSavings ?? 0,
     npv: cf[cf.length-1].npvToDate,
     irr,
     annualCo2TonsAvoided: annualCo2,
-    fleetCo2TonsAvoided10yr: annualCo2 * Math.min(10, i.analysisHorizonYears),
   };
 }
 
@@ -477,7 +501,8 @@ function buildInputs(over={}){
     trailerLength: len,
     coolingMode: over.coolingMode ?? "Cool",
     weightScenario: over.weightScenario ?? "Max",
-    brakingScenario: over.brakingScenario ?? "Moderate",
+    routePreset: over.routePreset ?? "regional",
+    brakingScenario: ROUTE_PRESETS.find(r=>r.id===(over.routePreset??"regional"))?.braking ?? "Moderate",
     weatherSeason: over.weatherSeason ?? "4 Season",
     reeferHoursPerYear: over.reeferHoursPerYear ?? profile.reeferHoursPerYear,
     milesPerYear: over.milesPerYear ?? profile.milesPerYear,
@@ -504,7 +529,7 @@ const fmtUSD  = n => isFinite(n) ? n.toLocaleString("en-US",{style:"currency",cu
 const fmtUSDgal = n => isFinite(n) ? "$"+n.toFixed(3) : "—";  // for $/gal prices — never round
 const fmtNum  = (n,d=0) => isFinite(n) ? n.toLocaleString("en-US",{maximumFractionDigits:d,minimumFractionDigits:d}) : "—";
 const fmtPct  = (n,d=0) => isFinite(n) ? (n*100).toFixed(d)+"%" : "—";
-const fmtYears = n => n==null ? "—" : `${n.toFixed(1)} yrs`;
+const fmtYears = n => n==null ? "—" : n==="immediate" ? "Immediate" : `${n.toFixed(1)} yrs`;
 
 // ─── Components ────────────────────────────────────────────────────────────
 function SectionHeader({ num, title, subtitle }){
@@ -634,14 +659,23 @@ function InputPanel({ inputs, onChange, onStateChange }){
       </div>
 
       <div>
-        <FieldLabel>Braking intensity</FieldLabel>
-        <Toggle options={[
-          {value:"Low",      label:"Low"},
-          {value:"Moderate", label:"Moderate"},
-          {value:"High",     label:"High"},
-        ]} value={inputs.brakingScenario} onChange={v=>set({brakingScenario:v})} />
-        <div className="text-[10px] text-snow-500 mt-1.5 leading-snug">
-          Low: highway   Moderate: mixed   High: urban / last-mile
+        <FieldLabel>Route type</FieldLabel>
+        <div className="space-y-1.5">
+          {ROUTE_PRESETS.map(rp => (
+            <button key={rp.id} onClick={()=>set({
+              routePreset: rp.id,
+              brakingScenario: rp.braking,
+            })}
+              className="w-full text-left px-3 py-2.5 rounded-lg transition"
+              style={inputs.routePreset===rp.id
+                ? {background:"rgba(26,176,80,0.12)",border:"1px solid rgba(26,176,80,0.3)",color:"#34d06a"}
+                : {background:"var(--bg-raise)",border:"1px solid var(--border)",color:"var(--muted)"}
+              }
+            >
+              <div className="text-[12px] font-semibold">{rp.label}</div>
+              <div className="text-[10px] mt-0.5 opacity-75">{rp.desc}</div>
+            </button>
+          ))}
         </div>
       </div>
 
@@ -758,7 +792,7 @@ function SummaryCards({ r }){
       <StatCard
         label="Payback period"
         value={fmtYears(r.paybackPeriodYears)}
-        subtext={r.paybackPeriodYears!=null ? `${fmtUSD0(yr5)} cumulative at year 5` : "beyond analysis horizon"}
+        subtext={`Tech ROI: ${r.operationalPaybackYears!=null ? r.operationalPaybackYears.toFixed(1)+" yrs pure ops" : "—"}  ·  yr 5: ${fmtUSD0(r.cumulativeSavings5yr)}`}
         accent="ice" delay={2}
       />
       <StatCard
@@ -879,12 +913,20 @@ function SavingsBreakdownChart({ r }){
 
 function ResultsPanel({ r }){
   const f = r.financials;
+  const centsPerMile = r.inputs.milesPerYear > 0
+    ? (f.totalAnnualSavings / r.inputs.milesPerYear * 100)
+    : 0;
+  const stateGridCo2label = STATE_LOOKUP[r.inputs.state]?.gridCo2 != null
+    ? `${STATE_LOOKUP[r.inputs.state].gridCo2.toFixed(3)} kg/kWh (${r.inputs.state} eGRID)`
+    : "0.386 kg/kWh (national avg)";
   const items = [
     { label:"Annual savings per unit", value: fmtUSD0(f.totalAnnualSavings), helper: `${fmtPct(r.energy.pctFuelReduction,1)} fuel reduction` },
-    { label:"Diesel gallons saved", value: fmtNum(r.energy.gallonsSaved * r.inputs.fleetSize * r.inputs.analysisHorizonYears, 0)+" gal", helper: `fleet, over ${r.inputs.analysisHorizonYears}-yr horizon` },
-    { label:`NPV (${r.inputs.analysisHorizonYears}-yr fleet)`,   value: fmtUSD0(r.npv), helper: `@ ${fmtPct(r.inputs.discountRate,1)} discount` },
-    { label:"IRR",                 value: r.irr!=null ? fmtPct(r.irr,1) : "—", helper: r.irr!=null && r.irr>r.inputs.discountRate ? "exceeds discount rate" : "" },
-    { label:`${r.inputs.analysisHorizonYears}-yr CO₂ avoided`,   value: `${fmtNum(r.annualCo2TonsAvoided * r.inputs.analysisHorizonYears * r.inputs.fleetSize / r.inputs.fleetSize,0)} t`, helper: `≈ ${fmtNum(r.annualCo2TonsAvoided * r.inputs.analysisHorizonYears / 4.6,0)} cars total` },
+    { label:"Savings per mile", value: `${centsPerMile.toFixed(1)}¢/mi`, helper: `${fmtUSD0(f.totalAnnualSavings * r.inputs.fleetSize / r.inputs.milesPerYear * 1000)} per 1k fleet miles` },
+    { label:"Diesel gallons saved", value: fmtNum(r.energy.gallonsSaved * r.inputs.fleetSize * r.inputs.analysisHorizonYears, 0)+" gal", helper: `fleet over ${r.inputs.analysisHorizonYears} yrs` },
+    { label:`NPV (${r.inputs.analysisHorizonYears}-yr fleet)`, value: fmtUSD0(r.npv), helper: `@ ${fmtPct(r.inputs.discountRate,1)} discount rate` },
+    { label:"IRR", value: r.irr!=null ? fmtPct(r.irr,1) : "—", helper: r.irr!=null && r.irr>r.inputs.discountRate ? "exceeds hurdle rate" : r.irr!=null ? "below hurdle rate" : "" },
+    { label:`${r.inputs.analysisHorizonYears}-yr CO₂ avoided`, value: `${fmtNum(r.annualCo2TonsAvoided * r.inputs.analysisHorizonYears,0)} t`, helper: `Grid intensity: ${stateGridCo2label}` },
+    { label:"Regen drive intensity", value: `${(r.energy.regenScale*100).toFixed(0)}%`, helper: `${r.inputs.milesPerYear.toLocaleString()} mi/yr vs ${DEFAULT_OPERATING_PROFILE[r.inputs.trailerLength].milesPerYear.toLocaleString()} default` },
     { label: r.inputs.acquisitionMode==="lease" ? "Annual lease cost" : "Upfront cash needed",
        value: r.inputs.acquisitionMode==="lease"
          ? fmtUSD0(14400*(1+r.inputs.salesTaxRate)*r.inputs.fleetSize)
@@ -984,7 +1026,7 @@ function App(){
         <div className="grid grid-cols-12 gap-8 items-end">
           <div className="col-span-12 lg:col-span-8">
             <div className="text-[11px] uppercase tracking-[0.25em] text-green-400 mb-3 font-medium">
-              TRUE System · TCO Calculator
+              TRUE System · TCO Calculator v2
             </div>
             <h1 className="text-[28px] lg:text-[44px] leading-[1.08] tracking-tight text-snow-50 font-semibold">
               Quantify the savings of a{" "}
@@ -992,9 +1034,10 @@ function App(){
               refrigeration fleet.
             </h1>
             <p className="text-snow-400 text-sm mt-4 max-w-[600px] leading-relaxed">
-              The FES system captures braking energy and powers the reefer unit directly —
-              reducing diesel consumption, emissions, and operating cost across every
-              U.S. state. Model your fleet's economics in real time.
+              The TRUE system captures braking energy and powers the reefer unit directly,
+              reducing diesel consumption, emissions, and operating cost. Model your
+              fleet's economics with live AAA fuel prices, EPA eGRID state carbon data,
+              and route-calibrated regeneration physics.
             </p>
           </div>
           <div className="hidden lg:block lg:col-span-4 text-right">
@@ -1037,7 +1080,7 @@ function App(){
             </div>
             <ResultsPanel r={results}/>
             <div className="text-[10px] text-snow-500 leading-relaxed pt-2" style={{borderTop:"1px solid rgba(255,255,255,0.05)"}}>
-              Calculation logic mirrors <span className="text-snow-200">FES TCO &amp; MLO Modeling.xlsx</span>{" "}
+              v2 · Calculation: FES TCO spreadsheet + mileage-scaled regen + EPA eGRID state CO₂{" "}
               Compressor Simulation C21:J24 (length x cooling) and C65:J80 (length x cooling x weight)
                 Braking: {results.inputs.brakingScenario}   Weather: {results.inputs.weatherSeason} (Regeneration Simulation sheet)
                 Payback method: linear interpolation across cumulative-cashflow zero-crossing (matches Years to Parity!V96)
