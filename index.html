@@ -198,7 +198,7 @@ function mkIp(o={}){
   const ep=o.elecPrice??(s?s.publicKwh*pp+s.depotKwh*(1-pp):0.17);
   return{state:c,fleetSize:o.fleetSize??50,trailerLength:t,coolingMode:o.coolingMode??"Cool",weatherSeason:o.weatherSeason??"4 Season",
     pctS1:o.pctS1??DS1[t],pctS2:o.pctS2??DS2[t],pctS3:o.pctS3??DS3[t],
-    pctHills:o.pctHills??0.1,altDropFt:o.altDropFt??500,
+    pctHills:o.pctHills??0,altDropFt:o.altDropFt??500,
     pctU:o.pctU??DU[t],pctM:o.pctM??DM[t],pctX:o.pctX??DX[t],
     dieselPrice:dp,elecPrice:ep,pctPublicCharging:pp,shorepower:o.shorepower??true,
     systemPrice:o.systemPrice??45000,residualValue:o.residualValue??12000,
@@ -444,10 +444,10 @@ function App(){
             </div>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-4">
               {[
-                {l:"Savings per mile",v:`${(T.savYr/miYr*100).toFixed(1)}\u00a2/mi`,h:`${f0(sYr/miYr*1000)} per 1k fleet mi`},
-                {l:"Daily regen avg",v:`${fn(T.rd,2)} kWh`,h:`${fn(T.dH,1)}h drive + ${fn(T.sH,1)}h static/day`},
+                {l:"Savings per truck/day",v:`${f0(T.savYr/T.days)}`,h:`${f0(sYr)} fleet/yr over ${T.days} operating days`},
+                {l:"Daily energy balance",v:`${fn(T.rd,2)} vs ${fn(T.dH*T.ek+T.sH*T.ek,2)} kWh`,h:`regen vs total cooling demand/day`},
                 {l:"Static hrs from regen",v:`${fn(T.avSH,1)} hrs/day`,h:"excess regen covers idle cooling"},
-                {l:"Regen vs driving",v:fp(T.rvDrv),h:"of driving energy covered"},
+                {l:"Regen vs driving demand",v:fp(Math.min(1,T.rvDrv)),h:`${fn(T.rd,1)} kWh regen vs ${fn(T.dH*T.ek,1)} kWh needed/day`},
                 {l:`NPV (${ip.analysisHorizonYears}-yr fleet)`,v:f0(R.npv),h:`@ ${fp(ip.discountRate,1)} discount rate`},
                 {l:"IRR",v:R.ir2!=null?fp(R.ir2,1):"—",h:R.ir2!=null&&R.ir2>ip.discountRate?"exceeds hurdle rate":R.ir2!=null?"below hurdle rate":""},
                 {l:`${ip.analysisHorizonYears}-yr CO\u2082 avoided`,v:`${fn(R.co2*ip.analysisHorizonYears,0)} t`,h:`Grid: ${(EG[ip.state]??0.386).toFixed(3)} kg/kWh (${ip.state} eGRID)`},
@@ -465,7 +465,7 @@ function App(){
           </div>
 
           <div className="text-[9px] text-snow-500 leading-relaxed" style={{borderTop:"1px solid rgba(255,255,255,0.05)",paddingTop:"6px"}}>
-            v2 based on DaniilCopyRegenCalc.xlsx Customer Economics tab  Regen efficiency 15%  Area-scaled cooling from Required Energy tab  Hills 85% capture  Braking S1/S2/S3 blended by fleet driving profile  EPA eGRID 2022 CO2  AAA diesel {pm.date}
+            v2 based on DaniilCopyRegenCalc.xlsx Customer Economics tab  Cooling demand from Required Energy tab (parked-trailer estimate)  Regen efficiency 15%  Hills 85% capture  EPA eGRID 2022 CO2  AAA diesel {pm.date}  Note: cooling demand baseline may be conservative vs active-driving TRU specs
           </div>
         </div>
       </div>
