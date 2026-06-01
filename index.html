@@ -3,725 +3,654 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Foregger Energy Solutions — TRUE TCO Calculator</title>
+<title>Foregger Energy Solutions — TRUE System Calculator</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-tailwind.config={theme:{extend:{colors:{
-  bg:{950:"#04070a",900:"#080f16",800:"#0d1820",700:"#121f2a"},
-  snow:{50:"#f0f4f8",100:"#dce6f0",200:"#b8cedf",400:"#7898b0",500:"#546e84"},
-  green:{400:"#2ecc71",500:"#1aab56",600:"#138a42"},
-  blue:{400:"#5db8ff",500:"#2ea8ff"},
-  amber:{400:"#f5a623"}
-},fontFamily:{sans:["Inter","system-ui"],mono:["DM Mono","Consolas"]}}}};
-</script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Geist+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
-<script crossorigin src="https://unpkg.com/prop-types@15.8.1/prop-types.min.js"></script>
 <script crossorigin src="https://unpkg.com/recharts@2.12.7/umd/Recharts.js"></script>
 <script crossorigin src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
 <style>
-:root{--bg:#04070a;--card:#080f16;--raise:#0d1820;--border:rgba(255,255,255,0.06);--bh:rgba(255,255,255,0.12);--green:#1aab56;--gl:#2ecc71;--text:#dce6f0;--muted:#546e84}
-*{box-sizing:border-box}
-html,body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;margin:0}
-.mono{font-family:"DM Mono",Consolas,monospace;font-variant-numeric:tabular-nums}
-.sel{width:100%;appearance:none;background:var(--raise);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:9px 30px 9px 11px;font-size:13px;font-family:inherit;cursor:pointer;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' stroke='%23546e84' stroke-width='1.5' fill='none'/></svg>");background-repeat:no-repeat;background-position:right 10px center;transition:border-color .12s}
-.sel:hover{border-color:var(--bh)}.sel:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(26,171,86,.15)}
-.sel option{background:#0d1820}
-.ni{width:100%;background:var(--raise);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:8px 11px;font-size:13px;font-family:"DM Mono",monospace;font-variant-numeric:tabular-nums;transition:border-color .12s}
-.ni:hover{border-color:var(--bh)}.ni:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(26,171,86,.15)}
-input[type=range]{-webkit-appearance:none;appearance:none;background:transparent;height:18px;width:100%}
-input[type=range]::-webkit-slider-runnable-track{height:3px;background:var(--raise);border-radius:2px}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;margin-top:-5.5px;background:var(--green);border-radius:50%;border:2px solid var(--bg);cursor:pointer;transition:transform .1s}
-input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2)}
-.recharts-cartesian-axis-tick-value,.recharts-legend-item-text{fill:var(--muted)!important;font-size:11px}
-::selection{background:rgba(26,171,86,.25)}
-.fi{opacity:0;transform:translateY(6px);animation:fi .4s ease forwards}
-.fx{opacity:0;transform:translateX(-5px);animation:fx .3s ease forwards .05s}
-@keyframes fi{to{opacity:1;transform:none}}@keyframes fx{to{opacity:1;transform:none}}
-.s1{animation-delay:.04s}.s2{animation-delay:.09s}.s3{animation-delay:.15s}.s4{animation-delay:.2s}
-.pulse{animation:pulse 2.2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.scroll::-webkit-scrollbar{width:3px}.scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-#boot{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:99;color:var(--muted);font-size:11px;letter-spacing:.18em;text-transform:uppercase}
-#boot .d{width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:10px;animation:pulse 1s infinite}
+/* ── Reset & tokens ─────────────────────────────────────────── */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#050608;
+  --s1:#0c0e12;
+  --s2:#13161c;
+  --s3:#1b1f28;
+  --bd:rgba(255,255,255,0.06);
+  --bda:rgba(255,255,255,0.12);
+  --lime:#b8ff57;
+  --lime2:#d4ff8a;
+  --amber:#ffa94d;
+  --red:#ff5757;
+  --txt:#e8eaf0;
+  --muted:#6b7280;
+  --sub:#9ca3af;
+}
+html,body{background:var(--bg);color:var(--txt);font-family:"Syne",sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
+/* ── Typography ─────────────────────────────────────────────── */
+.mono{font-family:"Geist Mono",monospace;font-variant-numeric:tabular-nums}
+/* ── Layout ──────────────────────────────────────────────────── */
+#root{display:grid;grid-template-columns:400px 1fr;min-height:100vh}
+@media(max-width:900px){#root{grid-template-columns:1fr}}
+.sidebar{background:var(--s1);border-right:1px solid var(--bd);overflow-y:auto;height:100vh;position:sticky;top:0}
+.main{padding:32px 36px;overflow-x:hidden}
+/* ── Form controls ───────────────────────────────────────────── */
+.field{margin-bottom:18px}
+.label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block;font-weight:500}
+select,input[type=number]{width:100%;background:var(--s2);border:1px solid var(--bd);border-radius:6px;color:var(--txt);font-family:"Syne",sans-serif;font-size:13px;padding:9px 12px;outline:none;transition:border-color .15s}
+select:focus,input[type=number]:focus{border-color:var(--lime)}
+select{cursor:pointer;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236b7280' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+input[type=range]{-webkit-appearance:none;width:100%;height:3px;background:var(--s3);border-radius:2px;outline:none;cursor:pointer;margin:8px 0}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--lime);border-radius:50%;cursor:pointer;border:2px solid var(--bg)}
+.pill-group{display:flex;gap:4px;flex-wrap:wrap}
+.pill{font-size:11px;padding:5px 12px;border-radius:20px;border:1px solid var(--bd);cursor:pointer;color:var(--muted);background:transparent;font-family:"Syne",sans-serif;transition:all .15s;letter-spacing:.04em}
+.pill.on{background:var(--lime);color:#000;border-color:var(--lime);font-weight:600}
+/* ── Sidebar sections ────────────────────────────────────────── */
+.sidebar-head{padding:24px 24px 16px;border-bottom:1px solid var(--bd)}
+.sidebar-body{padding:20px 24px}
+.section-title{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:14px;margin-top:24px}
+.section-title:first-child{margin-top:0}
+/* ── KPI cards ───────────────────────────────────────────────── */
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px}
+.kpi{background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:18px 20px;position:relative;overflow:hidden}
+.kpi-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-weight:500}
+.kpi-value{font-size:28px;font-weight:800;line-height:1;letter-spacing:-.02em}
+.kpi-sub{font-size:11px;color:var(--sub);margin-top:6px;font-family:"Geist Mono",monospace}
+.kpi.accent{border-color:rgba(184,255,87,0.2);background:rgba(184,255,87,0.04)}
+.kpi.accent .kpi-value{color:var(--lime)}
+.kpi.warn{border-color:rgba(255,169,77,0.2);background:rgba(255,169,77,0.04)}
+.kpi.warn .kpi-value{color:var(--amber)}
+/* ── Chart section ───────────────────────────────────────────── */
+.chart-box{background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:20px 24px;margin-bottom:20px}
+.chart-title{font-size:13px;font-weight:600;margin-bottom:4px}
+.chart-sub{font-size:11px;color:var(--muted);margin-bottom:20px;font-family:"Geist Mono",monospace}
+/* ── Coverage bar ────────────────────────────────────────────── */
+.cov-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.cov-label{font-size:11px;color:var(--sub);width:72px;flex-shrink:0}
+.cov-track{flex:1;height:6px;background:var(--s3);border-radius:3px;overflow:visible;position:relative}
+.cov-fill{height:100%;border-radius:3px;transition:width .4s ease;background:var(--lime)}
+.cov-fill.surplus{background:linear-gradient(90deg,var(--lime) 0%,var(--lime2) 85%,var(--amber) 100%)}
+.cov-pct{font-size:11px;font-family:"Geist Mono",monospace;color:var(--txt);width:48px;text-align:right}
+/* ── Cashflow table ─────────────────────────────────────────── */
+.cf-table{width:100%;border-collapse:collapse;font-size:12px}
+.cf-table th{color:var(--muted);font-weight:500;font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding:6px 10px;text-align:right;border-bottom:1px solid var(--bd)}
+.cf-table th:first-child{text-align:left}
+.cf-table td{padding:7px 10px;text-align:right;font-family:"Geist Mono",monospace;border-bottom:1px solid rgba(255,255,255,0.03)}
+.cf-table td:first-child{text-align:left;font-family:"Syne",sans-serif;color:var(--sub);font-size:11px}
+.pos{color:var(--lime)}
+.neg{color:var(--red)}
+.pb-row td{background:rgba(184,255,87,0.05);font-weight:600}
+/* ── Notice boxes ────────────────────────────────────────────── */
+.notice{font-size:11px;padding:10px 14px;border-radius:6px;border-left:2px solid;margin:10px 0;line-height:1.5}
+.notice.warn{background:rgba(255,169,77,0.08);border-color:var(--amber);color:#ffc885}
+.notice.ok{background:rgba(184,255,87,0.06);border-color:var(--lime);color:var(--lime2)}
+.notice.info{background:rgba(255,255,255,0.04);border-color:var(--bd);color:var(--sub)}
+/* ── Misc ────────────────────────────────────────────────────── */
+.page-title{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.wordmark{font-size:20px;font-weight:800;letter-spacing:-.03em;color:var(--txt);margin-top:4px}
+.wordmark span{color:var(--lime)}
+.divider{height:1px;background:var(--bd);margin:20px 0}
+.tag{font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:20px;font-weight:600;border:1px solid}
+.tag.green{color:var(--lime);border-color:rgba(184,255,87,0.3);background:rgba(184,255,87,0.08)}
+.tag.amber{color:var(--amber);border-color:rgba(255,169,77,0.3);background:rgba(255,169,77,0.08)}
+.tag.red{color:var(--red);border-color:rgba(255,87,87,0.3);background:rgba(255,87,87,0.08)}
+.footnote{font-size:10px;color:var(--muted);margin-top:28px;line-height:1.6;font-family:"Geist Mono",monospace;border-top:1px solid var(--bd);padding-top:16px}
+.recharts-cartesian-axis-tick-value,.recharts-legend-item-text{fill:var(--muted)!important;font-size:11px;font-family:"Geist Mono",monospace}
+.recharts-tooltip-wrapper .recharts-default-tooltip{background:var(--s2)!important;border:1px solid var(--bd)!important;border-radius:8px!important}
+.recharts-default-tooltip .recharts-tooltip-label{color:var(--sub)!important;font-size:11px;margin-bottom:4px}
+.recharts-default-tooltip .recharts-tooltip-item{color:var(--txt)!important;font-size:12px}
 </style>
 </head>
 <body>
-<div id="boot"><span class="d"></span>Loading</div>
 <div id="root"></div>
 <script type="text/babel" data-presets="env,react">
-const {useState,useMemo,useEffect,useCallback}=React;
-const {ResponsiveContainer,AreaChart,Area,XAxis,YAxis,CartesianGrid,Tooltip,ReferenceLine,BarChart,Bar,Cell,LabelList}=Recharts;
+const {useState,useMemo}=React;
+const {AreaChart,Area,BarChart,Bar,XAxis,YAxis,CartesianGrid,Tooltip,ResponsiveContainer,ReferenceLine,Cell}=Recharts;
 
-// ─── AAA live prices (updated daily by GitHub Actions) ───────────────────────
-const PF=[{"code":"AL","name":"Alabama","diesel":5.198,"pub":0.431,"dep":0.1896},{"code":"AK","name":"Alaska","diesel":5.852,"pub":0.517,"dep":0.2275},{"code":"AZ","name":"Arizona","diesel":5.771,"pub":0.409,"dep":0.18},{"code":"AR","name":"Arkansas","diesel":5.103,"pub":0.43,"dep":0.1892},{"code":"CA","name":"California","diesel":7.379,"pub":0.379,"dep":0.1668},{"code":"CO","name":"Colorado","diesel":5.431,"pub":0.338,"dep":0.1487},{"code":"CT","name":"Connecticut","diesel":5.783,"pub":0.371,"dep":0.1632},{"code":"DE","name":"Delaware","diesel":5.401,"pub":0.318,"dep":0.1399},{"code":"DC","name":"District of Columbia","diesel":5.949,"pub":0.349,"dep":0.1536},{"code":"FL","name":"Florida","diesel":5.309,"pub":0.382,"dep":0.1681},{"code":"GA","name":"Georgia","diesel":5.042,"pub":0.381,"dep":0.1676},{"code":"HI","name":"Hawaii","diesel":7.113,"pub":0.467,"dep":0.2055},{"code":"ID","name":"Idaho","diesel":5.592,"pub":0.421,"dep":0.1852},{"code":"IL","name":"Illinois","diesel":5.985,"pub":0.377,"dep":0.1659},{"code":"IN","name":"Indiana","diesel":5.955,"pub":0.386,"dep":0.1698},{"code":"IA","name":"Iowa","diesel":5.223,"pub":0.34,"dep":0.1496},{"code":"KS","name":"Kansas","diesel":5.062,"pub":0.252,"dep":0.1109},{"code":"KY","name":"Kentucky","diesel":5.224,"pub":0.416,"dep":0.183},{"code":"LA","name":"Louisiana","diesel":5.027,"pub":0.423,"dep":0.1861},{"code":"ME","name":"Maine","diesel":5.777,"pub":0.381,"dep":0.1676},{"code":"MD","name":"Maryland","diesel":5.455,"pub":0.28,"dep":0.1232},{"code":"MA","name":"Massachusetts","diesel":5.743,"pub":0.35,"dep":0.154},{"code":"MI","name":"Michigan","diesel":5.981,"pub":0.373,"dep":0.1641},{"code":"MN","name":"Minnesota","diesel":5.297,"pub":0.376,"dep":0.1654},{"code":"MS","name":"Mississippi","diesel":5.02,"pub":0.378,"dep":0.1663},{"code":"MO","name":"Missouri","diesel":5.21,"pub":0.28,"dep":0.1232},{"code":"MT","name":"Montana","diesel":5.386,"pub":0.428,"dep":0.1883},{"code":"NE","name":"Nebraska","diesel":5.115,"pub":0.283,"dep":0.1245},{"code":"NV","name":"Nevada","diesel":6.158,"pub":0.41,"dep":0.1804},{"code":"NH","name":"New Hampshire","diesel":5.71,"pub":0.435,"dep":0.1914},{"code":"NJ","name":"New Jersey","diesel":5.548,"pub":0.398,"dep":0.1751},{"code":"NM","name":"New Mexico","diesel":5.378,"pub":0.376,"dep":0.1654},{"code":"NY","name":"New York","diesel":5.912,"pub":0.355,"dep":0.1562},{"code":"NC","name":"North Carolina","diesel":5.286,"pub":0.327,"dep":0.1439},{"code":"ND","name":"North Dakota","diesel":5.12,"pub":0.42,"dep":0.1848},{"code":"OH","name":"Ohio","diesel":5.92,"pub":0.395,"dep":0.1738},{"code":"OK","name":"Oklahoma","diesel":4.939,"pub":0.401,"dep":0.1764},{"code":"OR","name":"Oregon","diesel":6.133,"pub":0.386,"dep":0.1698},{"code":"PA","name":"Pennsylvania","diesel":5.884,"pub":0.366,"dep":0.161},{"code":"RI","name":"Rhode Island","diesel":5.495,"pub":0.353,"dep":0.1553},{"code":"SC","name":"South Carolina","diesel":5.165,"pub":0.453,"dep":0.1993},{"code":"SD","name":"South Dakota","diesel":5.093,"pub":0.343,"dep":0.1509},{"code":"TN","name":"Tennessee","diesel":5.145,"pub":0.435,"dep":0.1914},{"code":"TX","name":"Texas","diesel":4.976,"pub":0.356,"dep":0.1566},{"code":"UT","name":"Utah","diesel":5.568,"pub":0.289,"dep":0.1272},{"code":"VT","name":"Vermont","diesel":5.747,"pub":0.326,"dep":0.1434},{"code":"VA","name":"Virginia","diesel":5.465,"pub":0.342,"dep":0.1505},{"code":"WA","name":"Washington","diesel":6.726,"pub":0.344,"dep":0.1514},{"code":"WV","name":"West Virginia","diesel":5.631,"pub":0.478,"dep":0.2103},{"code":"WI","name":"Wisconsin","diesel":5.669,"pub":0.423,"dep":0.1861},{"code":"WY","name":"Wyoming","diesel":5.47,"pub":0.385,"dep":0.1694}];
-let SD=[...PF]; const SL=Object.fromEntries(SD.map(s=>[s.code,s]));
+/* ═══════════════════════════════════════════════════════════
+   VERIFIED DATA — from TCO spreadsheet + spec v2
+═══════════════════════════════════════════════════════════ */
+
+// GCWR table — Regen Sim rows 13-15, reefer hrs row 23
+const GCWR={
+  "24ft":    {u:19000,m:34000,x:38000,hrs:2500},
+  "26ft":    {u:20000,m:36000,x:40000,hrs:2500},
+  "28ft":    {u:23000,m:62000,x:65000,hrs:2500},
+  "36-38ft": {u:25500,m:67000,x:70000,hrs:2750},
+  "40ft":    {u:27000,m:70000,x:75000,hrs:2750},
+  "45ft":    {u:29000,m:74000,x:78000,hrs:2750},
+  "48ft":    {u:30500,m:77000,x:80000,hrs:2750},
+  "53ft":    {u:32500,m:80000,x:80000,hrs:2750},
+};
+
+// Braking event params per trailer — Regen Sim rows 37-49
+// [start_mph, end_mph, events_per_hr]
+const BRAKE={
+  "24ft":    {s1:[25,0,12.5],s2:[25,15,20],  s3:[25,20,15]  },
+  "26ft":    {s1:[30,0,10],  s2:[30,15,16],  s3:[30,25,15]  },
+  "28ft":    {s1:[35,5,8],   s2:[40,30,14],  s3:[35,30,17.5]},
+  "36-38ft": {s1:[35,5,6.5], s2:[35,20,12],  s3:[35,30,17.5]},
+  "40ft":    {s1:[40,5,5.5], s2:[40,20,11],  s3:[40,35,15]  },
+  "45ft":    {s1:[45,5,4.5], s2:[45,35,9],   s3:[45,40,15]  },
+  "48ft":    {s1:[50,10,3],  s2:[50,40,7.5], s3:[55,50,17.5]},
+  "53ft":    {s1:[55,10,2],  s2:[55,45,6],   s3:[55,50,15]  },
+};
+
+// Compressor baseline gal/hr (Cold, no weather) — Compressor Sim rows 21-24
+const BASE_GAL={
+  "24ft":    {ambient:0.30225, cool:0.499875, chilled:0.68875,  frozen:1.023},
+  "26ft":    {ambient:0.3255,  cool:0.546375, chilled:0.748125, frozen:1.1},
+  "28ft":    {ambient:0.34875, cool:0.592875, chilled:0.8075,   frozen:1.188},
+  "36-38ft": {ambient:0.465,   cool:0.778875, chilled:1.056875, frozen:1.573},
+  "40ft":    {ambient:0.499875,cool:0.837,    chilled:1.14,     frozen:1.694},
+  "45ft":    {ambient:0.569625,cool:0.941625, chilled:1.2825,   frozen:1.914},
+  "48ft":    {ambient:0.6045,  cool:1.011375, chilled:1.3775,   frozen:2.035},
+  "53ft":    {ambient:0.662625,cool:1.116,    chilled:1.52,     frozen:2.244},
+};
+
+// Weather multipliers — Compressor Sim rows 11-14
+const WX={
+  ambient: {hot:1.55,warm:1.25,cold:1.00,freezing:0.85,"4season":1.1625},
+  cool:    {hot:1.55,warm:1.25,cold:1.00,freezing:0.85,"4season":1.1625},
+  chilled: {hot:1.70,warm:1.30,cold:1.00,freezing:0.75,"4season":1.1875},
+  frozen:  {hot:1.35,warm:1.15,cold:1.00,freezing:0.90,"4season":1.1000},
+};
+
+// AAA fallback prices (state code → $/gal pump price, DEF always +$0.105)
+const AAA_FALLBACK={AL:5.20,AK:5.85,AZ:5.77,AR:5.10,CA:7.38,CO:5.43,CT:5.78,
+DE:5.40,FL:5.31,GA:5.04,HI:7.11,ID:5.59,IL:5.99,IN:5.96,IA:5.22,KS:5.06,
+KY:5.22,LA:5.03,ME:5.78,MD:5.46,MA:5.74,MI:5.98,MN:5.30,MS:5.02,MO:5.21,
+MT:5.39,NE:5.12,NV:6.16,NH:5.71,NJ:5.55,NM:5.38,NY:5.91,NC:5.29,ND:5.12,
+OH:5.92,OK:4.94,OR:6.13,PA:5.88,RI:5.50,SC:5.17,SD:5.09,TN:5.15,TX:4.98,
+UT:5.57,VT:5.75,VA:5.47,WA:6.73,WV:5.63,WI:5.67,WY:5.47};
 const DEF=0.105;
 
-// ─── eGRID 2022 state CO2 kg/kWh ────────────────────────────────────────────
-const EG={AL:0.395,AK:0.308,AZ:0.295,AR:0.354,CA:0.193,CO:0.381,CT:0.156,DE:0.395,DC:0.298,FL:0.384,GA:0.379,HI:0.621,ID:0.088,IL:0.411,IN:0.523,IA:0.415,KS:0.476,KY:0.641,LA:0.438,ME:0.151,MD:0.298,MA:0.291,MI:0.453,MN:0.423,MS:0.427,MO:0.524,MT:0.310,NE:0.529,NV:0.391,NH:0.149,NJ:0.237,NM:0.487,NY:0.178,NC:0.368,ND:0.545,OH:0.470,OK:0.464,OR:0.103,PA:0.339,RI:0.242,SC:0.291,SD:0.140,TN:0.393,TX:0.395,UT:0.544,VT:0.010,VA:0.289,WA:0.074,WV:0.643,WI:0.479,WY:0.705};
-
-// ─── Spreadsheet data tables (FES_Calculator_v3.xlsx) ───────────────────────
 const TRAILERS=["24ft","26ft","28ft","36-38ft","40ft","45ft","48ft","53ft"];
-const COOLING=["Maintain Ambient","Cool","Chilled","Frozen"];
+const MODES={ambient:"Maintain Ambient",cool:"Cool (10-15°C)",chilled:"Chilled (2-8°C)",frozen:"Frozen (-18°C)"};
+const SEASONS={hot:"Summer / Hot",warm:"Spring / Warm",cold:"Winter / Cold",freezing:"Winter / Freezing","4season":"4-Season Avg"};
+const STATES=Object.keys(AAA_FALLBACK);
 
-// Tab 2 Section D: Diesel gal/hr — standard 85°F, area-scaled from TK SLXi 400
-const DIESEL_STD={
-  "Maintain Ambient":{t:[0.2296,0.2459,0.2623,0.3493,0.3747,0.4302,0.4564,0.5000]},
-  "Cool":            {t:[0.4132,0.4426,0.4721,0.6287,0.6744,0.7744,0.8215,0.9000]},
-  "Chilled":         {t:[0.6428,0.6886,0.7343,0.9780,1.0491,1.2047,1.2779,1.4000]},
-  "Frozen":          {t:[1.0101,1.0820,1.1539,1.5368,1.6486,1.8931,2.0082,2.2000]},
-};
-
-// Tab 2 Section C: Weather multipliers [MA, Cool, Chilled, Frozen]
-const WX={
-  "Hot / Summer":      [1.30,1.30,1.40,1.20],
-  "Warm / Spring-Fall":[1.10,1.10,1.15,1.05],
-  "Standard / 85°F":  [1.00,1.00,1.00,1.00],
-  "Cool / Autumn":     [0.85,0.85,0.90,0.95],
-  "Cold / Winter":     [0.70,0.70,0.75,0.88],
-  "4-Season Average":  [0.99,0.99,1.04,1.02],
-};
-
-// Tab 3 Section C: Regen kWh/hr [by trailer index 0-7]
-const RH={
-  S1:{U:[0.2803,0.3399,0.4170,0.3756,0.4417,0.4929,0.4147,0.3591],
-      M:[0.4205,0.5099,0.7977,0.7034,0.8343,0.9093,0.7512,0.6297],
-      X:[0.5606,0.6799,1.1784,1.0311,1.2269,1.3257,1.0878,0.8838]},
-  S2:{U:[0.2871,0.4079,0.4257,0.4768,0.6731,0.3943,0.3888,0.3683],
-      M:[0.4306,0.6119,0.8143,0.8927,1.2713,0.7275,0.7043,0.6459],
-      X:[0.5741,0.8158,1.2030,1.3087,1.8696,1.0606,1.0198,0.9065]},
-  S3:{U:[0.1211,0.1558,0.2470,0.2739,0.2868,0.3491,0.5292,0.4833],
-      M:[0.1817,0.2337,0.4726,0.5129,0.5418,0.6441,0.9586,0.8477],
-      X:[0.2422,0.3116,0.6982,0.7519,0.7967,0.9391,1.3880,1.1898]},
-};
-
-// Tab 3 Section E: Hills regen kWh/day at 10% fleet, 500ft altitude drop
-// Scale proportionally: actual = table × (pctHills/0.10) × (altFt/500)
-const HILLS_BASE={
-  U:[0.3042,0.3202,0.3683,0.4083,0.4323,0.4643,0.4884,0.5204],
-  M:[0.4563,0.4803,0.7045,0.7646,0.8166,0.8566,0.8846,0.9127],
-  X:[0.6084,0.6405,1.0408,1.1208,1.2009,1.2489,1.2809,1.2809],
-};
-const HILLS_BASE_PCT=0.10; const HILLS_BASE_FT=500;
-
-const FLEET_PRESETS=[{l:"Pilot",n:1},{l:"Small",n:25},{l:"Medium",n:100},{l:"Enterprise",n:500}];
-
-// ─── Core calculation engine (mirrors Tab 4 exactly) ────────────────────────
-function dieselGalHr(trailerIdx, coolingMode, wxSeason){
-  const mi=COOLING.indexOf(coolingMode);
-  const base=DIESEL_STD[coolingMode].t[trailerIdx];
-  const mult=(WX[wxSeason]||WX["4-Season Average"])[mi];
-  return base*mult;
-}
-
-function calcRegen(trailerIdx, pctS1, pctS2, pctS3, pctU, pctM, pctX,
-                   pctHills, altFt, driveHrs){
-  // Regen kWh/hr for each weight class (blended across S1/S2/S3)
-  const regenHr=(wt)=>
-    RH.S1[wt][trailerIdx]*pctS1 +
-    RH.S2[wt][trailerIdx]*pctS2 +
-    RH.S3[wt][trailerIdx]*pctS3;
-  // Braking regen/day = kWh/hr × driving hours
-  const brakeU=regenHr("U")*driveHrs;
-  const brakeM=regenHr("M")*driveHrs;
-  const brakeX=regenHr("X")*driveHrs;
-  // Hills regen/day (scaled from base table)
-  const hillScale=(pctHills/HILLS_BASE_PCT)*(altFt/HILLS_BASE_FT);
-  const hillU=HILLS_BASE.U[trailerIdx]*hillScale;
-  const hillM=HILLS_BASE.M[trailerIdx]*hillScale;
-  const hillX=HILLS_BASE.X[trailerIdx]*hillScale;
-  // Total per weight class
-  const totU=brakeU+hillU; const totM=brakeM+hillM; const totX=brakeX+hillX;
-  // Fleet-weighted blend
-  return totU*pctU + totM*pctM + totX*pctX;
-}
-
-function calcEconomics(ip){
-  const ti=TRAILERS.indexOf(ip.trailer);
-  const mi=COOLING.indexOf(ip.cooling);
-  const dGal=dieselGalHr(ti, ip.cooling, ip.season);
-  const eKwh=dGal*12; // kWh/hr equivalent
-  const {driveHrs,staticHrs,days}=ip;
-
-  // Daily energy demands
-  const driveDemKwh=eKwh*driveHrs;
-  const statDemKwh =eKwh*staticHrs;
-
-  // Regen kWh/day (fleet avg)
-  const regenDay=calcRegen(ti,ip.pctS1,ip.pctS2,ip.pctS3,
-                            ip.pctU,ip.pctM,ip.pctX,
-                            ip.pctHills,ip.altFt,driveHrs);
-
-  // Coverage
-  const driveCov  =Math.min(regenDay,driveDemKwh);
-  const excess    =Math.max(0,regenDay-driveDemKwh);
-  const driveRemKwh=Math.max(0,driveDemKwh-driveCov);
-  const statFromRegen=Math.min(excess,statDemKwh);
-  const statRemKwh=Math.max(0,statDemKwh-statFromRegen);
-
-  // Daily diesel
-  const baseDayGal=dGal*(driveHrs+staticHrs);
-  const trDriveGal=driveRemKwh/12;
-  const trStatGal =ip.shore ? 0 : statRemKwh/12;
-  const trDayGal  =trDriveGal+trStatGal;
-  const galSavedDay=baseDayGal-trDayGal;
-  const shoreKwhDay=ip.shore ? statRemKwh : 0;
-
-  // Annual costs
-  const {diesel:dp,elec:ep}=ip;
-  const baseYr=baseDayGal*days*dp;
-  const trueYr=trDayGal*days*dp + shoreKwhDay*days*ep;
-  const savYr =baseYr-trueYr;
-  const pctRed=baseYr>0?savYr/baseYr:0;
-  const pctDriveCov=driveDemKwh>0?driveCov/driveDemKwh:0;
-  const avStatHrs=eKwh>0?excess/eKwh:0;
-  const co2=(galSavedDay*10.21-shoreKwhDay*(EG[ip.state]||0.386))*days*ip.fleet/1000;
-
-  return{
-    dGal,eKwh,driveHrs,staticHrs,days,
-    driveDemKwh,statDemKwh,regenDay,
-    driveCov,excess,driveRemKwh,statFromRegen,statRemKwh,
-    baseDayGal,trDayGal,galSavedDay,shoreKwhDay,
-    baseYr,trueYr,savYr,pctRed,pctDriveCov,avStatHrs,
-    annualCo2Tons:co2,
-    fleetBaseYr:baseYr*ip.fleet,
-    fleetTrueYr:trueYr*ip.fleet,
-    fleetSavYr:savYr*ip.fleet,
+/* ═══════════════════════════════════════════════════════════
+   CORE CALCULATION — 10-step spec v2 chain
+═══════════════════════════════════════════════════════════ */
+function calcRegen(trailer, massKg, pctS1, pctS2, pctS3){
+  const b=BRAKE[trailer], eff=0.50;
+  function oneScenario([vs,ve,ev]){
+    const v1=vs*0.44704, v2=ve*0.44704;
+    const ke=0.5*massKg*(v1*v1-v2*v2)/3600000;
+    return ke*eff*ev; // kWh/hr for this scenario
+  }
+  const kS1=oneScenario(b.s1), kS2=oneScenario(b.s2), kS3=oneScenario(b.s3);
+  // Step 5: blend by user's S1/S2/S3 fleet percentages
+  return {
+    s1:kS1, s2:kS2, s3:kS3,
+    total: pctS1*kS1 + pctS2*kS2 + pctS3*kS3,
   };
-}
-
-function pmt(P,r,n){
-  if(!P||!n)return 0;
-  const m=n*12,rm=r/12;
-  if(!rm)return P/n;
-  return(P*rm)/(1-Math.pow(1+rm,-m))*12;
-}
-
-function buildCF(ip,eco){
-  const{fleet:n,sysPrice:sp,taxRate:tx,downPct:dp,interest:ir,
-        loanYrs:ly,acqMode:am,residual:rv,discount:dr,
-        horizon:hz,maintSav:ms}=ip;
-  const savUnit=eco.savYr+ms;
-  const cf=[]; let cum=0,npvCum=0;
-  for(let t=0;t<=hz;t++){
-    let up=0,fn=0,base=0,wt=0;
-    if(t===0){
-      if(am==="cash")up=-sp*(1+tx)*n;
-      else if(am==="financed")up=-sp*(dp+tx)*n;
-    } else {
-      base=eco.baseYr*n; wt=(eco.trueYr-ms)*n;
-      if(am==="financed"&&t<=ly) fn=-pmt(sp*(1-dp),ir,ly)*n;
-      else if(am==="lease") fn=-14400*(1+tx)*n;
-      if((am==="cash"||am==="financed")&&t===hz) fn+=rv*n;
-    }
-    const a=up+(base-wt)+fn; cum+=a;
-    const disc=t===0?1:Math.pow(1+dr,t);
-    npvCum+=a/disc;
-    cf.push({year:t,a,cum,npv:npvCum,base:base*1,wt:wt*1});
-  }
-  return cf;
-}
-
-function payback(cf,am){
-  if(am==="lease"&&(cf[1]?.cum||0)>0)return "immediate";
-  for(let i=1;i<cf.length;i++){
-    const p=cf[i-1],c=cf[i];
-    if(p.cum<0&&c.cum>=0)return p.year+(-p.cum/(c.cum-p.cum));
-    if(p.cum>=0&&i===1)return 0;
-  }
-  return null;
-}
-
-function irr(cf){
-  const fl=cf.map(y=>y.a);
-  if(!fl.some(f=>f>0)||!fl.some(f=>f<0))return null;
-  const npv=r=>fl.reduce((s,f,t)=>s+f/Math.pow(1+r,t),0);
-  let r=0.15;
-  for(let i=0;i<80;i++){const f=npv(r),e=1e-6,d=(npv(r+e)-f)/e;if(Math.abs(d)<1e-12)break;const x=r-f/d;if(Math.abs(x-r)<1e-8)return x;r=x;if(r<-.99)r=-.99;if(r>10)r=10;}
-  return r;
 }
 
 function calc(ip){
-  const eco=calcEconomics(ip);
-  const cf=buildCF(ip,eco);
-  const pb=payback(cf,ip.acqMode);
-  const ir2=irr(cf);
-  const opPb=eco.savYr>0?ip.sysPrice*(1+ip.taxRate)/eco.savYr:null;
-  return{ip,eco,cf,pb,ir2,opPb,
-    npv:cf[cf.length-1].npv,
-    cum10:cf[Math.min(ip.horizon,cf.length-1)]?.cum||0,
-    cum5:cf[Math.min(5,cf.length-1)]?.cum||0};
-}
+  const {trailer,cooling,season,pctU,pctM,pctX,pctS1,pctS2,pctS3,
+         dieselPrice,fleetSize,acqMode,horizon,sysPrice}=ip;
+  const g=GCWR[trailer];
 
-function mkIp(o={}){
-  const code=o.state||"CA"; const s=SL[code];
-  const dp=(s?s.diesel+DEF:5.5+DEF);
-  const ep=(s?s.dep*0.9+s.pub*0.1:0.15);
-  return{
-    state:code, fleet:o.fleet||50,
-    trailer:o.trailer||"40ft", cooling:o.cooling||"Cool", season:o.season||"4-Season Average",
-    driveHrs:o.driveHrs||6, staticHrs:o.staticHrs||3, days:o.days||300,
-    pctS1:o.pctS1||0.20, pctS2:o.pctS2||0.30, pctS3:o.pctS3||0.50,
-    pctU:o.pctU||0.20, pctM:o.pctM||0.35, pctX:o.pctX||0.45,
-    pctHills:o.pctHills||0.10, altFt:o.altFt||500, shore:o.shore!==undefined?o.shore:true,
-    diesel:o.diesel||dp, elec:o.elec||ep,
-    sysPrice:45000, residual:12000, taxRate:0.08,
-    acqMode:o.acqMode||"financed", interest:0.05, loanYrs:5, downPct:0.10,
-    discount:0.08, horizon:o.horizon||10, maintSav:0,
+  // Step 2: blended GCWR → kg
+  const blendedLbs = pctU*g.u + pctM*g.m + pctX*g.x;
+  const massKg = blendedLbs / 2.20462;
+
+  // Step 4 + 5: regen per hour (kWh/hr)
+  const regen = calcRegen(trailer, massKg, pctS1, pctS2, pctS3);
+
+  // Step 6: weather-adjusted compressor demand
+  const baseGal = BASE_GAL[trailer][cooling];
+  const wxMult  = WX[cooling][season];
+  const adjGal  = baseGal * wxMult;           // gal/hr (weather adjusted)
+  const compKwh = adjGal * 12;               // kWh/hr (12 kWh/gal equiv)
+
+  // Step 7: regen offset
+  const regenUsed   = Math.min(regen.total, compKwh);
+  const surplusKwh  = Math.max(0, regen.total - compKwh);
+  const residualKwh = Math.max(0, compKwh - regen.total);
+  const trueGalHr   = residualKwh / 12;      // floored at 0 (conservative)
+
+  // Coverage — cap display at 100%, show surplus separately
+  const coveragePct = compKwh > 0 ? Math.min(1, regenUsed/compKwh)*100 : 0;
+  const hasSurplus  = surplusKwh > 0;
+
+  // Step 8: fuel savings
+  const galSavedHr   = adjGal - trueGalHr;
+  const annSavingsOne = galSavedHr * dieselPrice * g.hrs;   // per truck/yr
+  const fleetSavings  = annSavingsOne * fleetSize;
+
+  // Step 9: CO2 — spec formula: gal_saved × hrs × 22.38 ÷ 2204.62
+  const galSavedYr = galSavedHr * g.hrs;
+  const co2TonsYr  = galSavedYr * fleetSize * 22.38 / 2204.62;
+
+  // Step 10: year-by-year cashflow
+  const TAX=0.08, DOWN=0.10, INT=0.065, TERM=5;
+  const initCost = sysPrice*(1+TAX)*fleetSize;
+  const finDown  = sysPrice*(DOWN+TAX)*fleetSize;
+  const pmt = ()=>{
+    const r=INT/12, n=TERM*12, P=sysPrice*(1-DOWN)*fleetSize;
+    return (P*r)/(1-Math.pow(1+r,-n))*12;
+  };
+  const leaseCostYr = 14400 * fleetSize;
+
+  let cum=0; const rows=[];
+  for(let y=0;y<=horizon;y++){
+    let financing=0;
+    if(y===0){
+      financing = acqMode==="cash"?initCost:(acqMode==="financed"?finDown:0);
+    } else {
+      if(acqMode==="financed"&&y<=TERM) financing=pmt();
+      if(acqMode==="lease") financing=leaseCostYr;
+    }
+    const baseline = y===0?0: annSavingsOne*fleetSize;
+    const fuel     = y===0?0: 0; // TRUE fuel cost = 0 when fully covered (conservative)
+    const benefit  = baseline - fuel - financing;
+    cum += benefit;
+    rows.push({y,baseline,financing,benefit,cum});
+  }
+
+  // Payback interpolation
+  let payback=null;
+  for(let i=1;i<rows.length;i++){
+    if(rows[i-1].cum<0&&rows[i].cum>=0){
+      payback=rows[i-1].y + (-rows[i-1].cum)/(rows[i].cum-rows[i-1].cum);
+      break;
+    }
+    if(rows[i].cum>=0&&i===1){payback=0;break;}
+  }
+
+  // NPV
+  const r8=0.08;
+  const npv=rows.reduce((s,row)=>s+row.benefit/Math.pow(1+r8,row.y),0);
+
+  // Lease viability flag
+  const leaseViable = annSavingsOne*fleetSize > leaseCostYr;
+
+  return {
+    massKg,blendedLbs,regen,adjGal,compKwh,
+    regenUsed,surplusKwh,residualKwh,trueGalHr,
+    coveragePct,hasSurplus,
+    galSavedHr,annSavingsOne,fleetSavings,
+    galSavedYr,co2TonsYr,
+    rows,payback,npv,leaseViable,
+    reeferHrs:g.hrs,
   };
 }
 
-// ─── Formatters ──────────────────────────────────────────────────────────────
-const f$=(n,d=0)=>isFinite(n)?n.toLocaleString("en-US",{style:"currency",currency:"USD",maximumFractionDigits:d}):"—";
-const fn=(n,d=0)=>isFinite(n)?n.toLocaleString("en-US",{maximumFractionDigits:d,minimumFractionDigits:d}):"—";
-const fp=(n,d=1)=>isFinite(n)?`${(n*100).toFixed(d)}%`:"—";
-const fy=n=>n==null?"—":n==="immediate"?"Immediate":`${n.toFixed(1)} yrs`;
-const f3=(n)=>isFinite(n)?`$${n.toFixed(3)}`:"—";
+/* ═══════════════════════════════════════════════════════════
+   FORMATTERS
+═══════════════════════════════════════════════════════════ */
+const f$=(n,d=0)=>n==null?"—":"$"+Math.abs(n).toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d});
+const fn=(n,d=1)=>n==null?"—":n.toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d});
+const fp=(n)=>n==null?"—":n.toFixed(1)+"%";
+const fyr=(n)=>n==null?"Never":n.toFixed(1)+" yrs";
 
-// ─── Shared UI primitives ────────────────────────────────────────────────────
-const card=(extra="")=>`rounded-xl p-5 ${extra}`;
-const cardStyle={background:"var(--card)",border:"1px solid var(--border)"};
-const raiseStyle={background:"var(--raise)",border:"1px solid var(--border)"};
-
-function Lbl({children,hint}){
+/* ═══════════════════════════════════════════════════════════
+   COMPONENTS
+═══════════════════════════════════════════════════════════ */
+function Slider({label,min,max,step,value,fmt,onChange}){
   return(
-    <div className="flex items-baseline justify-between mb-1.5">
-      <label className="text-[10px] uppercase tracking-wider text-snow-500">{children}</label>
-      {hint&&<span className="text-[10px] mono text-snow-400">{hint}</span>}
+    <div className="field">
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <label className="label" style={{marginBottom:0}}>{label}</label>
+        <span className="mono" style={{fontSize:12,color:"var(--lime)"}}>{fmt(value)}</span>
+      </div>
+      <input type="range" min={min} max={max} step={step} value={value}
+        onChange={e=>onChange(parseFloat(e.target.value))}/>
     </div>
   );
 }
-function NI({v,onChange,pre,suf,dec=0,min,max,step}){
+
+function PillGroup({label,options,value,onChange}){
   return(
-    <div className="relative">
-      {pre&&<span className="absolute left-3 top-1/2 -translate-y-1/2 text-snow-500 text-xs pointer-events-none">{pre}</span>}
-      <input type="number" value={v} className="ni"
-        style={{paddingLeft:pre?28:11,paddingRight:suf?36:11}}
-        min={min} max={max} step={step||dec>0?Math.pow(10,-dec):1}
-        onChange={e=>{const x=parseFloat(e.target.value);if(isFinite(x))onChange(x);}}/>
-      {suf&&<span className="absolute right-3 top-1/2 -translate-y-1/2 text-snow-500 text-[11px] pointer-events-none">{suf}</span>}
-    </div>
-  );
-}
-function Tog({opts,val,onC}){
-  return(
-    <div className="flex rounded-md p-0.5" style={raiseStyle}>
-      {opts.map(o=>(
-        <button key={String(o.v)} onClick={()=>onC(o.v)}
-          className="flex-1 py-1.5 text-[11px] uppercase tracking-wider rounded-md transition"
-          style={String(val)===String(o.v)
-            ?{background:"rgba(26,171,86,.14)",color:"#2ecc71",outline:"1px solid rgba(26,171,86,.3)"}
-            :{color:"var(--muted)"}}
-          onMouseEnter={e=>{if(String(val)!==String(o.v))e.target.style.color="#dce6f0";}}
-          onMouseLeave={e=>{if(String(val)!==String(o.v))e.target.style.color="var(--muted)";}}>
-          {o.l}
-        </button>
-      ))}
-    </div>
-  );
-}
-function Sec({n,title,sub}){
-  return(
-    <div className="mt-4 mb-2.5">
-      <div className="flex items-center gap-2">
-        <span className="mono text-green-500 text-sm font-medium">{n}.</span>
-        <span className="text-snow-100 text-sm font-medium">{title}</span>
-      </div>
-      {sub&&<p className="text-snow-500 text-[10px] mt-0.5 ml-5">{sub}</p>}
-    </div>
-  );
-}
-function PctBar({label,val,onC,hint}){
-  return(
-    <div>
-      <div className="flex justify-between mb-0.5">
-        <span className="text-[10px] text-snow-500 uppercase tracking-wide">{label}</span>
-        <span className="text-[10px] mono text-snow-400">{fp(val)}</span>
-      </div>
-      <input type="range" min={0} max={1} step={0.05} value={val}
-        onChange={e=>onC(parseFloat(e.target.value))}/>
-      {hint&&<p className="text-[9px] text-snow-500 mt-0.5">{hint}</p>}
-    </div>
-  );
-}
-function norm3(keys,key,val,cur){
-  const ot=keys.filter(k=>k!==key);
-  const rem=Math.max(0,1-val);
-  const tot=cur[ot[0]]+(cur[ot[1]]||0);
-  if(tot<=0)return{[key]:val,[ot[0]]:rem/2,[ot[1]]:rem/2};
-  const a=parseFloat((cur[ot[0]]/tot*rem).toFixed(3));
-  const b=parseFloat((rem-a).toFixed(3));
-  return{[key]:parseFloat(val.toFixed(3)),[ot[0]]:a,[ot[1]]:b};
-}
-
-// ─── Input panel ─────────────────────────────────────────────────────────────
-function Inputs({ip,set,onState}){
-  const [adv,setAdv]=useState(false);
-  const s=SL[ip.state];
-  return(
-    <div className="space-y-1">
-      <Sec n="01" title="Location" sub="Diesel price from live AAA data"/>
-      <div>
-        <Lbl hint={s?f3(s.diesel+DEF):""}>State</Lbl>
-        <select className="sel" value={ip.state} onChange={e=>onState(e.target.value)}>
-          {SD.map(st=><option key={st.code} value={st.code}>{st.name}  {f3(st.diesel+DEF)}/gal</option>)}
-        </select>
-      </div>
-
-      <Sec n="02" title="Fleet"/>
-      <div>
-        <Lbl>Number of trailers</Lbl>
-        <NI v={ip.fleet} onChange={v=>set({fleet:Math.max(1,Math.round(v))})} suf="units" min={1}/>
-        <div className="flex gap-1.5 mt-1.5">
-          {FLEET_PRESETS.map(p=>(
-            <button key={p.l} onClick={()=>set({fleet:p.n})}
-              className="text-[10px] uppercase tracking-wide px-2 py-1 rounded-md transition"
-              style={ip.fleet===p.n
-                ?{background:"rgba(26,171,86,.14)",color:"#2ecc71",outline:"1px solid rgba(26,171,86,.3)"}
-                :{background:"var(--raise)",color:"var(--muted)",border:"1px solid var(--border)"}}>
-              {p.l}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <Sec n="03" title="Trailer" sub="Cooling demand area-scaled from TK SLXi 400"/>
-      <div>
-        <Lbl>Length</Lbl>
-        <div className="grid grid-cols-4 gap-1.5">
-          {TRAILERS.map(t=>(
-            <button key={t} onClick={()=>set({trailer:t})}
-              className="text-[11px] py-2 rounded-md mono transition"
-              style={ip.trailer===t
-                ?{background:"rgba(26,171,86,.14)",color:"#2ecc71",outline:"1px solid rgba(26,171,86,.3)"}
-                :{background:"var(--raise)",color:"var(--muted)",border:"1px solid var(--border)"}}>
-              {t}
-            </button>
-          ))}
-        </div>
-      </div>
-      <div>
-        <Lbl>Cooling mode</Lbl>
-        <select className="sel" value={ip.cooling} onChange={e=>set({cooling:e.target.value})}>
-          <option value="Maintain Ambient">Maintain Ambient — 65°F</option>
-          <option value="Cool">Cool — 35°F (produce, dairy)</option>
-          <option value="Chilled">Chilled — 20°F (meat, ice cream)</option>
-          <option value="Frozen">Frozen — -20°F (deep freeze)</option>
-        </select>
-      </div>
-      <div>
-        <Lbl>Weather / Season</Lbl>
-        <select className="sel" value={ip.season} onChange={e=>set({season:e.target.value})}>
-          {Object.keys(WX).map(s=><option key={s} value={s}>{s}</option>)}
-        </select>
-      </div>
-
-      <Sec n="04" title="Load profile" sub="% of operating time per weight class"/>
-      <div className="space-y-2.5 p-3 rounded-lg" style={raiseStyle}>
-        <PctBar label="Empty / Unladen" val={ip.pctU} onC={v=>set(norm3(["pctU","pctM","pctX"],"pctU",v,ip))}/>
-        <PctBar label="Mid load" val={ip.pctM} onC={v=>set(norm3(["pctU","pctM","pctX"],"pctM",v,ip))}/>
-        <PctBar label="Full / Max load" val={ip.pctX} onC={v=>set(norm3(["pctU","pctM","pctX"],"pctX",v,ip))}/>
-        <div className="text-[9px] text-snow-500">Total: {fp(ip.pctU+ip.pctM+ip.pctX,0)}</div>
-      </div>
-
-      <Sec n="05" title="Driving profile" sub="% of drive time by braking type"/>
-      <div className="space-y-2.5 p-3 rounded-lg" style={raiseStyle}>
-        <PctBar label="S1 — Significant braking" val={ip.pctS1} onC={v=>set(norm3(["pctS1","pctS2","pctS3"],"pctS1",v,ip))} hint="Full/near stops — toll plazas, lights, exits"/>
-        <PctBar label="S2 — Moderate braking" val={ip.pctS2} onC={v=>set(norm3(["pctS1","pctS2","pctS3"],"pctS2",v,ip))} hint="Merging, ramps, slowing traffic"/>
-        <PctBar label="S3 — Micro braking" val={ip.pctS3} onC={v=>set(norm3(["pctS1","pctS2","pctS3"],"pctS3",v,ip))} hint="Cruise control adj., slight decel"/>
-        <div className="text-[9px] text-snow-500">Total: {fp(ip.pctS1+ip.pctS2+ip.pctS3,0)}</div>
-      </div>
-
-      <Sec n="06" title="Operations & hills"/>
-      <div className="space-y-3">
-        <div className="grid grid-cols-2 gap-2">
-          <div><Lbl>Drive hrs/day</Lbl><NI v={ip.driveHrs} onChange={v=>set({driveHrs:Math.max(0,Math.min(18,v))})} suf="h" dec={1}/></div>
-          <div><Lbl>Static hrs/day</Lbl><NI v={ip.staticHrs} onChange={v=>set({staticHrs:Math.max(0,Math.min(12,v))})} suf="h" dec={1}/></div>
-        </div>
-        <div><Lbl>Operating days/yr</Lbl><NI v={ip.days} onChange={v=>set({days:Math.max(1,Math.round(v))})} suf="days"/></div>
-        <PctBar label="Fleet % on hilly routes" val={ip.pctHills} onC={v=>set({pctHills:v})}/>
-        {ip.pctHills>0&&(
-          <div><Lbl hint="500 ft = spreadsheet default">Daily altitude drop</Lbl>
-            <NI v={ip.altFt} onChange={v=>set({altFt:Math.max(0,v)})} suf="ft/day"/>
-          </div>
-        )}
-        <div><Lbl>Shore power at depot</Lbl>
-          <Tog opts={[{v:true,l:"Yes — grid"},{v:false,l:"No — diesel"}]} val={ip.shore} onC={v=>set({shore:v})}/>
-        </div>
-      </div>
-
-      <Sec n="07" title="Acquisition"/>
-      <Tog opts={[{v:"cash",l:"Cash"},{v:"financed",l:"Financed"},{v:"lease",l:"Lease"}]}
-        val={ip.acqMode} onC={v=>set({acqMode:v})}/>
-
-      <div className="mt-3 pt-3" style={{borderTop:"1px solid var(--border)"}}>
-        <button onClick={()=>setAdv(a=>!a)}
-          className="w-full flex items-center justify-between text-[11px] uppercase tracking-wider py-1"
-          style={{color:"var(--muted)"}}>
-          <span>Advanced</span>
-          <span style={{display:"inline-block",transform:adv?"rotate(180deg)":"none",transition:"transform .2s"}}>▾</span>
-        </button>
-        {adv&&(
-          <div className="space-y-3 pt-2">
-            <div><Lbl hint={fp(ip.interest,1)}>Interest rate</Lbl><NI v={ip.interest*100} onChange={v=>set({interest:v/100})} suf="%" dec={2}/></div>
-            <div><Lbl>Loan term</Lbl><NI v={ip.loanYrs} onChange={v=>set({loanYrs:Math.max(1,Math.round(v))})} suf="yrs"/></div>
-            <div><Lbl hint={fp(ip.discount,1)}>Discount rate (NPV)</Lbl><NI v={ip.discount*100} onChange={v=>set({discount:v/100})} suf="%" dec={2}/></div>
-            <div><Lbl>Maintenance savings</Lbl><NI v={ip.maintSav} onChange={v=>set({maintSav:Math.max(0,v)})} pre="$" suf="/yr/unit"/></div>
-            <div><Lbl>Analysis horizon</Lbl><NI v={ip.horizon} onChange={v=>set({horizon:Math.min(20,Math.max(1,Math.round(v)))})} suf="yrs"/></div>
-          </div>
-        )}
+    <div className="field">
+      <label className="label">{label}</label>
+      <div className="pill-group">
+        {options.map(([v,l])=>(
+          <button key={v} className={"pill"+(value===v?" on":"")}
+            onClick={()=>onChange(v)}>{l}</button>
+        ))}
       </div>
     </div>
   );
 }
 
-// ─── Main app ────────────────────────────────────────────────────────────────
+function CoverageBar({label,pct,surplus}){
+  const capped=Math.min(100,pct);
+  return(
+    <div className="cov-row">
+      <div className="cov-label">{label}</div>
+      <div className="cov-track">
+        <div className={"cov-fill"+(surplus?" surplus":"")}
+          style={{width:capped+"%"}}/>
+      </div>
+      <div className="cov-pct mono">
+        {surplus?"100%+":fp(pct)}
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   APP
+═══════════════════════════════════════════════════════════ */
 function App(){
-  const[ip,setIp]=useState(()=>mkIp({state:"CA",fleet:50}));
-  const[pm,setPm]=useState({date:"2026-05-27",live:false});
-  const R=useMemo(()=>calc(ip),[ip]);
-  const E=R.eco; const n=ip.fleet;
-
-  useEffect(()=>{
-    fetch("prices.json").then(r=>r.json()).then(d=>{
-      if(d.states?.length>40){
-        SD.length=0; d.states.forEach(s=>{
-          SD.push({...s,pub:s.publicKwh,dep:s.depotKwh});
-          SL[s.code]={...s,pub:s.publicKwh,dep:s.depotKwh};
-        });
-        setPm({date:d.date||"today",live:true});
-        const s=SL[ip.state];
-        if(s) setIp(p=>({...p,diesel:s.diesel+DEF,elec:s.dep*0.9+s.pub*0.1}));
-      }
-    }).catch(()=>{});
-    setTimeout(()=>{const e=document.getElementById("boot");if(e)e.remove();},200);
-  },[]);
-
+  const [ip,setIp]=useState({
+    trailer:"40ft", cooling:"cool", season:"4season",
+    state:"CA",
+    pctU:0.20, pctM:0.45, pctX:0.35,
+    pctS1:0.25, pctS2:0.45, pctS3:0.30,
+    fleetSize:50,
+    acqMode:"cash",
+    horizon:10,
+    sysPrice:45000,
+    dieselPrice:7.38+DEF,
+  });
   const set=p=>setIp(prev=>({...prev,...p}));
-  const onState=code=>{
-    const s=SL[code]; if(!s){set({state:code});return;}
-    set({state:code,diesel:s.diesel+DEF,elec:s.dep*0.9+s.pub*0.1});
-  };
+
+  // Normalize percentages so they sum to 1
+  function normLoad(key,val){
+    const others=["pctU","pctM","pctX"].filter(k=>k!==key);
+    const rem=Math.max(0,Math.min(1,val));
+    const cur=ip[others[0]]+ip[others[1]];
+    if(cur<=0){set({[key]:rem,[others[0]]:(1-rem)/2,[others[1]]:(1-rem)/2});return;}
+    const ratio=(1-rem)/cur;
+    set({[key]:rem,[others[0]]:parseFloat((ip[others[0]]*ratio).toFixed(3)),[others[1]]:parseFloat((ip[others[1]]*ratio).toFixed(3))});
+  }
+  function normDrive(key,val){
+    const others=["pctS1","pctS2","pctS3"].filter(k=>k!==key);
+    const rem=Math.max(0,Math.min(1,val));
+    const cur=ip[others[0]]+ip[others[1]];
+    if(cur<=0){set({[key]:rem,[others[0]]:(1-rem)/2,[others[1]]:(1-rem)/2});return;}
+    const ratio=(1-rem)/cur;
+    set({[key]:rem,[others[0]]:parseFloat((ip[others[0]]*ratio).toFixed(3)),[others[1]]:parseFloat((ip[others[1]]*ratio).toFixed(3))});
+  }
+
+  const R=useMemo(()=>calc(ip),[ip]);
 
   // Chart data
-  const cfData=R.cf.map(y=>({yr:`Yr ${y.year}`,c:Math.round(y.cum)}));
-  const barData=[
-    {nm:"Without TRUE",v:Math.round(E.fleetBaseYr),col:"rgba(245,166,35,.85)"},
-    {nm:"With TRUE",   v:Math.round(E.fleetTrueYr), col:"rgba(93,184,255,.85)"},
-    {nm:"Savings",     v:Math.round(E.fleetSavYr),  col:"rgba(46,204,113,.9)"},
-  ];
-  const tip={contentStyle:{background:"#0d1820",border:"1px solid rgba(255,255,255,0.08)",borderRadius:8},
-             labelStyle:{color:"#546e84",fontSize:11},itemStyle:{color:"#dce6f0",fontSize:12}};
+  const cfData=R.rows.map(r=>({
+    year:`Y${r.y}`,
+    benefit:Math.round(r.benefit),
+    cum:Math.round(r.cum),
+  }));
+
+  const pbYear=R.payback!=null?Math.ceil(R.payback):null;
+
+  // Coverage table rows
+  const modes=["ambient","cool","chilled","frozen"];
+  const modeLabelShort={ambient:"Ambient",cool:"Cool",chilled:"Chilled",frozen:"Frozen"};
+  const covRows=modes.map(m=>{
+    const baseG=BASE_GAL[ip.trailer][m];
+    const wxM=WX[m][ip.season];
+    const adjG=baseG*wxM;
+    const ck=adjG*12;
+    const used=Math.min(R.regen.total,ck);
+    const pct=ck>0?used/ck*100:0;
+    const surplus=R.regen.total>ck;
+    return{m,label:modeLabelShort[m],pct,surplus};
+  });
 
   return(
-    <main className="min-h-screen">
-      {/* Header */}
-      <header style={{borderBottom:"1px solid var(--border)",background:"var(--card)"}}>
-        <div className="max-w-[1480px] mx-auto px-5 lg:px-8 py-4 flex items-center justify-between">
-          <div className="flex items-baseline gap-3">
-            <span className="text-snow-50 font-semibold text-base flex items-center gap-2">
-              <span className="text-green-500 pulse">●</span>Foregger
-            </span>
-            <span className="text-snow-500 text-[10px] uppercase tracking-widest hidden sm:inline">
-              Foregger Energy Solutions
-            </span>
+    <div id="root">
+      {/* ── SIDEBAR ───────────────────────────────────── */}
+      <aside className="sidebar">
+        <div className="sidebar-head">
+          <div className="page-title">TRUE Regen System</div>
+          <div className="wordmark">Foregger<span>.</span></div>
+        </div>
+
+        <div className="sidebar-body">
+          <p className="section-title">Location & Fleet</p>
+
+          <div className="field">
+            <label className="label">State (diesel price)</label>
+            <select value={ip.state} onChange={e=>{
+              const st=e.target.value;
+              const pump=AAA_FALLBACK[st]||5.0;
+              set({state:st, dieselPrice:pump+DEF});
+            }}>
+              {STATES.map(s=><option key={s} value={s}>{s} — {f$(AAA_FALLBACK[s]+DEF,3)}/gal</option>)}
+            </select>
           </div>
-          <div className="text-right hidden lg:block">
-            <div className="text-[9px] uppercase tracking-widest text-snow-500">Diesel prices</div>
-            <div className="text-xs text-snow-400 mt-0.5">
-              <a href="https://gasprices.aaa.com/state-gas-price-averages/" target="_blank"
-                 rel="noopener noreferrer" className="underline underline-offset-2 hover:text-green-400">AAA</a>
-              {" "}
-              {pm.live
-                ?<span className="text-green-400">Live {pm.date}</span>
-                :<span className="text-amber-400">Snapshot {pm.date}</span>}
+
+          <Slider label="Fleet size" min={1} max={500} step={1}
+            value={ip.fleetSize} fmt={v=>v+" trucks"} onChange={v=>set({fleetSize:v})}/>
+
+          <div className="divider"/>
+          <p className="section-title">Trailer & Operations</p>
+
+          <div className="field">
+            <label className="label">Trailer length</label>
+            <select value={ip.trailer} onChange={e=>set({trailer:e.target.value})}>
+              {TRAILERS.map(t=><option key={t} value={t}>{t}</option>)}
+            </select>
+          </div>
+
+          <div className="field">
+            <label className="label">Cooling mode</label>
+            <select value={ip.cooling} onChange={e=>set({cooling:e.target.value})}>
+              {Object.entries(MODES).map(([k,v])=><option key={k} value={k}>{v}</option>)}
+            </select>
+          </div>
+
+          <div className="field">
+            <label className="label">Weather / Season</label>
+            <select value={ip.season} onChange={e=>set({season:e.target.value})}>
+              {Object.entries(SEASONS).map(([k,v])=><option key={k} value={k}>{v}</option>)}
+            </select>
+          </div>
+
+          <div className="divider"/>
+          <p className="section-title">Fleet Load Profile</p>
+          <div style={{fontSize:10,color:"var(--muted)",marginBottom:10,lineHeight:1.5}}>
+            Blended GCWR = %U×{GCWR[ip.trailer].u.toLocaleString()} + %M×{GCWR[ip.trailer].m.toLocaleString()} + %X×{GCWR[ip.trailer].x.toLocaleString()} lbs
+          </div>
+          <Slider label="% Unladen" min={0} max={1} step={0.05}
+            value={ip.pctU} fmt={v=>Math.round(v*100)+"% unladen"}
+            onChange={v=>normLoad("pctU",v)}/>
+          <Slider label="% Mid load" min={0} max={1} step={0.05}
+            value={ip.pctM} fmt={v=>Math.round(v*100)+"% mid"}
+            onChange={v=>normLoad("pctM",v)}/>
+          <Slider label="% Max load" min={0} max={1} step={0.05}
+            value={ip.pctX} fmt={v=>Math.round(v*100)+"% max"}
+            onChange={v=>normLoad("pctX",v)}/>
+          <div style={{fontSize:10,color:"var(--muted)",fontFamily:"Geist Mono,monospace",marginTop:-4}}>
+            Blended: {fn(ip.blendedLbs??((ip.pctU*GCWR[ip.trailer].u+ip.pctM*GCWR[ip.trailer].m+ip.pctX*GCWR[ip.trailer].x)),0).replace(/\.0$/,"")} lbs → {fn((ip.pctU*GCWR[ip.trailer].u+ip.pctM*GCWR[ip.trailer].m+ip.pctX*GCWR[ip.trailer].x)/2.20462,0)} kg
+          </div>
+
+          <div className="divider"/>
+          <p className="section-title">Braking Profile</p>
+          <div style={{fontSize:10,color:"var(--muted)",marginBottom:10,lineHeight:1.5}}>
+            S1 = full stops · S2 = moderate decel · S3 = micro/cruise
+          </div>
+          <Slider label="% S1 (significant)" min={0} max={1} step={0.05}
+            value={ip.pctS1} fmt={v=>Math.round(v*100)+"%"}
+            onChange={v=>normDrive("pctS1",v)}/>
+          <Slider label="% S2 (moderate)" min={0} max={1} step={0.05}
+            value={ip.pctS2} fmt={v=>Math.round(v*100)+"%"}
+            onChange={v=>normDrive("pctS2",v)}/>
+          <Slider label="% S3 (micro)" min={0} max={1} step={0.05}
+            value={ip.pctS3} fmt={v=>Math.round(v*100)+"%"}
+            onChange={v=>normDrive("pctS3",v)}/>
+          <div style={{fontSize:10,color:"var(--muted)",fontFamily:"Geist Mono,monospace",marginTop:-4}}>
+            Regen: {fn(R.regen.total,3)} kWh/hr  ·  {fn(R.regen.total*R.reeferHrs,0)} kWh/yr per truck
+          </div>
+
+          <div className="divider"/>
+          <p className="section-title">Acquisition</p>
+
+          <PillGroup label="Mode" value={ip.acqMode} onChange={v=>set({acqMode:v})}
+            options={[["cash","Cash"],["financed","Financed"],["lease","Lease"]]}/>
+
+          {ip.acqMode==="lease"&&!R.leaseViable&&(
+            <div className="notice warn">
+              ⚠ Lease not viable — savings ({f$(R.annSavingsOne*ip.fleetSize)}/yr) are below lease cost (${ (14400*ip.fleetSize).toLocaleString()}/yr). Switch mode or increase fleet size.
             </div>
+          )}
+
+          <Slider label="System price / truck" min={30000} max={80000} step={1000}
+            value={ip.sysPrice} fmt={v=>f$(v)} onChange={v=>set({sysPrice:v})}/>
+          <Slider label="Analysis horizon" min={3} max={20} step={1}
+            value={ip.horizon} fmt={v=>v+" years"} onChange={v=>set({horizon:v})}/>
+        </div>
+      </aside>
+
+      {/* ── MAIN ─────────────────────────────────────── */}
+      <main className="main">
+        <div style={{marginBottom:28}}>
+          <div style={{fontSize:11,color:"var(--muted)",letterSpacing:".12em",textTransform:"uppercase",fontWeight:600}}>
+            Investor Dashboard
+          </div>
+          <div style={{fontSize:26,fontWeight:800,letterSpacing:"-.02em",marginTop:4}}>
+            {ip.fleetSize} × {ip.trailer} · {MODES[ip.cooling]} · {SEASONS[ip.season]}
+          </div>
+          <div className="mono" style={{fontSize:11,color:"var(--sub)",marginTop:4}}>
+            Diesel: {f$(ip.dieselPrice,3)}/gal (AAA {ip.state} + $0.105 DEF) · 50% regen eff · TCO spreadsheet model
           </div>
         </div>
-      </header>
 
-      {/* Hero */}
-      <section className="max-w-[1480px] mx-auto px-5 lg:px-8 pt-7 pb-4">
-        <div className="text-[10px] uppercase tracking-[.2em] text-green-500 mb-2 font-medium">
-          TRUE System — TCO Calculator v3
-        </div>
-        <h1 className="text-[22px] lg:text-[36px] leading-tight text-snow-50 font-semibold">
-          Quantify your fleet's{" "}
-          <span className="italic text-green-400">regenerative braking</span> economics.
-        </h1>
-        <p className="text-snow-400 text-sm mt-2 max-w-[540px] leading-relaxed">
-          Physics-based model using Thermo King SLXi 400 fuel specs, live AAA state diesel prices,
-          and your fleet's actual load and driving profile.
-        </p>
-      </section>
-
-      {/* Main layout */}
-      <section className="max-w-[1480px] mx-auto px-5 lg:px-8 pb-16">
-        <div className="grid grid-cols-12 gap-5">
-
-          {/* Inputs sidebar */}
-          <aside className="col-span-12 lg:col-span-4 lg:sticky lg:top-5 lg:max-h-[calc(100vh-5rem)] lg:overflow-y-auto scroll fx">
-            <div className="rounded-xl p-5" style={cardStyle}>
-              <div className="flex items-baseline justify-between mb-3 pb-3"
-                   style={{borderBottom:"1px solid var(--border)"}}>
-                <h2 className="text-snow-50 font-semibold text-sm">Scenario inputs</h2>
-                <span className="flex items-center gap-1.5 text-[9px] uppercase text-snow-500">
-                  <span className="w-1.5 h-1.5 rounded-full bg-green-500 pulse inline-block"/>Live
-                </span>
-              </div>
-              <Inputs ip={ip} set={set} onState={onState}/>
+        {/* KPIs */}
+        <div className="kpi-grid">
+          <div className="kpi accent">
+            <div className="kpi-label">Fleet annual savings</div>
+            <div className="kpi-value">{f$(R.fleetSavings)}</div>
+            <div className="kpi-sub">{f$(R.annSavingsOne)}/yr per truck · {f$(R.annSavingsOne/R.reeferHrs,2)}/reefer-hr</div>
+          </div>
+          <div className="kpi">
+            <div className="kpi-label">Payback period</div>
+            <div className="kpi-value" style={{color:R.payback&&R.payback<6?"var(--lime)":"var(--txt)"}}>{fyr(R.payback)}</div>
+            <div className="kpi-sub">NPV {f$(R.npv)} @ 8% · {ip.horizon}-yr horizon</div>
+          </div>
+          <div className="kpi">
+            <div className="kpi-label">CO₂ avoided / yr</div>
+            <div className="kpi-value mono">{fn(R.co2TonsYr,1)} t</div>
+            <div className="kpi-sub">{fn(R.galSavedYr*ip.fleetSize,0)} gal diesel saved (fleet)</div>
+          </div>
+          <div className="kpi">
+            <div className="kpi-label">Regen coverage</div>
+            <div className="kpi-value" style={{color:R.hasSurplus?"var(--lime)":"var(--txt)"}}>
+              {R.hasSurplus?"100%+":fp(R.coveragePct)}
             </div>
-          </aside>
-
-          {/* Results */}
-          <div className="col-span-12 lg:col-span-8 space-y-4">
-
-            {/* KPI row */}
-            <div className="grid grid-cols-3 gap-3">
-              {[
-                {label:"Annual fleet savings",
-                 value:f$(E.fleetSavYr),
-                 sub:`${f$(E.savYr)}/unit  ·  ${f$(R.cum10)} over ${ip.horizon} yrs`,
-                 accent:"#1aab56",delay:1},
-                {label:"Payback period",
-                 value:fy(R.pb),
-                 sub:`Tech ROI: ${R.opPb?R.opPb.toFixed(1)+" yrs":"—"}  ·  yr 5: ${f$(R.cum5)}`,
-                 accent:"#2ea8ff",delay:2},
-                {label:"CO\u2082 avoided / yr",
-                 value:`${fn(E.annualCo2Tons,0)} t`,
-                 sub:`\u2248 ${fn(E.annualCo2Tons/4.6,0)} cars off road`,
-                 accent:"#1aab56",delay:3},
-              ].map(card=>(
-                <div key={card.label} className={`fi s${card.delay} relative rounded-xl p-5 overflow-hidden`} style={cardStyle}>
-                  <div className="absolute left-0 top-0 bottom-0 w-[3px]" style={{background:card.accent,opacity:.8}}/>
-                  <div className="text-[9px] uppercase tracking-widest text-snow-500 mb-2">{card.label}</div>
-                  <div className="mono text-snow-50 text-[20px] leading-none font-semibold">{card.value}</div>
-                  <div className="text-snow-400 text-[11px] mt-2">{card.sub}</div>
-                </div>
-              ))}
-            </div>
-
-            {/* Charts row */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              {/* Cash flow */}
-              <div className="rounded-xl p-5 fi s2" style={cardStyle}>
-                <div className="text-snow-50 text-sm font-semibold mb-0.5">Cumulative fleet cash flow</div>
-                <div className="text-snow-500 text-[9px] uppercase mb-3">Fleet total, undiscounted</div>
-                <div style={{height:230}}>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={cfData} margin={{top:8,right:8,left:0,bottom:0}}>
-                      <defs>
-                        <linearGradient id="gG" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#1aab56" stopOpacity={.4}/>
-                          <stop offset="100%" stopColor="#1aab56" stopOpacity={.02}/>
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid stroke="rgba(255,255,255,0.03)" vertical={false}/>
-                      <XAxis dataKey="yr" stroke="rgba(255,255,255,.18)" tickLine={false} tick={{fontSize:10}}/>
-                      <YAxis stroke="rgba(255,255,255,.18)" tickLine={false} axisLine={false}
-                             tickFormatter={v=>"$"+(Math.abs(v)/1000).toFixed(0)+"k"} width={52} tick={{fontSize:10}}/>
-                      <Tooltip {...tip} formatter={v=>f$(v)}/>
-                      <ReferenceLine y={0} stroke="rgba(255,255,255,.1)" strokeDasharray="3 3"/>
-                      {R.pb!=null&&typeof R.pb==="number"&&(
-                        <ReferenceLine x={`Yr ${Math.round(R.pb)}`} stroke="#5db8ff" strokeDasharray="4 3"
-                          label={{value:"Payback",fill:"#5db8ff",fontSize:10,position:"top"}}/>
-                      )}
-                      <Area type="monotone" dataKey="c" stroke="#1aab56" strokeWidth={2} fill="url(#gG)" name="Cumulative"/>
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-
-              {/* Cost bar chart */}
-              <div className="rounded-xl p-5 fi s3" style={cardStyle}>
-                <div className="text-snow-50 text-sm font-semibold mb-0.5">Annual fleet costs vs savings</div>
-                <div className="text-snow-500 text-[9px] uppercase mb-3">Year-1 operating</div>
-                <div style={{height:200}}>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={barData} margin={{top:18,right:8,left:0,bottom:2}}>
-                      <CartesianGrid stroke="rgba(255,255,255,0.03)" vertical={false}/>
-                      <XAxis dataKey="nm" stroke="rgba(255,255,255,.25)" tickLine={false} tick={{fontSize:10}}/>
-                      <YAxis stroke="rgba(255,255,255,.18)" tickLine={false} axisLine={false}
-                             tickFormatter={v=>"$"+(v/1000).toFixed(0)+"k"} width={52} tick={{fontSize:10}}/>
-                      <Tooltip {...tip} cursor={{fill:"rgba(255,255,255,.03)"}} formatter={v=>f$(v)}/>
-                      <Bar dataKey="v" radius={[4,4,0,0]}>
-                        {barData.map((d,i)=><Cell key={i} fill={d.col}/>)}
-                        <LabelList dataKey="v" position="top" formatter={v=>f$(v)}
-                          style={{fill:"#b8cedf",fontFamily:"DM Mono,monospace",fontSize:10}}/>
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-                {/* Mini stats */}
-                <div className="grid grid-cols-3 gap-2 mt-3 pt-3 text-center"
-                     style={{borderTop:"1px solid rgba(255,255,255,.04)"}}>
-                  <div>
-                    <div className="text-[9px] uppercase text-snow-500">Fuel reduction</div>
-                    <div className="mono text-snow-50 text-sm mt-0.5 font-medium">{fp(E.pctRed)}</div>
-                  </div>
-                  <div>
-                    <div className="text-[9px] uppercase text-snow-500">Regen covers</div>
-                    <div className="mono text-snow-50 text-sm mt-0.5 font-medium">{fp(E.pctDriveCov)} driving</div>
-                  </div>
-                  <div>
-                    <div className="text-[9px] uppercase text-snow-500">Static from regen</div>
-                    <div className="mono text-snow-50 text-sm mt-0.5 font-medium">{fn(E.avStatHrs,1)} hrs/day</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Secondary metrics grid */}
-            <div className="rounded-xl p-5 fi s4" style={cardStyle}>
-              <div className="flex items-baseline justify-between mb-4">
-                <div className="text-snow-50 text-sm font-semibold">Secondary metrics</div>
-                <div className="text-snow-500 text-[9px] uppercase">Per unit / annual</div>
-              </div>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-4">
-                {[
-                  {l:"Savings per day/unit",   v:f$(E.savYr/ip.days),      h:"at current diesel & operating profile"},
-                  {l:"Daily regen (fleet avg)", v:`${fn(E.regenDay,2)} kWh`,h:`${fn(E.driveHrs,1)}h driving + ${fn(E.staticHrs,1)}h static`},
-                  {l:"Gallons saved / yr",      v:fn(E.galSavedDay*ip.days*n,0)+" gal",h:`fleet total over ${ip.days} days`},
-                  {l:"Shore power / day",       v:`${fn(E.shoreKwhDay,1)} kWh`,h:ip.shore?"grid covers remaining static":"no shore power"},
-                  {l:`NPV (${ip.horizon}-yr fleet)`, v:f$(R.npv),            h:`@ ${fp(ip.discount,1)} discount rate`},
-                  {l:"IRR",                     v:R.ir2!=null?fp(R.ir2,1):"—", h:R.ir2!=null&&R.ir2>ip.discount?"exceeds hurdle rate":""},
-                  {l:`${ip.horizon}-yr CO\u2082`, v:`${fn(E.annualCo2Tons*ip.horizon,0)} t`,h:`${(EG[ip.state]||0.386).toFixed(3)} kg/kWh (${ip.state} eGRID)`},
-                  {l:"Upfront cash",
-                   v:ip.acqMode==="lease"
-                     ?f$(14400*(1+ip.taxRate)*n)
-                     :ip.acqMode==="financed"
-                       ?f$(ip.sysPrice*(ip.downPct+ip.taxRate)*n)
-                       :f$(ip.sysPrice*(1+ip.taxRate)*n),
-                   h:ip.acqMode==="financed"
-                     ?`${fp(ip.downPct,0)} down + ${fp(ip.taxRate,0)} tax`
-                     :ip.acqMode==="lease"?"annual lease":"cash + tax"},
-                ].map((m,i)=>(
-                  <div key={i}>
-                    <div className="text-[9px] uppercase tracking-widest text-snow-500 mb-1">{m.l}</div>
-                    <div className="mono text-snow-50 text-[15px] font-semibold leading-none">{m.v}</div>
-                    {m.h&&<div className="text-[9px] text-snow-500 mt-1">{m.h}</div>}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Footer note */}
-            <div className="text-[9px] text-snow-500 leading-relaxed"
-                 style={{borderTop:"1px solid rgba(255,255,255,.04)",paddingTop:6}}>
-              v3 · Physics: Thermo King SLXi 400 CARB-validated fuel consumption, area-scaled by trailer size ·
-              Regen: 15% efficiency (one rear axle) · Hills: 85% PE capture ·
-              Prices: AAA state diesel + $0.105 DEF surcharge · CO₂: EPA eGRID 2022 ·
-              Source: FES_Calculator_v3.xlsx
+            <div className="kpi-sub">
+              {fn(R.regen.total,3)} kWh/hr regen · {fn(R.compKwh,3)} kWh/hr demand
+              {R.hasSurplus&&<span style={{color:"var(--amber)"}}> · +{fn(R.surplusKwh,2)} kWh/hr surplus</span>}
             </div>
           </div>
         </div>
-      </section>
-    </main>
+
+        {/* Coverage by cooling mode */}
+        <div className="chart-box" style={{marginBottom:20}}>
+          <div className="chart-title">Regen coverage by cooling mode</div>
+          <div className="chart-sub">
+            Regen total: {fn(R.regen.total,3)} kWh/hr (blended load, {ip.trailer}) · 
+            Same regen regardless of mode — only denominator changes
+          </div>
+          {covRows.map(row=>(
+            <CoverageBar key={row.m} label={row.label} pct={row.pct} surplus={row.surplus}/>
+          ))}
+          {R.hasSurplus&&(
+            <div className="notice ok" style={{marginTop:12}}>
+              Surplus {fn(R.surplusKwh,2)} kWh/hr → {fn(R.surplusKwh*R.reeferHrs,0)} kWh/yr available for onboard battery storage per truck
+            </div>
+          )}
+        </div>
+
+        {/* Cashflow chart */}
+        <div className="chart-box">
+          <div className="chart-title">Cumulative fleet cash flow ({ip.acqMode})</div>
+          <div className="chart-sub">{f$(R.fleetSavings)}/yr fleet savings · System cost {f$(ip.sysPrice*ip.fleetSize*(1.08))}</div>
+          <ResponsiveContainer width="100%" height={240}>
+            <AreaChart data={cfData} margin={{top:8,right:8,left:0,bottom:0}}>
+              <defs>
+                <linearGradient id="gcum" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#b8ff57" stopOpacity={0.25}/>
+                  <stop offset="95%" stopColor="#b8ff57" stopOpacity={0}/>
+                </linearGradient>
+              </defs>
+              <CartesianGrid stroke="rgba(255,255,255,0.04)" vertical={false}/>
+              <XAxis dataKey="year" tick={{fill:"var(--muted)",fontSize:11}} tickLine={false} axisLine={false}/>
+              <YAxis tickFormatter={v=>"$"+Math.round(v/1000)+"k"} tick={{fill:"var(--muted)",fontSize:11}} tickLine={false} axisLine={false} width={52}/>
+              <Tooltip formatter={(v)=>f$(v)} labelStyle={{color:"var(--sub)"}} contentStyle={{background:"var(--s2)",border:"1px solid var(--bd)",borderRadius:8}}/>
+              <ReferenceLine y={0} stroke="rgba(255,255,255,0.15)" strokeDasharray="4 3"/>
+              {pbYear&&<ReferenceLine x={`Y${pbYear}`} stroke="var(--amber)" strokeDasharray="4 3" label={{value:"Payback",fill:"var(--amber)",fontSize:10,position:"top"}}/>}
+              <Area type="monotone" dataKey="cum" stroke="#b8ff57" strokeWidth={2} fill="url(#gcum)" name="Cumulative ($)"/>
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Year-by-year table */}
+        <div className="chart-box" style={{marginTop:20}}>
+          <div className="chart-title">Year-by-year cashflow</div>
+          <div className="chart-sub">Annual benefit = Fleet savings − Financing · Cumulative = running total</div>
+          <table className="cf-table">
+            <thead>
+              <tr>
+                <th style={{textAlign:"left"}}>Year</th>
+                <th>Baseline fuel</th>
+                <th>TRUE fuel</th>
+                <th>Financing</th>
+                <th>Benefit</th>
+                <th>Cumulative</th>
+              </tr>
+            </thead>
+            <tbody>
+              {R.rows.map(row=>{
+                const isPB=R.payback!=null&&row.y===Math.ceil(R.payback);
+                return(
+                  <tr key={row.y} className={isPB?"pb-row":""}>
+                    <td>Year {row.y}{isPB&&<span className="tag green" style={{marginLeft:6}}>payback</span>}</td>
+                    <td>{row.y===0?"—":f$(row.baseline)}</td>
+                    <td>{row.y===0?"—":"$0"}</td>
+                    <td className={row.financing>0?"neg":""}>{row.financing>0?"-"+f$(row.financing):"—"}</td>
+                    <td className={row.benefit>=0?"pos":"neg"}>{row.benefit>=0?"+":""}{f$(row.benefit)}</td>
+                    <td className={row.cum>=0?"pos":"neg"}>{f$(row.cum)}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Energy breakdown */}
+        <div className="chart-box" style={{marginTop:20}}>
+          <div className="chart-title">Energy balance detail</div>
+          <div className="chart-sub">Per truck per reefer hour — blended {fn(ip.pctU*100,0)}% unladen / {fn(ip.pctM*100,0)}% mid / {fn(ip.pctX*100,0)}% max</div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12}}>
+            {[
+              {l:"S1 regen",v:fn(R.regen.s1,4)+" kWh/hr",s:"significant braking"},
+              {l:"S2 regen",v:fn(R.regen.s2,4)+" kWh/hr",s:"moderate braking"},
+              {l:"S3 regen",v:fn(R.regen.s3,4)+" kWh/hr",s:"micro braking"},
+              {l:"Blended regen",v:fn(R.regen.total,4)+" kWh/hr",s:"S1×"+Math.round(ip.pctS1*100)+"% + S2×"+Math.round(ip.pctS2*100)+"% + S3×"+Math.round(ip.pctS3*100)+"%"},
+              {l:"Compressor demand",v:fn(R.compKwh,4)+" kWh/hr",s:fn(R.adjGal,4)+" gal/hr × 12"},
+              {l:"Surplus / deficit",v:(R.hasSurplus?"+":"")+fn(R.regen.total-R.compKwh,4)+" kWh/hr",s:R.hasSurplus?"→ battery storage":"→ residual diesel"},
+            ].map(({l,v,s})=>(
+              <div key={l} style={{background:"var(--s2)",border:"1px solid var(--bd)",borderRadius:8,padding:"12px 14px"}}>
+                <div style={{fontSize:10,color:"var(--muted)",letterSpacing:".08em",textTransform:"uppercase",marginBottom:4}}>{l}</div>
+                <div className="mono" style={{fontSize:13,fontWeight:500}}>{v}</div>
+                <div style={{fontSize:10,color:"var(--muted)",marginTop:3}}>{s}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="footnote">
+          <div style={{marginBottom:4,fontWeight:500,color:"var(--sub)"}}>Model notes</div>
+          Regen efficiency: 50% (TCO spreadsheet, Regen Sim row 33) · KE = ½mv², ΔV² = (v₁×0.44704)² − (v₂×0.44704)² · 
+          1 gal diesel = 12 kWh reefer equivalent (37.8 kWh LHV × 32% TRU efficiency) · 
+          Weather multipliers per Compressor Sim rows 11-14 · CO₂: gal_saved × 22.38 lb/gal ÷ 2204.62 lb/ton · 
+          Payback interpolated, conservative (remainder floored at 0, no phantom kWh revenue) · 
+          Lease shown only when savings exceed $14,400/yr/truck threshold
+        </div>
+      </main>
+    </div>
   );
 }
+
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
 </script>
 </body>
