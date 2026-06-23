@@ -453,8 +453,7 @@ gid('stateSel').addEventListener('change', function() {
   if (this.value) { dieselPrice = parseFloat(this.value) + DEF; calc(); }
 });
 
-
-  const d = TRAILER_DEFAULTS[ti];
+function setTrailerDefaults(ti) {
   gid('s1S').value = d.s1; gid('s1Val').textContent = d.s1 + '%';
   gid('s2S').value = d.s2; gid('s2Val').textContent = d.s2 + '%';
   gid('s3S').value = d.s3; gid('s3Val').textContent = d.s3 + '%';
