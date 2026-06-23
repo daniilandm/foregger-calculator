@@ -52,6 +52,22 @@ nav{position:sticky;top:0;z-index:100;background:rgba(8,8,10,0.93);backdrop-filt
 .preset-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
 .preset-btn{font-size:10px;font-weight:500;letter-spacing:0.05em;padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:var(--panel-r);color:var(--muted);cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif}
 .preset-btn:hover,.preset-btn.active{background:var(--green-dim);color:var(--green);border-color:var(--green-border)}
+.slider-block{margin-bottom:1rem}
+.slider-block:last-child{margin-bottom:0}
+.slider-block-title{font-size:11px;color:var(--muted);font-weight:500;margin-bottom:.65rem}
+.slider-item{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.slider-item:last-of-type{margin-bottom:0}
+.slider-header{display:flex;justify-content:space-between;align-items:center}
+.slider-lbl{font-size:12px;color:var(--muted)}
+.slider-val{font-size:12px;font-weight:600;color:var(--text);min-width:36px;text-align:right}
+input[type="range"]{-webkit-appearance:none;appearance:none;width:100%;height:20px;background:transparent;outline:none;cursor:pointer;display:block}
+input[type="range"]::-webkit-slider-runnable-track{height:4px;border-radius:99px;background:var(--panel-r)}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;margin-top:-6px;border-radius:50%;background:var(--green);border:2px solid var(--bg);box-shadow:0 0 0 1px var(--green);cursor:pointer}
+input[type="range"]::-moz-range-track{height:4px;border-radius:99px;background:var(--panel-r)}
+input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--green);border:2px solid var(--bg);cursor:pointer;box-sizing:border-box}
+.sum-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;display:inline-block;margin-top:4px}
+.sum-badge.ok{background:rgba(29,158,117,0.12);color:var(--green)}
+.sum-badge.bad{background:rgba(224,85,85,0.12);color:var(--red)}
 .adv-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;padding:8px 0 0;background:none;border:none;color:var(--muted);font-size:11px;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:color .15s}
 .adv-toggle:hover{color:var(--text)}
 .adv-arrow{transition:transform .2s}
@@ -75,20 +91,6 @@ nav{position:sticky;top:0;z-index:100;background:rgba(8,8,10,0.93);backdrop-filt
 .metric-item .m-label{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
 .metric-item .m-val{font-family:'Inter Tight',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:-0.02em;color:var(--text)}
 .metric-item .m-sub{font-size:10px;color:var(--dimmed);margin-top:2px}
-.slider-item{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
-.slider-item:last-child{margin-bottom:0}
-.slider-header{display:flex;justify-content:space-between;align-items:center}
-.slider-lbl{font-size:12px;color:var(--muted)}
-.slider-val{font-size:12px;font-weight:600;color:var(--text);min-width:36px;text-align:right}
-input[type="range"]{-webkit-appearance:none;appearance:none;width:100%;height:20px;background:transparent;outline:none;cursor:pointer;display:block}
-input[type="range"]::-webkit-slider-runnable-track{height:4px;border-radius:99px;background:var(--panel-r)}
-input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;margin-top:-6px;border-radius:50%;background:var(--green);border:2px solid var(--bg);box-shadow:0 0 0 1px var(--green);cursor:pointer}
-input[type="range"]::-moz-range-track{height:4px;border-radius:99px;background:var(--panel-r)}
-input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--green);border:2px solid var(--bg);cursor:pointer;box-sizing:border-box}
-.sum-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;display:inline-block;margin-top:4px}
-.sum-badge.ok{background:rgba(29,158,117,0.12);color:var(--green)}
-.sum-badge.bad{background:rgba(224,85,85,0.12);color:var(--red)}
-.offset-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
 .offset-track{height:5px;background:rgba(255,255,255,0.07);border-radius:99px;overflow:hidden;margin-bottom:4px}
 .offset-fill{height:100%;background:var(--green);border-radius:99px;transition:width .4s}
 .offset-detail{font-size:10px;color:var(--dimmed)}
@@ -125,19 +127,19 @@ footer a:hover{color:var(--green)}
 </div>
 
 <div class="layout">
-
   <div class="inputs">
 
+    <!-- 01 LOCATION -->
     <div class="card">
-      <div class="sec-title">01 · Location &amp; fuel</div>
+      <div class="sec-title">01 · Location</div>
       <div class="field">
         <label>State</label>
         <select id="stateSel"><option value="">Loading prices…</option></select>
         <div class="price-tag" id="priceTag"></div>
       </div>
-
     </div>
 
+    <!-- 02 FLEET & TRAILER -->
     <div class="card">
       <div class="sec-title">02 · Fleet &amp; trailer</div>
       <div class="field">
@@ -175,24 +177,6 @@ footer a:hover{color:var(--green)}
         </div>
       </div>
       <div class="field">
-        <label>Load weight</label>
-        <div class="toggle-group" id="weightTg">
-          <button class="toggle-btn" onclick="setToggle('weightTg',this,'Unladen')">Unladen</button>
-          <button class="toggle-btn active" onclick="setToggle('weightTg',this,'Mid')">Mid</button>
-          <button class="toggle-btn" onclick="setToggle('weightTg',this,'Max')">Max</button>
-        </div>
-        <div style="font-size:10px;color:var(--dimmed);margin-top:4px">Heavier loads = more regen energy captured</div>
-      </div>
-      <div class="field">
-        <label>Braking intensity</label>
-        <div class="toggle-group" id="brakeTg">
-          <button class="toggle-btn" onclick="setToggle('brakeTg',this,'Low')">Low</button>
-          <button class="toggle-btn active" onclick="setToggle('brakeTg',this,'Moderate')">Moderate</button>
-          <button class="toggle-btn" onclick="setToggle('brakeTg',this,'High')">High</button>
-        </div>
-        <div style="font-size:10px;color:var(--dimmed);margin-top:4px">Low: highway · Moderate: mixed · High: urban</div>
-      </div>
-      <div class="field">
         <label>Weather / Season</label>
         <select id="weatherSel">
           <option value="Hot">Summer / Hot — highest demand</option>
@@ -201,54 +185,75 @@ footer a:hover{color:var(--green)}
           <option value="Freezing">Winter / Freezing — lowest demand</option>
           <option value="4Season" selected>4 Season average</option>
         </select>
-        <div style="font-size:10px;color:var(--dimmed);margin-top:4px">Scales compressor demand only — regen is fixed by physics</div>
       </div>
     </div>
 
+    <!-- 03 ROUTE & LOAD MIX -->
     <div class="card">
       <div class="sec-title">03 · Route &amp; load mix</div>
-      <div style="margin-bottom:1rem">
-        <div style="font-size:11px;color:var(--muted);margin-bottom:.75rem;font-weight:500">Road mix — % of driving time</div>
+
+      <div class="slider-block">
+        <div class="slider-block-title">Road mix — % of driving time</div>
         <div class="slider-item">
-          <div class="slider-header"><span class="slider-lbl">S1 · Significant braking <span style="color:var(--dimmed);font-size:10px">(tolls, exits)</span></span><span class="slider-val" id="s1Val">30%</span></div>
+          <div class="slider-header">
+            <span class="slider-lbl">S1 · Significant braking <span style="color:var(--dimmed);font-size:10px">(tolls, exits)</span></span>
+            <span class="slider-val" id="s1Val">30%</span>
+          </div>
           <input type="range" id="s1S" min="0" max="100" step="5" value="30">
         </div>
         <div class="slider-item">
-          <div class="slider-header"><span class="slider-lbl">S2 · Moderate braking <span style="color:var(--dimmed);font-size:10px">(merging, hills)</span></span><span class="slider-val" id="s2Val">20%</span></div>
+          <div class="slider-header">
+            <span class="slider-lbl">S2 · Moderate braking <span style="color:var(--dimmed);font-size:10px">(merging, hills)</span></span>
+            <span class="slider-val" id="s2Val">20%</span>
+          </div>
           <input type="range" id="s2S" min="0" max="100" step="5" value="20">
         </div>
         <div class="slider-item">
-          <div class="slider-header"><span class="slider-lbl">S3 · Micro deceleration <span style="color:var(--dimmed);font-size:10px">(cruise adjust)</span></span><span class="slider-val" id="s3Val">50%</span></div>
+          <div class="slider-header">
+            <span class="slider-lbl">S3 · Micro deceleration <span style="color:var(--dimmed);font-size:10px">(cruise adjust)</span></span>
+            <span class="slider-val" id="s3Val">50%</span>
+          </div>
           <input type="range" id="s3S" min="0" max="100" step="5" value="50">
         </div>
         <span class="sum-badge ok" id="roadSum">Total: 100%</span>
       </div>
-      <div style="border-top:1px solid var(--border);padding-top:1rem">
-        <div style="font-size:11px;color:var(--muted);margin-bottom:.75rem;font-weight:500">Load mix — % of operating day</div>
+
+      <div class="slider-block" style="border-top:1px solid var(--border);padding-top:1rem;margin-top:.25rem">
+        <div class="slider-block-title">Load mix — % of operating day</div>
         <div class="slider-item">
-          <div class="slider-header"><span class="slider-lbl">Unladen</span><span class="slider-val" id="unladenVal">25%</span></div>
+          <div class="slider-header">
+            <span class="slider-lbl">Unladen</span>
+            <span class="slider-val" id="unladenVal">25%</span>
+          </div>
           <input type="range" id="unladenS" min="0" max="100" step="5" value="25">
         </div>
         <div class="slider-item">
-          <div class="slider-header"><span class="slider-lbl">Mid load</span><span class="slider-val" id="midVal">50%</span></div>
+          <div class="slider-header">
+            <span class="slider-lbl">Mid load</span>
+            <span class="slider-val" id="midVal">50%</span>
+          </div>
           <input type="range" id="midS" min="0" max="100" step="5" value="50">
         </div>
         <div class="slider-item">
-          <div class="slider-header"><span class="slider-lbl">Max load</span><span class="slider-val" id="maxVal">25%</span></div>
+          <div class="slider-header">
+            <span class="slider-lbl">Max load</span>
+            <span class="slider-val" id="maxVal">25%</span>
+          </div>
           <input type="range" id="maxS" min="0" max="100" step="5" value="25">
         </div>
         <span class="sum-badge ok" id="loadSum">Total: 100%</span>
       </div>
     </div>
 
+    <!-- 04 ACQUISITION -->
     <div class="card">
       <div class="sec-title">04 · Acquisition</div>
       <div class="field">
         <label>Mode</label>
         <div class="toggle-group" id="acqTg">
-          <button class="toggle-btn" onclick="setToggle('acqTg',this,'Cash')">Cash</button>
-          <button class="toggle-btn active" onclick="setToggle('acqTg',this,'Financed')">Financed</button>
-          <button class="toggle-btn" onclick="setToggle('acqTg',this,'Lease')">Lease</button>
+          <button class="toggle-btn" onclick="setAcq(this,'Cash')">Cash</button>
+          <button class="toggle-btn active" onclick="setAcq(this,'Financed')">Financed</button>
+          <button class="toggle-btn" onclick="setAcq(this,'Lease')">Lease</button>
         </div>
       </div>
       <div class="field">
@@ -302,7 +307,7 @@ footer a:hover{color:var(--green)}
       </div>
     </div>
 
-  </div>
+  </div><!-- end inputs -->
 
   <div class="results">
 
@@ -394,41 +399,58 @@ footer a:hover{color:var(--green)}
 </footer>
 
 <script>
-const DEF=0.105, CO2_PER_GAL=10.18;
+const DEF = 0.105, CO2_PER_GAL = 10.18;
 
-const TRAILERS=[
-  {name:'24 ft',daysYr:250,driveHrs:5.5,staticHrs:4.5},
-  {name:'26 ft',daysYr:250,driveHrs:6.5,staticHrs:3.5},
-  {name:'28 ft',daysYr:270,driveHrs:6.3,staticHrs:3.0},
-  {name:'36–38 ft',daysYr:225,driveHrs:8.2,staticHrs:4.0},
-  {name:'40 ft',daysYr:300,driveHrs:5.7,staticHrs:3.5},
-  {name:'45 ft',daysYr:300,driveHrs:6.2,staticHrs:3.0},
-  {name:'48 ft',daysYr:300,driveHrs:6.2,staticHrs:3.0},
-  {name:'53 ft',daysYr:250,driveHrs:9.0,staticHrs:2.0}
+const TRAILERS = [
+  {name:'24 ft', daysYr:250, driveHrs:5.5, staticHrs:4.5},
+  {name:'26 ft', daysYr:250, driveHrs:6.5, staticHrs:3.5},
+  {name:'28 ft', daysYr:270, driveHrs:6.3, staticHrs:3.0},
+  {name:'36–38 ft', daysYr:225, driveHrs:8.2, staticHrs:4.0},
+  {name:'40 ft', daysYr:300, driveHrs:5.7, staticHrs:3.5},
+  {name:'45 ft', daysYr:300, driveHrs:6.2, staticHrs:3.0},
+  {name:'48 ft', daysYr:300, driveHrs:6.2, staticHrs:3.0},
+  {name:'53 ft', daysYr:250, driveHrs:9.0, staticHrs:2.0}
 ];
-const TEMP_NAMES=['Ambient','Cool','Chilled','Frozen'];
-const GAL_HR=[
+
+const TEMP_NAMES = ['Ambient','Cool','Chilled','Frozen'];
+
+const GAL_HR = [
   [0.3,0.4,0.7,2.3],[0.3,0.4,0.8,2.4],[0.3,0.4,0.8,2.6],[0.4,0.5,1.0,3.3],
   [0.4,0.5,1.1,3.5],[0.4,0.6,1.2,3.9],[0.5,0.6,1.3,4.1],[0.5,0.7,1.4,4.5]
 ];
-const KWH_HR=[
+
+const KWH_HR = [
   [0.2,0.3,0.6,1.9],[0.2,0.3,0.6,2.0],[0.2,0.3,0.6,2.1],[0.3,0.4,0.8,2.7],
   [0.3,0.4,0.9,2.9],[0.3,0.4,0.9,3.2],[0.4,0.5,1.0,3.4],[0.4,0.5,1.1,3.7]
 ];
-const REGEN={
-  S1:{u:[0.28,0.34,0.42,0.38,0.44,0.49,0.41,0.36],m:[0.42,0.51,0.80,0.70,0.83,0.91,0.75,0.62],x:[0.56,0.68,1.18,1.03,1.23,1.33,1.09,0.88]},
-  S2:{u:[0.29,0.41,0.43,0.48,0.67,0.39,0.39,0.37],m:[0.43,0.61,0.81,0.89,1.27,0.73,0.70,0.64],x:[0.57,0.82,1.20,1.31,1.87,1.06,1.02,0.91]},
-  S3:{u:[0.12,0.16,0.25,0.27,0.29,0.35,0.53,0.48],m:[0.18,0.23,0.47,0.51,0.54,0.64,0.96,0.84],x:[0.24,0.31,0.70,0.75,0.80,0.94,1.39,1.19]}
-};
-const WEATHER_MULT={
-  Hot:    [1.55,1.55,1.70,1.35],
-  Warm:   [1.25,1.25,1.30,1.15],
-  Cold:   [1.00,1.00,1.00,1.00],
-  Freezing:[0.85,0.85,0.75,0.90],
-  '4Season':[1.1625,1.1625,1.1875,1.10]
+
+const REGEN = {
+  S1: {
+    u: [0.28,0.34,0.42,0.38,0.44,0.49,0.41,0.36],
+    m: [0.42,0.51,0.80,0.70,0.83,0.91,0.75,0.62],
+    x: [0.56,0.68,1.18,1.03,1.23,1.33,1.09,0.88]
+  },
+  S2: {
+    u: [0.29,0.41,0.43,0.48,0.67,0.39,0.39,0.37],
+    m: [0.43,0.61,0.81,0.89,1.27,0.73,0.70,0.64],
+    x: [0.57,0.82,1.20,1.31,1.87,1.06,1.02,0.91]
+  },
+  S3: {
+    u: [0.12,0.16,0.25,0.27,0.29,0.35,0.53,0.48],
+    m: [0.18,0.23,0.47,0.51,0.54,0.64,0.96,0.84],
+    x: [0.24,0.31,0.70,0.75,0.80,0.94,1.39,1.19]
+  }
 };
 
-const SNAPSHOT={date:'2026-06-23',states:[
+const WEATHER_MULT = {
+  Hot:      [1.55, 1.55, 1.70, 1.35],
+  Warm:     [1.25, 1.25, 1.30, 1.15],
+  Cold:     [1.00, 1.00, 1.00, 1.00],
+  Freezing: [0.85, 0.85, 0.75, 0.90],
+  '4Season':[1.1625, 1.1625, 1.1875, 1.10]
+};
+
+const SNAPSHOT = {date:'2026-06-23', states:[
   {code:'AK',name:'Alaska',diesel:4.086},{code:'AL',name:'Alabama',diesel:3.438},
   {code:'AR',name:'Arkansas',diesel:3.364},{code:'AZ',name:'Arizona',diesel:3.655},
   {code:'CA',name:'California',diesel:5.164},{code:'CO',name:'Colorado',diesel:3.517},
@@ -457,217 +479,232 @@ const SNAPSHOT={date:'2026-06-23',states:[
   {code:'WY',name:'Wyoming',diesel:3.587}
 ]};
 
-let state={
-  weight:'Mid', braking:'Moderate', acq:'Financed',
-  s1:30,s2:20,s3:50, unl:25,mid:50,max:25
-};
+let dieselPrice = 3.82;
+let acqMode = 'Financed';
 
-function $id(id){return document.getElementById(id)}
-function fmt(n){return '$'+Math.round(n).toLocaleString()}
-function fmtK(n){return n>=1000?'$'+(n/1000).toFixed(1)+'k':fmt(n)}
+function gid(id) { return document.getElementById(id); }
+function fmt(n)  { return '$' + Math.round(n).toLocaleString(); }
 
-function buildStateSelect(data,live){
-  const sel=$id('stateSel');
-  sel.innerHTML='<option value="">— Select state —</option>';
-  data.states.forEach(s=>{
-    const opt=document.createElement('option');
-    opt.value=s.diesel;
-    opt.textContent=`${s.name}  ·  $${(s.diesel+DEF).toFixed(2)}/gal`;
+// ── State / prices ──────────────────────────────────────────────────────────
+function buildStateSelect(data, live) {
+  const sel = gid('stateSel');
+  sel.innerHTML = '<option value="">— Select state —</option>';
+  data.states.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s.diesel;
+    opt.textContent = s.name + '  ·  $' + (s.diesel + DEF).toFixed(2) + '/gal';
     sel.appendChild(opt);
   });
-  const tag=$id('priceTag');
-  tag.innerHTML=live
-    ?`<span class="dot live"></span>Live AAA prices · ${data.date}`
-    :`<span class="dot snap"></span>Snapshot · ${data.date}`;
+  const tag = gid('priceTag');
+  tag.innerHTML = live
+    ? '<span class="dot live"></span>Live AAA prices · ' + data.date
+    : '<span class="dot snap"></span>Snapshot · ' + data.date;
 }
 
-async function loadPrices(){
-  try{
-    const r=await fetch('https://daniilandm.github.io/foregger-calculator/prices.json');
-    if(!r.ok)throw new Error();
-    const d=await r.json();
-    buildStateSelect(d,true);
-  }catch{buildStateSelect(SNAPSHOT,false)}
+async function loadPrices() {
+  try {
+    const r = await fetch('https://daniilandm.github.io/foregger-calculator/prices.json');
+    if (!r.ok) throw new Error();
+    const d = await r.json();
+    buildStateSelect(d, true);
+  } catch(e) {
+    buildStateSelect(SNAPSHOT, false);
+  }
 }
 
-state.dieselPrice=3.82;
-$id('stateSel').addEventListener('change',function(){
-  if(this.value){state.dieselPrice=parseFloat(this.value)+DEF;calc()}
+gid('stateSel').addEventListener('change', function() {
+  if (this.value) { dieselPrice = parseFloat(this.value) + DEF; calc(); }
 });
 
-function setToggle(groupId,btn,val){
-  document.querySelectorAll('#'+groupId+' .toggle-btn').forEach(b=>b.classList.remove('active'));
+// ── Toggle helpers ──────────────────────────────────────────────────────────
+function setAcq(btn, val) {
+  document.querySelectorAll('#acqTg .toggle-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  state[groupId==='weightTg'?'weight':groupId==='brakeTg'?'braking':'acq']=val;
+  acqMode = val;
   calc();
 }
 
-function setFleet(n){
-  $id('fleetSize').value=n;
-  document.querySelectorAll('.preset-btn').forEach(b=>{
-    b.classList.toggle('active',parseInt(b.textContent.match(/\d+/)[0])===n);
+function setFleet(n) {
+  gid('fleetSize').value = n;
+  document.querySelectorAll('.preset-btn').forEach(b => {
+    const num = parseInt(b.textContent.match(/\d+/)[0]);
+    b.classList.toggle('active', num === n);
   });
   calc();
 }
 
-function toggleAdv(btn){
-  const body=$id('advBody');
-  const arrow=btn.querySelector('.adv-arrow');
-  const open=body.classList.toggle('open');
-  arrow.classList.toggle('open',open);
+function toggleAdv(btn) {
+  const body = gid('advBody');
+  const arrow = btn.querySelector('.adv-arrow');
+  const open = body.classList.toggle('open');
+  arrow.classList.toggle('open', open);
 }
 
+// ── Slider auto-balance ─────────────────────────────────────────────────────
 function balanceSliders(movedId, ids, valIds, sumId) {
-  const sliders = ids.map(id => $id(id));
-  const labels  = valIds.map(id => $id(id));
-  const moved   = sliders[ids.indexOf(movedId)];
-  const others  = sliders.filter(s => s.id !== movedId);
-  const remainder = 100 - parseInt(moved.value);
-  const otherSum  = others.reduce((a,s) => a + parseInt(s.value), 0);
-  if (remainder < 0) { moved.value = 100; others.forEach(s => s.value = 0); }
-  else if (otherSum === 0) {
-    const split = Math.floor(remainder / others.length);
-    others.forEach((s,i) => s.value = split + (i === 0 ? remainder - split * others.length : 0));
+  const sliders  = ids.map(id => gid(id));
+  const labels   = valIds.map(id => gid(id));
+  const movedIdx = ids.indexOf(movedId);
+  const movedVal = parseInt(sliders[movedIdx].value);
+  const others   = sliders.filter((_, i) => i !== movedIdx);
+  const remainder = 100 - movedVal;
+  const otherSum  = others.reduce((a, s) => a + parseInt(s.value), 0);
+
+  if (remainder <= 0) {
+    sliders[movedIdx].value = 100;
+    others.forEach(s => s.value = 0);
+  } else if (otherSum === 0) {
+    const half = Math.floor(remainder / 2);
+    others[0].value = half;
+    others[1].value = remainder - half;
   } else {
     let allocated = 0;
     others.forEach((s, i) => {
       if (i < others.length - 1) {
         const v = Math.round(parseInt(s.value) / otherSum * remainder / 5) * 5;
-        s.value = v; allocated += v;
-      } else { s.value = remainder - allocated; }
+        s.value = Math.max(0, v);
+        allocated += parseInt(s.value);
+      } else {
+        s.value = Math.max(0, remainder - allocated);
+      }
     });
   }
-  sliders.forEach((s,i) => labels[i].textContent = s.value + '%');
-  const total = sliders.reduce((a,s) => a + parseInt(s.value), 0);
-  const badge = $id(sumId);
+
+  sliders.forEach((s, i) => labels[i].textContent = s.value + '%');
+  const total = sliders.reduce((a, s) => a + parseInt(s.value), 0);
+  const badge = gid(sumId);
   badge.textContent = 'Total: ' + total + '%';
   badge.className = 'sum-badge ' + (total === 100 ? 'ok' : 'bad');
   calc();
 }
 
-['s1S','s2S','s3S'].forEach(id => $id(id).addEventListener('input', () =>
-  balanceSliders(id, ['s1S','s2S','s3S'], ['s1Val','s2Val','s3Val'], 'roadSum')));
-['unladenS','midS','maxS'].forEach(id => $id(id).addEventListener('input', () =>
-  balanceSliders(id, ['unladenS','midS','maxS'], ['unladenVal','midVal','maxVal'], 'loadSum')));
+['s1S','s2S','s3S'].forEach(id => {
+  gid(id).addEventListener('input', () =>
+    balanceSliders(id, ['s1S','s2S','s3S'], ['s1Val','s2Val','s3Val'], 'roadSum'));
+});
+['unladenS','midS','maxS'].forEach(id => {
+  gid(id).addEventListener('input', () =>
+    balanceSliders(id, ['unladenS','midS','maxS'], ['unladenVal','midVal','maxVal'], 'loadSum'));
+});
 
-principal,rate,term){
-  if(principal<=0||term<=0)return 0;
-  const r=rate/12,n=term*12;
-  if(r===0)return principal/term;
-  return (principal*r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1)*12;
+// ── Finance helpers ─────────────────────────────────────────────────────────
+function annualLoanPayment(principal, rate, term) {
+  if (principal <= 0 || term <= 0) return 0;
+  const r = rate / 12, n = term * 12;
+  if (r === 0) return principal / term;
+  return (principal * r * Math.pow(1+r, n)) / (Math.pow(1+r, n) - 1) * 12;
 }
 
-function buildCashFlow(savingsPerUnit,systemCost,acq,horizon,taxRate,downPct,intRate,finTerm,residual,discRate,maintSav){
-  const cf=[];
-  for(let t=0;t<=horizon;t++){
-    let flow=0;
-    if(t===0){
-      if(acq==='Cash') flow=-(systemCost*(1+taxRate));
-      else if(acq==='Financed') flow=-(systemCost*downPct+systemCost*taxRate);
-      else flow=0;
+function buildCashFlow(savingsPerUnit, systemCost, acq, horizon, taxRate, downPct, intRate, finTerm, residual, maintSav) {
+  const cf = [];
+  for (let t = 0; t <= horizon; t++) {
+    let flow = 0;
+    if (t === 0) {
+      if (acq === 'Cash')     flow = -(systemCost * (1 + taxRate));
+      else if (acq === 'Financed') flow = -(systemCost * downPct + systemCost * taxRate);
+      else flow = 0;
     } else {
-      flow=savingsPerUnit+maintSav;
-      if(acq==='Financed'&&t<=finTerm){
-        const principal=systemCost*(1-downPct);
-        flow-=annualLoanPayment(principal,intRate,finTerm);
+      flow = savingsPerUnit + maintSav;
+      if (acq === 'Financed' && t <= finTerm) {
+        const principal = systemCost * (1 - downPct);
+        flow -= annualLoanPayment(principal, intRate, finTerm);
       }
-      if(acq==='Financed'&&t===finTerm) flow+=residual;
-      if(acq==='Lease') flow-=14400*(1+taxRate);
+      if (acq === 'Financed' && t === finTerm) flow += residual;
+      if (acq === 'Lease') flow -= 14400 * (1 + taxRate);
     }
     cf.push(flow);
   }
-  const cumCF=[];
-  let cum=0;
-  cf.forEach(f=>{cum+=f;cumCF.push(cum)});
-  return{annual:cf,cumulative:cumCF};
+  const cumulative = [];
+  let cum = 0;
+  cf.forEach(f => { cum += f; cumulative.push(cum); });
+  return { annual: cf, cumulative };
 }
 
-function computePayback(cumCF){
-  for(let i=1;i<cumCF.length;i++){
-    if(cumCF[i-1]<0&&cumCF[i]>=0){
-      const frac=-cumCF[i-1]/(cumCF[i]-cumCF[i-1]);
-      return (i-1)+frac;
+function computePayback(cumCF) {
+  if (cumCF[0] >= 0) return 0;
+  for (let i = 1; i < cumCF.length; i++) {
+    if (cumCF[i-1] < 0 && cumCF[i] >= 0) {
+      return (i-1) + (-cumCF[i-1] / (cumCF[i] - cumCF[i-1]));
     }
-    if(cumCF[0]>=0)return 0;
   }
   return null;
 }
 
-function computeNPV(cf,discRate){
-  return cf.annual.reduce((sum,f,t)=>sum+f/Math.pow(1+discRate,t),0);
+function computeNPV(cf, discRate) {
+  return cf.annual.reduce((sum, f, t) => sum + f / Math.pow(1 + discRate, t), 0);
 }
 
-let chart=null;
-function updateChart(cumCF,horizon,payback){
-  const labels=Array.from({length:horizon+1},(_,i)=>'Yr '+i);
-  const data=cumCF.map(v=>Math.round(v));
-  const zero=new Array(horizon+1).fill(0);
-  const ctx=$id('cfChart').getContext('2d');
-  if(chart)chart.destroy();
-  const positiveColor='rgba(29,158,117,0.18)';
-  const negativeColor='rgba(224,85,85,0.13)';
-  chart=new Chart(ctx,{
-    type:'line',
-    data:{
+// ── Chart ───────────────────────────────────────────────────────────────────
+let chart = null;
+function updateChart(cumCF, horizon) {
+  const labels = Array.from({length: horizon+1}, (_, i) => 'Yr ' + i);
+  const data   = cumCF.map(v => Math.round(v));
+  const ctx    = gid('cfChart').getContext('2d');
+  if (chart) chart.destroy();
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: {
       labels,
-      datasets:[
+      datasets: [
         {
-          label:'Cumulative savings',
+          label: 'Cumulative savings',
           data,
-          borderColor:'#1D9E75',
-          borderWidth:2,
-          pointRadius:3,
-          pointBackgroundColor:'#1D9E75',
-          fill:true,
-          backgroundColor:(ctx)=>{
-            const chart=ctx.chart,{ctx:c,chartArea}=chart;
-            if(!chartArea)return positiveColor;
-            const grad=c.createLinearGradient(0,chartArea.top,0,chartArea.bottom);
-            grad.addColorStop(0,'rgba(29,158,117,0.25)');
-            grad.addColorStop(1,'rgba(29,158,117,0.02)');
-            return grad;
+          borderColor: '#1D9E75',
+          borderWidth: 2,
+          pointRadius: 3,
+          pointBackgroundColor: '#1D9E75',
+          fill: true,
+          backgroundColor: function(ctx) {
+            const c = ctx.chart.ctx, ca = ctx.chart.chartArea;
+            if (!ca) return 'rgba(29,158,117,0.15)';
+            const g = c.createLinearGradient(0, ca.top, 0, ca.bottom);
+            g.addColorStop(0, 'rgba(29,158,117,0.25)');
+            g.addColorStop(1, 'rgba(29,158,117,0.02)');
+            return g;
           },
-          tension:0.35
+          tension: 0.35
         },
         {
-          label:'Break even',
-          data:zero,
-          borderColor:'rgba(255,255,255,0.12)',
-          borderWidth:1,
-          borderDash:[4,4],
-          pointRadius:0,
-          fill:false
+          label: 'Break even',
+          data: new Array(horizon+1).fill(0),
+          borderColor: 'rgba(255,255,255,0.12)',
+          borderWidth: 1,
+          borderDash: [4,4],
+          pointRadius: 0,
+          fill: false
         }
       ]
     },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      interaction:{mode:'index',intersect:false},
-      plugins:{
-        legend:{display:false},
-        tooltip:{
-          backgroundColor:'#18181c',
-          borderColor:'rgba(255,255,255,0.1)',
-          borderWidth:1,
-          titleColor:'#888',
-          bodyColor:'#efefef',
-          titleFont:{size:11,family:'Inter'},
-          bodyFont:{size:12,family:'Inter Tight'},
-          callbacks:{
-            label:ctx=>ctx.dataset.label==='Break even'?null:' '+fmt(ctx.parsed.y)
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: {mode:'index', intersect:false},
+      plugins: {
+        legend: {display:false},
+        tooltip: {
+          backgroundColor: '#18181c',
+          borderColor: 'rgba(255,255,255,0.1)',
+          borderWidth: 1,
+          titleColor: '#888',
+          bodyColor: '#efefef',
+          titleFont: {size:11, family:'Inter'},
+          bodyFont: {size:12, family:'Inter Tight'},
+          callbacks: {
+            label: ctx => ctx.dataset.label === 'Break even' ? null : ' ' + fmt(ctx.parsed.y)
           }
         }
       },
-      scales:{
-        x:{
-          grid:{color:'rgba(255,255,255,0.04)'},
-          ticks:{color:'#555',font:{size:11,family:'Inter'}}
+      scales: {
+        x: {
+          grid: {color:'rgba(255,255,255,0.04)'},
+          ticks: {color:'#555', font:{size:11, family:'Inter'}}
         },
-        y:{
-          grid:{color:'rgba(255,255,255,0.04)'},
-          ticks:{
-            color:'#555',font:{size:11,family:'Inter'},
-            callback:v=>(v>=0?'$':'−$')+Math.abs(v/1000).toFixed(0)+'k'
+        y: {
+          grid: {color:'rgba(255,255,255,0.04)'},
+          ticks: {
+            color:'#555',
+            font: {size:11, family:'Inter'},
+            callback: v => (v >= 0 ? '$' : '-$') + Math.abs(v/1000).toFixed(0) + 'k'
           }
         }
       }
@@ -675,94 +712,102 @@ function updateChart(cumCF,horizon,payback){
   });
 }
 
-function calc(){
-  const ti=+$id('trailerSel').value;
-  const temp=+$id('tempSel').value;
-  const fleet=Math.max(1,+$id('fleetSize').value||1);
-  const dieselPx=state.dieselPrice||3.82;
-  const systemCost=+$id('systemCost').value||45000;
-  const horizon=Math.min(20,Math.max(1,+$id('horizon').value||10));
-  const taxRate=(+$id('salesTax').value||8)/100;
-  const downPct=(+$id('downPct').value||10)/100;
-  const intRate=(+$id('interestRate').value||5)/100;
-  const finTerm=+$id('finTerm').value||5;
-  const residual=+$id('residual').value||12000;
-  const discRate=(+$id('discRate').value||8)/100;
-  const maintSav=+$id('maintSavings').value||0;
-  const wMult=WEATHER_MULT[$id('weatherSel').value]||WEATHER_MULT['4Season'];
+// ── Main calc ───────────────────────────────────────────────────────────────
+function calc() {
+  const ti      = +gid('trailerSel').value;
+  const temp    = +gid('tempSel').value;
+  const fleet   = Math.max(1, +gid('fleetSize').value || 1);
+  const cost    = +gid('systemCost').value || 45000;
+  const horizon = Math.min(20, Math.max(1, +gid('horizon').value || 10));
+  const taxRate = (+gid('salesTax').value || 8) / 100;
+  const downPct = (+gid('downPct').value || 10) / 100;
+  const intRate = (+gid('interestRate').value || 5) / 100;
+  const finTerm = +gid('finTerm').value || 5;
+  const residual = +gid('residual').value || 12000;
+  const discRate = (+gid('discRate').value || 8) / 100;
+  const maintSav = +gid('maintSavings').value || 0;
+  const weather = gid('weatherSel').value || '4Season';
+  const wMult   = WEATHER_MULT[weather] || WEATHER_MULT['4Season'];
 
-  const s1f = +$id('s1S').value / 100;
-  const s2f = +$id('s2S').value / 100;
-  const s3f = +$id('s3S').value / 100;
-  const unl = +$id('unladenS').value / 100;
-  const mid = +$id('midS').value / 100;
-  const max = +$id('maxS').value / 100;
+  const s1f = +gid('s1S').value / 100;
+  const s2f = +gid('s2S').value / 100;
+  const s3f = +gid('s3S').value / 100;
+  const unl = +gid('unladenS').value / 100;
+  const mid = +gid('midS').value / 100;
+  const max = +gid('maxS').value / 100;
 
-  const t=TRAILERS[ti];
+  const t = TRAILERS[ti];
 
-  const regenDay=t.driveHrs*(
-    s1f*(unl*REGEN.S1.u[ti]+mid*REGEN.S1.m[ti]+max*REGEN.S1.x[ti])+
-    s2f*(unl*REGEN.S2.u[ti]+mid*REGEN.S2.m[ti]+max*REGEN.S2.x[ti])+
-    s3f*(unl*REGEN.S3.u[ti]+mid*REGEN.S3.m[ti]+max*REGEN.S3.x[ti])
+  // Regen captured per driving day (kWh) — weighted by road mix and load mix
+  const regenDay = t.driveHrs * (
+    s1f * (unl*REGEN.S1.u[ti] + mid*REGEN.S1.m[ti] + max*REGEN.S1.x[ti]) +
+    s2f * (unl*REGEN.S2.u[ti] + mid*REGEN.S2.m[ti] + max*REGEN.S2.x[ti]) +
+    s3f * (unl*REGEN.S3.u[ti] + mid*REGEN.S3.m[ti] + max*REGEN.S3.x[ti])
   );
 
-  const weatherM=wMult[temp];
-  const demandKwh=(t.driveHrs+t.staticHrs)*KWH_HR[ti][temp]*weatherM;
-  const demandGal=(t.driveHrs+t.staticHrs)*GAL_HR[ti][temp]*weatherM;
-  const baselineGal=(t.driveHrs+t.staticHrs)*GAL_HR[ti][temp];
-  const offset=Math.min(regenDay/demandKwh,1.0);
-  const galSavedDay=demandGal*offset;
-  const galSavedYr=galSavedDay*t.daysYr;
-  const baselineGalYr=baselineGal*t.daysYr;
-  const savingsYr=galSavedYr*dieselPx;
-  const co2YrFleet=galSavedYr*CO2_PER_GAL*fleet/1000;
-  const pctFuel=baselineGalYr>0?galSavedYr/baselineGalYr:0;
+  // Weather multiplier applies to demand only
+  const weatherM   = wMult[temp];
+  const demandKwh  = (t.driveHrs + t.staticHrs) * KWH_HR[ti][temp] * weatherM;
+  const demandGal  = (t.driveHrs + t.staticHrs) * GAL_HR[ti][temp] * weatherM;
+  const baselineGal = (t.driveHrs + t.staticHrs) * GAL_HR[ti][temp];
 
-  const cf=buildCashFlow(savingsYr,systemCost,state.acq,horizon,taxRate,downPct,intRate,finTerm,residual,discRate,maintSav);
-  const payback=computePayback(cf.cumulative);
-  const npv=computeNPV(cf,discRate)*fleet;
+  const offset     = Math.min(regenDay / demandKwh, 1.0);
+  const galSavedYr = demandGal * offset * t.daysYr;
+  const baselineYr = baselineGal * t.daysYr;
+  const savingsYr  = galSavedYr * dieselPrice;
+  const pctFuel    = baselineYr > 0 ? galSavedYr / baselineYr : 0;
+  const co2Fleet   = galSavedYr * CO2_PER_GAL * fleet / 1000;
 
-  let upfront=0;
-  if(state.acq==='Cash') upfront=systemCost*(1+taxRate)*fleet;
-  else if(state.acq==='Financed') upfront=(systemCost*downPct+systemCost*taxRate)*fleet;
-  else upfront=14400*(1+taxRate)*fleet;
+  const cf      = buildCashFlow(savingsYr, cost, acqMode, horizon, taxRate, downPct, intRate, finTerm, residual, maintSav);
+  const payback = computePayback(cf.cumulative);
+  const npv     = computeNPV(cf, discRate) * fleet;
 
-  $id('kpiSavings').textContent=fmt(savingsYr);
-  $id('kpiSavingsSub').textContent=`${fmt(savingsYr*fleet)} total fleet / yr`;
-  $id('kpiPayback').textContent=payback!=null?payback.toFixed(1)+' yrs':'Beyond horizon';
-  $id('kpiPaybackSub').textContent=payback!=null?`With ${state.acq.toLowerCase()} acquisition`:'Increase horizon or adjust inputs';
-  $id('kpiCO2').textContent=co2YrFleet.toFixed(1)+' t';
-  $id('kpiCO2Sub').textContent=`≈ ${Math.round(co2YrFleet/4.6)} cars off the road`;
+  let upfront = 0;
+  if (acqMode === 'Cash')     upfront = cost * (1 + taxRate) * fleet;
+  else if (acqMode === 'Financed') upfront = (cost * downPct + cost * taxRate) * fleet;
+  else upfront = 14400 * (1 + taxRate) * fleet;
 
-  $id('offsetBar').style.width=Math.round(offset*100)+'%';
-  $id('offsetPct').textContent=Math.round(offset*100)+'% of demand offset by regen';
-  $id('offsetDetail').textContent=`${regenDay.toFixed(2)} kWh captured per day  ·  ${demandKwh.toFixed(2)} kWh demand (weather-adjusted)`;
+  // KPIs
+  gid('kpiSavings').textContent    = fmt(savingsYr);
+  gid('kpiSavingsSub').textContent = fmt(savingsYr * fleet) + ' total fleet / yr';
+  gid('kpiPayback').textContent    = payback != null ? payback.toFixed(1) + ' yrs' : 'Beyond horizon';
+  gid('kpiPaybackSub').textContent = payback != null ? 'With ' + acqMode.toLowerCase() + ' acquisition' : 'Increase horizon or adjust inputs';
+  gid('kpiCO2').textContent        = co2Fleet.toFixed(1) + ' t';
+  gid('kpiCO2Sub').textContent     = '≈ ' + Math.round(co2Fleet / 4.6) + ' cars off the road';
 
-  $id('mFleet').textContent=fmt(savingsYr*fleet);
-  $id('mFleetSub').textContent=`${fleet} unit${fleet>1?'s':''} × ${fmt(savingsYr)}`;
-  $id('mGallons').textContent=Math.round(galSavedYr).toLocaleString();
-  $id('mPctFuel').textContent=Math.round(pctFuel*100)+'%';
-  $id('mNPV').textContent=fmt(npv);
-  $id('mNPVSub').textContent=`${horizon}-yr fleet · ${Math.round(discRate*100)}% discount`;
-  $id('mUpfront').textContent=fmt(upfront);
-  $id('mUpfrontSub').textContent=state.acq==='Lease'?'Annual lease cost (fleet)':state.acq==='Financed'?`Down + tax · ${Math.round(downPct*100)}% down`:'Full purchase + tax';
-  $id('mCO2Total').textContent=(co2YrFleet*horizon).toFixed(0)+' t';
-  $id('mCO2TotalSub').textContent=`Over ${horizon}-yr horizon · fleet`;
+  // Offset bar
+  gid('offsetBar').style.width = Math.round(offset * 100) + '%';
+  gid('offsetPct').textContent = Math.round(offset * 100) + '% of demand offset by regen';
+  gid('offsetDetail').textContent = regenDay.toFixed(2) + ' kWh captured / day  ·  ' + demandKwh.toFixed(2) + ' kWh demand (weather-adjusted)';
 
-  const trailer=TRAILERS[ti].name;
-  const tempName=TEMP_NAMES[temp];
-  $id('chartSub').textContent=`${trailer} · ${tempName} · ${state.braking} braking · ${state.weight} load · ${state.acq}`;
-  $id('fullSub').textContent=`${trailer} · ${fleet} unit${fleet>1?'s':''} · ${horizon}-yr horizon`;
-  $id('paybackBadge').textContent=payback!=null?`Payback at ${payback.toFixed(1)} yrs`:'No payback within horizon';
+  // Full picture
+  gid('mFleet').textContent       = fmt(savingsYr * fleet);
+  gid('mFleetSub').textContent    = fleet + ' unit' + (fleet > 1 ? 's' : '') + ' × ' + fmt(savingsYr);
+  gid('mGallons').textContent     = Math.round(galSavedYr).toLocaleString();
+  gid('mPctFuel').textContent     = Math.round(pctFuel * 100) + '%';
+  gid('mNPV').textContent         = fmt(npv);
+  gid('mNPVSub').textContent      = horizon + '-yr fleet · ' + Math.round(discRate * 100) + '% discount';
+  gid('mUpfront').textContent     = fmt(upfront);
+  gid('mUpfrontSub').textContent  = acqMode === 'Lease' ? 'Annual lease cost (fleet)' : acqMode === 'Financed' ? 'Down + tax · ' + Math.round(downPct*100) + '% down' : 'Full purchase + tax';
+  gid('mCO2Total').textContent    = (co2Fleet * horizon).toFixed(0) + ' t';
+  gid('mCO2TotalSub').textContent = 'Over ' + horizon + '-yr horizon · fleet';
 
-  updateChart(cf.cumulative,horizon,payback);
+  // Chart labels
+  const tName = TRAILERS[ti].name;
+  const cName = TEMP_NAMES[temp];
+  gid('chartSub').textContent    = tName + ' · ' + cName + ' · ' + acqMode;
+  gid('fullSub').textContent     = tName + ' · ' + fleet + ' unit' + (fleet > 1 ? 's' : '') + ' · ' + horizon + '-yr horizon';
+  gid('paybackBadge').textContent = payback != null ? 'Payback at ' + payback.toFixed(1) + ' yrs' : 'No payback within horizon';
+
+  updateChart(cf.cumulative, horizon);
 }
 
+// ── Event listeners ─────────────────────────────────────────────────────────
 ['trailerSel','tempSel','fleetSize','systemCost','horizon',
  'salesTax','downPct','interestRate','finTerm','residual','discRate','maintSavings','weatherSel']
-  .forEach(id=>$id(id).addEventListener('input',calc));
+  .forEach(id => gid(id).addEventListener('input', calc));
 
-loadPrices().then(()=>calc());
+loadPrices().then(() => calc());
 </script>
 </body>
 </html>
