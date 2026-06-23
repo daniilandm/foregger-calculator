@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRUE Savings Calculator | Foregger Energy Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#1D9E75;--green-dim:rgba(29,158,117,0.12);--green-border:rgba(29,158,117,0.35);
+  --bg:#08080a;--panel:#111114;--panel-r:#18181c;--border:rgba(255,255,255,0.07);
+  --border-h:rgba(255,255,255,0.13);--text:#efefef;--muted:#777;--dimmed:#444;--red:#e05555;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased}
+nav{position:sticky;top:0;z-index:100;background:rgba(8,8,10,0.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nav-logo img{display:block;filter:invert(1);height:32px}
+.nav-logo-text{display:flex;flex-direction:column;gap:1px}
+.nav-logo-name{font-family:'Inter Tight',sans-serif;font-weight:700;font-size:14px;color:var(--text);letter-spacing:-0.3px;line-height:1.2}
+.nav-logo-sub{font-size:10px;color:var(--dimmed);letter-spacing:0.06em;text-transform:uppercase}
+.nav-tag{font-size:11px;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase}
+.hero{padding:3.5rem 2rem 2rem;max-width:1240px;margin:0 auto}
+.hero-eye{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--green);font-weight:500;margin-bottom:.9rem}
+.hero h1{font-family:'Inter Tight',sans-serif;font-weight:800;font-size:clamp(1.9rem,3.5vw,2.8rem);line-height:1.08;letter-spacing:-0.03em;color:#fff;margin-bottom:.9rem;max-width:600px}
+.hero h1 em{font-style:normal;color:var(--green)}
+.hero-sub{color:var(--muted);font-size:14px;max-width:520px;line-height:1.75}
+.price-tag{font-size:11px;color:var(--dimmed);margin-top:3px;display:flex;align-items:center;gap:5px}
+.dot{width:6px;height:6px;border-radius:50%;display:inline-block;flex-shrink:0}
+.dot.live{background:var(--green)}.dot.snap{background:#BA7517}
+.layout{max-width:1240px;margin:0 auto;padding:0 2rem 5rem;display:grid;grid-template-columns:340px 1fr;gap:1.75rem;align-items:start}
+.inputs{display:flex;flex-direction:column;gap:1.25rem;position:sticky;top:76px;max-height:calc(100vh - 96px);overflow-y:auto;overflow-x:visible;padding-right:4px}
+.inputs::-webkit-scrollbar{width:3px}.inputs::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:1.25rem}
+.sec-title{font-size:10px;font-weight:600;letter-spacing:0.11em;text-transform:uppercase;color:var(--dimmed);margin-bottom:1rem}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.field:last-child{margin-bottom:0}
+.field label{font-size:11px;color:var(--muted);font-weight:500;letter-spacing:0.03em}
+.field select,.field input[type="number"]{background:var(--panel-r);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Inter',sans-serif;font-size:13px;padding:8px 11px;width:100%;outline:none;transition:border-color .15s;appearance:none;-webkit-appearance:none}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;cursor:pointer}
+.field select:focus,.field input[type="number"]:focus{border-color:var(--green)}
+.field select option{background:#1a1a1e}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.toggle-group{display:flex;background:var(--panel-r);border:1px solid var(--border);border-radius:8px;padding:3px;gap:3px}
+.toggle-btn{flex:1;padding:6px 4px;font-size:11px;font-weight:500;letter-spacing:0.03em;border:none;border-radius:6px;cursor:pointer;background:transparent;color:var(--muted);transition:background .15s,color .15s;font-family:'Inter',sans-serif}
+.toggle-btn.active{background:var(--green-dim);color:var(--green);outline:1px solid var(--green-border)}
+.toggle-btn:hover:not(.active){color:var(--text)}
+.preset-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.preset-btn{font-size:10px;font-weight:500;letter-spacing:0.05em;padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:var(--panel-r);color:var(--muted);cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif}
+.preset-btn:hover,.preset-btn.active{background:var(--green-dim);color:var(--green);border-color:var(--green-border)}
+.slider-block{margin-bottom:1rem}
+.slider-block:last-child{margin-bottom:0}
+.slider-block-title{font-size:11px;color:var(--muted);font-weight:500;margin-bottom:.65rem}
+.slider-item{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.slider-item:last-of-type{margin-bottom:0}
+.slider-header{display:flex;justify-content:space-between;align-items:center}
+.slider-lbl{font-size:12px;color:var(--muted)}
+.slider-val{font-size:12px;font-weight:600;color:var(--text);min-width:36px;text-align:right}
+input[type="range"]{-webkit-appearance:none;appearance:none;width:100%;height:20px;background:transparent;outline:none;cursor:pointer;display:block}
+input[type="range"]::-webkit-slider-runnable-track{height:4px;border-radius:99px;background:var(--panel-r)}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;margin-top:-6px;border-radius:50%;background:var(--green);border:2px solid var(--bg);box-shadow:0 0 0 1px var(--green);cursor:pointer}
+input[type="range"]::-moz-range-track{height:4px;border-radius:99px;background:var(--panel-r)}
+input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--green);border:2px solid var(--bg);cursor:pointer;box-sizing:border-box}
+.sum-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;display:inline-block;margin-top:4px}
+.sum-badge.ok{background:rgba(29,158,117,0.12);color:var(--green)}
+.sum-badge.bad{background:rgba(224,85,85,0.12);color:var(--red)}
+.adv-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;padding:8px 0 0;background:none;border:none;color:var(--muted);font-size:11px;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:color .15s}
+.adv-toggle:hover{color:var(--text)}
+.adv-arrow{transition:transform .2s}
+.adv-arrow.open{transform:rotate(180deg)}
+.adv-body{display:none;padding-top:10px;border-top:1px solid var(--border);margin-top:8px}
+.adv-body.open{display:block}
+.results{display:flex;flex-direction:column;gap:1.25rem}
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.kpi{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--green);border-radius:0}
+.kpi.blue::before{background:#378ADD}
+.kpi-label{font-size:10px;letter-spacing:0.09em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.kpi-val{font-family:'Inter Tight',sans-serif;font-weight:800;font-size:1.6rem;letter-spacing:-0.03em;color:#fff;line-height:1}
+.kpi-sub{font-size:11px;color:var(--muted);margin-top:5px}
+.chart-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:1.25rem}
+.chart-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1rem}
+.chart-title{font-size:14px;font-weight:500;color:var(--text)}
+.chart-sub{font-size:11px;color:var(--muted)}
+.metrics-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:1.25rem}
+.metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.metric-item .m-label{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.metric-item .m-val{font-family:'Inter Tight',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:-0.02em;color:var(--text)}
+.metric-item .m-sub{font-size:10px;color:var(--dimmed);margin-top:2px}
+.offset-track{height:5px;background:rgba(255,255,255,0.07);border-radius:99px;overflow:hidden;margin-bottom:4px}
+.offset-fill{height:100%;background:var(--green);border-radius:99px;transition:width .4s}
+.offset-detail{font-size:10px;color:var(--dimmed)}
+footer{border-top:1px solid var(--border);padding:1.75rem 2rem;text-align:center;font-size:11px;color:var(--dimmed);max-width:1240px;margin:0 auto}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--green)}
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr;padding:0 1rem 3rem}
+  .inputs{position:static;max-height:none;overflow:visible}
+  .hero{padding:2rem 1rem 1.5rem}
+  nav{padding:0 1rem}
+  .kpi-grid{grid-template-columns:1fr 1fr}
+  .metrics-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://www.foreggerenergy.com" class="nav-logo" target="_blank" rel="noopener">
+    <img src="./FESlogo.avif" alt="FES logo">
+    <div class="nav-logo-text">
+      <div class="nav-logo-name">Foregger Energy Solutions</div>
+      <div class="nav-logo-sub">TRUE System Calculator</div>
+    </div>
+  </a>
+  <div class="nav-tag">foreggerenergy.com</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-eye">Transport Refrigeration Unit Electrified</div>
+  <h1>How much could TRUE<br><em>save your fleet?</em></h1>
+  <p class="hero-sub">Configure your operation below. We'll calculate annual diesel savings, payback period, and CO₂ reduction based on your trailer type, route profile, and live state fuel prices.</p>
+</div>
+
+<div class="layout">
+  <div class="inputs">
+
+    <!-- 01 LOCATION -->
+    <div class="card">
+      <div class="sec-title">01 · Location</div>
+      <div class="field">
+        <label>State</label>
+        <select id="stateSel"><option value="">Loading prices…</option></select>
+        <div class="price-tag" id="priceTag"></div>
+      </div>
+    </div>
+
+    <!-- 02 FLEET & TRAILER -->
+    <div class="card">
+      <div class="sec-title">02 · Fleet &amp; trailer</div>
+      <div class="field">
+        <label>Fleet size</label>
+        <input type="number" id="fleetSize" value="10" min="1" max="10000" step="1">
+        <div class="preset-row">
+          <button class="preset-btn" onclick="setFleet(1)">Pilot (1)</button>
+          <button class="preset-btn" onclick="setFleet(25)">Small (25)</button>
+          <button class="preset-btn" onclick="setFleet(100)">Medium (100)</button>
+          <button class="preset-btn" onclick="setFleet(500)">Enterprise (500)</button>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>Trailer type</label>
+          <select id="trailerSel">
+            <option value="0">24 ft Reefer Pup</option>
+            <option value="1">26 ft Reefer Pup</option>
+            <option value="2">28 ft Reefer Pup</option>
+            <option value="3">36–38 ft Utility</option>
+            <option value="4" selected>40 ft Reefer</option>
+            <option value="5">45 ft Reefer</option>
+            <option value="6">48 ft Reefer</option>
+            <option value="7">53 ft Reefer</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Temperature mode</label>
+          <select id="tempSel">
+            <option value="0">Maintain ambient</option>
+            <option value="1" selected>Cool (10–15 °C)</option>
+            <option value="2">Chilled (2–8 °C)</option>
+            <option value="3">Frozen (−18 °C)</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Weather / Season</label>
+        <select id="weatherSel">
+          <option value="Hot">Summer / Hot — highest demand</option>
+          <option value="Warm">Spring–Fall / Warm</option>
+          <option value="Cold">Winter / Cold — baseline</option>
+          <option value="Freezing">Winter / Freezing — lowest demand</option>
+          <option value="4Season" selected>4 Season average</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 03 ROUTE & LOAD MIX -->
+    <div class="card">
+      <div class="sec-title">03 · Route &amp; load mix</div>
+
+      <div class="slider-block">
+        <div class="slider-block-title">Road mix — % of driving time</div>
+        <div class="slider-item">
+          <div class="slider-header">
+            <span class="slider-lbl">S1 · Significant braking <span style="color:var(--dimmed);font-size:10px">(tolls, exits)</span></span>
+            <span class="slider-val" id="s1Val">30%</span>
+          </div>
+          <input type="range" id="s1S" min="0" max="100" step="5" value="30">
+        </div>
+        <div class="slider-item">
+          <div class="slider-header">
+            <span class="slider-lbl">S2 · Moderate braking <span style="color:var(--dimmed);font-size:10px">(merging, hills)</span></span>
+            <span class="slider-val" id="s2Val">20%</span>
+          </div>
+          <input type="range" id="s2S" min="0" max="100" step="5" value="20">
+        </div>
+        <div class="slider-item">
+          <div class="slider-header">
+            <span class="slider-lbl">S3 · Micro deceleration <span style="color:var(--dimmed);font-size:10px">(cruise adjust)</span></span>
+            <span class="slider-val" id="s3Val">50%</span>
+          </div>
+          <input type="range" id="s3S" min="0" max="100" step="5" value="50">
+        </div>
+        <span class="sum-badge ok" id="roadSum">Total: 100%</span>
+      </div>
+
+      <div class="slider-block" style="border-top:1px solid var(--border);padding-top:1rem;margin-top:.25rem">
+        <div class="slider-block-title">Load mix — % of operating day</div>
+        <div class="slider-item">
+          <div class="slider-header">
+            <span class="slider-lbl">Unladen</span>
+            <span class="slider-val" id="unladenVal">25%</span>
+          </div>
+          <input type="range" id="unladenS" min="0" max="100" step="5" value="25">
+        </div>
+        <div class="slider-item">
+          <div class="slider-header">
+            <span class="slider-lbl">Mid load</span>
+            <span class="slider-val" id="midVal">50%</span>
+          </div>
+          <input type="range" id="midS" min="0" max="100" step="5" value="50">
+        </div>
+        <div class="slider-item">
+          <div class="slider-header">
+            <span class="slider-lbl">Max load</span>
+            <span class="slider-val" id="maxVal">25%</span>
+          </div>
+          <input type="range" id="maxS" min="0" max="100" step="5" value="25">
+        </div>
+        <span class="sum-badge ok" id="loadSum">Total: 100%</span>
+      </div>
+    </div>
+
+    <!-- 04 ACQUISITION -->
+    <div class="card">
+      <div class="sec-title">04 · Acquisition</div>
+      <div class="field">
+        <label>Mode</label>
+        <div class="toggle-group" id="acqTg">
+          <button class="toggle-btn" onclick="setAcq(this,'Cash')">Cash</button>
+          <button class="toggle-btn active" onclick="setAcq(this,'Financed')">Financed</button>
+          <button class="toggle-btn" onclick="setAcq(this,'Lease')">Lease</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>System cost per unit ($)</label>
+        <input type="number" id="systemCost" value="45000" min="0" step="1000">
+      </div>
+      <div class="field">
+        <label>Analysis horizon (years)</label>
+        <input type="number" id="horizon" value="10" min="1" max="20" step="1">
+      </div>
+
+      <button class="adv-toggle" onclick="toggleAdv(this)">
+        <span>Advanced</span>
+        <span class="adv-arrow">▾</span>
+      </button>
+      <div class="adv-body" id="advBody">
+        <div class="row2" style="margin-top:10px">
+          <div class="field">
+            <label>Sales tax (%)</label>
+            <input type="number" id="salesTax" value="8" min="0" max="20" step="0.1">
+          </div>
+          <div class="field">
+            <label>Down payment (%)</label>
+            <input type="number" id="downPct" value="10" min="0" max="100" step="1">
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label>Interest rate (%)</label>
+            <input type="number" id="interestRate" value="5" min="0" max="30" step="0.1">
+          </div>
+          <div class="field">
+            <label>Financing term (yrs)</label>
+            <input type="number" id="finTerm" value="5" min="1" max="15" step="1">
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label>Residual value ($)</label>
+            <input type="number" id="residual" value="12000" min="0" step="500">
+          </div>
+          <div class="field">
+            <label>Discount rate (%)</label>
+            <input type="number" id="discRate" value="8" min="0" max="30" step="0.1">
+          </div>
+        </div>
+        <div class="field">
+          <label>Maintenance savings ($/yr per unit)</label>
+          <input type="number" id="maintSavings" value="0" min="0" step="100">
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end inputs -->
+
+  <div class="results">
+
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="kpi-label">Annual savings · per unit</div>
+        <div class="kpi-val" id="kpiSavings">—</div>
+        <div class="kpi-sub" id="kpiSavingsSub">—</div>
+      </div>
+      <div class="kpi blue">
+        <div class="kpi-label">Payback period</div>
+        <div class="kpi-val" id="kpiPayback">—</div>
+        <div class="kpi-sub" id="kpiPaybackSub">—</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">CO₂ avoided · fleet / yr</div>
+        <div class="kpi-val" id="kpiCO2">—</div>
+        <div class="kpi-sub" id="kpiCO2Sub">—</div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">Cumulative savings — per unit</div>
+          <div class="chart-sub" id="chartSub">—</div>
+        </div>
+        <div id="paybackBadge" style="font-size:11px;color:#378ADD"></div>
+      </div>
+      <div style="position:relative;height:240px">
+        <canvas id="cfChart"></canvas>
+      </div>
+    </div>
+
+    <div class="metrics-card">
+      <div class="chart-header" style="margin-bottom:.75rem">
+        <div class="chart-title">Energy offset</div>
+        <span id="offsetPct" style="font-size:13px;font-weight:600;color:var(--green)">—</span>
+      </div>
+      <div class="offset-track"><div class="offset-fill" id="offsetBar" style="width:0%"></div></div>
+      <div class="offset-detail" id="offsetDetail">—</div>
+    </div>
+
+    <div class="metrics-card">
+      <div class="chart-header" style="margin-bottom:1rem">
+        <div class="chart-title">Full picture</div>
+        <div class="chart-sub" id="fullSub">—</div>
+      </div>
+      <div class="metrics-grid">
+        <div class="metric-item">
+          <div class="m-label">Fleet savings / yr</div>
+          <div class="m-val" id="mFleet">—</div>
+          <div class="m-sub" id="mFleetSub">—</div>
+        </div>
+        <div class="metric-item">
+          <div class="m-label">Diesel saved / unit / yr</div>
+          <div class="m-val" id="mGallons">—</div>
+          <div class="m-sub">gallons</div>
+        </div>
+        <div class="metric-item">
+          <div class="m-label">% fuel reduction</div>
+          <div class="m-val" id="mPctFuel">—</div>
+          <div class="m-sub">of baseline diesel use</div>
+        </div>
+        <div class="metric-item">
+          <div class="m-label">NPV · fleet</div>
+          <div class="m-val" id="mNPV">—</div>
+          <div class="m-sub" id="mNPVSub">—</div>
+        </div>
+        <div class="metric-item">
+          <div class="m-label">Upfront cost · fleet</div>
+          <div class="m-val" id="mUpfront">—</div>
+          <div class="m-sub" id="mUpfrontSub">—</div>
+        </div>
+        <div class="metric-item">
+          <div class="m-label">CO₂ over horizon · fleet</div>
+          <div class="m-val" id="mCO2Total">—</div>
+          <div class="m-sub" id="mCO2TotalSub">—</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <p>Prices from <a href="https://gasprices.aaa.com/state-gas-price-averages/" target="_blank" rel="noopener">AAA</a>, updated daily · DEF surcharge $0.105/gal included · <a href="https://www.foreggerenergy.com" target="_blank" rel="noopener">foreggerenergy.com</a></p>
+  <p style="margin-top:5px">Estimates based on modeled braking and compressor data. Actual savings vary by route and operation.</p>
+</footer>
+
+<script>
+const DEF = 0.105, CO2_PER_GAL = 10.18;
+
+const TRAILERS = [
+  {name:'24 ft', daysYr:250, driveHrs:5.5, staticHrs:4.5},
+  {name:'26 ft', daysYr:250, driveHrs:6.5, staticHrs:3.5},
+  {name:'28 ft', daysYr:270, driveHrs:6.3, staticHrs:3.0},
+  {name:'36–38 ft', daysYr:225, driveHrs:8.2, staticHrs:4.0},
+  {name:'40 ft', daysYr:300, driveHrs:5.7, staticHrs:3.5},
+  {name:'45 ft', daysYr:300, driveHrs:6.2, staticHrs:3.0},
+  {name:'48 ft', daysYr:300, driveHrs:6.2, staticHrs:3.0},
+  {name:'53 ft', daysYr:250, driveHrs:9.0, staticHrs:2.0}
+];
+
+const TEMP_NAMES = ['Ambient','Cool','Chilled','Frozen'];
+
+const GAL_HR = [
+  [0.3,0.4,0.7,2.3],[0.3,0.4,0.8,2.4],[0.3,0.4,0.8,2.6],[0.4,0.5,1.0,3.3],
+  [0.4,0.5,1.1,3.5],[0.4,0.6,1.2,3.9],[0.5,0.6,1.3,4.1],[0.5,0.7,1.4,4.5]
+];
+
+const KWH_HR = [
+  [0.2,0.3,0.6,1.9],[0.2,0.3,0.6,2.0],[0.2,0.3,0.6,2.1],[0.3,0.4,0.8,2.7],
+  [0.3,0.4,0.9,2.9],[0.3,0.4,0.9,3.2],[0.4,0.5,1.0,3.4],[0.4,0.5,1.1,3.7]
+];
+
+const REGEN = {
+  S1: {
+    u: [0.28,0.34,0.42,0.38,0.44,0.49,0.41,0.36],
+    m: [0.42,0.51,0.80,0.70,0.83,0.91,0.75,0.62],
+    x: [0.56,0.68,1.18,1.03,1.23,1.33,1.09,0.88]
+  },
+  S2: {
+    u: [0.29,0.41,0.43,0.48,0.67,0.39,0.39,0.37],
+    m: [0.43,0.61,0.81,0.89,1.27,0.73,0.70,0.64],
+    x: [0.57,0.82,1.20,1.31,1.87,1.06,1.02,0.91]
+  },
+  S3: {
+    u: [0.12,0.16,0.25,0.27,0.29,0.35,0.53,0.48],
+    m: [0.18,0.23,0.47,0.51,0.54,0.64,0.96,0.84],
+    x: [0.24,0.31,0.70,0.75,0.80,0.94,1.39,1.19]
+  }
+};
+
+const WEATHER_MULT = {
+  Hot:      [1.55, 1.55, 1.70, 1.35],
+  Warm:     [1.25, 1.25, 1.30, 1.15],
+  Cold:     [1.00, 1.00, 1.00, 1.00],
+  Freezing: [0.85, 0.85, 0.75, 0.90],
+  '4Season':[1.1625, 1.1625, 1.1875, 1.10]
+};
+
+const SNAPSHOT = {date:'2026-06-23', states:[
+  {code:'AK',name:'Alaska',diesel:4.086},{code:'AL',name:'Alabama',diesel:3.438},
+  {code:'AR',name:'Arkansas',diesel:3.364},{code:'AZ',name:'Arizona',diesel:3.655},
+  {code:'CA',name:'California',diesel:5.164},{code:'CO',name:'Colorado',diesel:3.517},
+  {code:'CT',name:'Connecticut',diesel:3.971},{code:'DC',name:'Washington DC',diesel:3.772},
+  {code:'DE',name:'Delaware',diesel:3.689},{code:'FL',name:'Florida',diesel:3.610},
+  {code:'GA',name:'Georgia',diesel:3.552},{code:'HI',name:'Hawaii',diesel:5.228},
+  {code:'IA',name:'Iowa',diesel:3.537},{code:'ID',name:'Idaho',diesel:3.839},
+  {code:'IL',name:'Illinois',diesel:3.763},{code:'IN',name:'Indiana',diesel:3.782},
+  {code:'KS',name:'Kansas',diesel:3.461},{code:'KY',name:'Kentucky',diesel:3.431},
+  {code:'LA',name:'Louisiana',diesel:3.304},{code:'MA',name:'Massachusetts',diesel:3.851},
+  {code:'MD',name:'Maryland',diesel:3.697},{code:'ME',name:'Maine',diesel:3.880},
+  {code:'MI',name:'Michigan',diesel:3.697},{code:'MN',name:'Minnesota',diesel:3.609},
+  {code:'MO',name:'Missouri',diesel:3.423},{code:'MS',name:'Mississippi',diesel:3.274},
+  {code:'MT',name:'Montana',diesel:3.627},{code:'NC',name:'North Carolina',diesel:3.456},
+  {code:'ND',name:'North Dakota',diesel:3.468},{code:'NE',name:'Nebraska',diesel:3.430},
+  {code:'NH',name:'New Hampshire',diesel:3.798},{code:'NJ',name:'New Jersey',diesel:3.621},
+  {code:'NM',name:'New Mexico',diesel:3.508},{code:'NV',name:'Nevada',diesel:3.968},
+  {code:'NY',name:'New York',diesel:3.911},{code:'OH',name:'Ohio',diesel:3.697},
+  {code:'OK',name:'Oklahoma',diesel:3.258},{code:'OR',name:'Oregon',diesel:4.493},
+  {code:'PA',name:'Pennsylvania',diesel:3.977},{code:'RI',name:'Rhode Island',diesel:3.805},
+  {code:'SC',name:'South Carolina',diesel:3.391},{code:'SD',name:'South Dakota',diesel:3.404},
+  {code:'TN',name:'Tennessee',diesel:3.401},{code:'TX',name:'Texas',diesel:3.186},
+  {code:'UT',name:'Utah',diesel:3.709},{code:'VA',name:'Virginia',diesel:3.596},
+  {code:'VT',name:'Vermont',diesel:3.817},{code:'WA',name:'Washington',diesel:5.068},
+  {code:'WI',name:'Wisconsin',diesel:3.515},{code:'WV',name:'West Virginia',diesel:3.566},
+  {code:'WY',name:'Wyoming',diesel:3.587}
+]};
+
+let dieselPrice = 3.82;
+let acqMode = 'Financed';
+
+function gid(id) { return document.getElementById(id); }
+function fmt(n)  { return '$' + Math.round(n).toLocaleString(); }
+
+// ── State / prices ──────────────────────────────────────────────────────────
+function buildStateSelect(data, live) {
+  const sel = gid('stateSel');
+  sel.innerHTML = '<option value="">— Select state —</option>';
+  data.states.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s.diesel;
+    opt.textContent = s.name + '  ·  $' + (s.diesel + DEF).toFixed(2) + '/gal';
+    sel.appendChild(opt);
+  });
+  const tag = gid('priceTag');
+  tag.innerHTML = live
+    ? '<span class="dot live"></span>Live AAA prices · ' + data.date
+    : '<span class="dot snap"></span>Snapshot · ' + data.date;
+}
+
+async function loadPrices() {
+  try {
+    const r = await fetch('https://daniilandm.github.io/foregger-calculator/prices.json');
+    if (!r.ok) throw new Error();
+    const d = await r.json();
+    buildStateSelect(d, true);
+  } catch(e) {
+    buildStateSelect(SNAPSHOT, false);
+  }
+}
+
+gid('stateSel').addEventListener('change', function() {
+  if (this.value) { dieselPrice = parseFloat(this.value) + DEF; calc(); }
+});
+
+// ── Toggle helpers ──────────────────────────────────────────────────────────
+function setAcq(btn, val) {
+  document.querySelectorAll('#acqTg .toggle-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  acqMode = val;
+  calc();
+}
+
+function setFleet(n) {
+  gid('fleetSize').value = n;
+  document.querySelectorAll('.preset-btn').forEach(b => {
+    const num = parseInt(b.textContent.match(/\d+/)[0]);
+    b.classList.toggle('active', num === n);
+  });
+  calc();
+}
+
+function toggleAdv(btn) {
+  const body = gid('advBody');
+  const arrow = btn.querySelector('.adv-arrow');
+  const open = body.classList.toggle('open');
+  arrow.classList.toggle('open', open);
+}
+
+// ── Slider auto-balance ─────────────────────────────────────────────────────
+function balanceSliders(movedId, ids, valIds, sumId) {
+  const sliders  = ids.map(id => gid(id));
+  const labels   = valIds.map(id => gid(id));
+  const movedIdx = ids.indexOf(movedId);
+  const movedVal = parseInt(sliders[movedIdx].value);
+  const others   = sliders.filter((_, i) => i !== movedIdx);
+  const remainder = 100 - movedVal;
+  const otherSum  = others.reduce((a, s) => a + parseInt(s.value), 0);
+
+  if (remainder <= 0) {
+    sliders[movedIdx].value = 100;
+    others.forEach(s => s.value = 0);
+  } else if (otherSum === 0) {
+    const half = Math.floor(remainder / 2);
+    others[0].value = half;
+    others[1].value = remainder - half;
+  } else {
+    let allocated = 0;
+    others.forEach((s, i) => {
+      if (i < others.length - 1) {
+        const v = Math.round(parseInt(s.value) / otherSum * remainder / 5) * 5;
+        s.value = Math.max(0, v);
+        allocated += parseInt(s.value);
+      } else {
+        s.value = Math.max(0, remainder - allocated);
+      }
+    });
+  }
+
+  sliders.forEach((s, i) => labels[i].textContent = s.value + '%');
+  const total = sliders.reduce((a, s) => a + parseInt(s.value), 0);
+  const badge = gid(sumId);
+  badge.textContent = 'Total: ' + total + '%';
+  badge.className = 'sum-badge ' + (total === 100 ? 'ok' : 'bad');
+  calc();
+}
+
+['s1S','s2S','s3S'].forEach(id => {
+  gid(id).addEventListener('input', () =>
+    balanceSliders(id, ['s1S','s2S','s3S'], ['s1Val','s2Val','s3Val'], 'roadSum'));
+});
+['unladenS','midS','maxS'].forEach(id => {
+  gid(id).addEventListener('input', () =>
+    balanceSliders(id, ['unladenS','midS','maxS'], ['unladenVal','midVal','maxVal'], 'loadSum'));
+});
+
+// ── Finance helpers ─────────────────────────────────────────────────────────
+function annualLoanPayment(principal, rate, term) {
+  if (principal <= 0 || term <= 0) return 0;
+  const r = rate / 12, n = term * 12;
+  if (r === 0) return principal / term;
+  return (principal * r * Math.pow(1+r, n)) / (Math.pow(1+r, n) - 1) * 12;
+}
+
+function buildCashFlow(savingsPerUnit, systemCost, acq, horizon, taxRate, downPct, intRate, finTerm, residual, maintSav) {
+  const cf = [];
+  for (let t = 0; t <= horizon; t++) {
+    let flow = 0;
+    if (t === 0) {
+      if (acq === 'Cash')     flow = -(systemCost * (1 + taxRate));
+      else if (acq === 'Financed') flow = -(systemCost * downPct + systemCost * taxRate);
+      else flow = 0;
+    } else {
+      flow = savingsPerUnit + maintSav;
+      if (acq === 'Financed' && t <= finTerm) {
+        const principal = systemCost * (1 - downPct);
+        flow -= annualLoanPayment(principal, intRate, finTerm);
+      }
+      if (acq === 'Financed' && t === finTerm) flow += residual;
+      if (acq === 'Lease') flow -= 14400 * (1 + taxRate);
+    }
+    cf.push(flow);
+  }
+  const cumulative = [];
+  let cum = 0;
+  cf.forEach(f => { cum += f; cumulative.push(cum); });
+  return { annual: cf, cumulative };
+}
+
+function computePayback(cumCF) {
+  if (cumCF[0] >= 0) return 0;
+  for (let i = 1; i < cumCF.length; i++) {
+    if (cumCF[i-1] < 0 && cumCF[i] >= 0) {
+      return (i-1) + (-cumCF[i-1] / (cumCF[i] - cumCF[i-1]));
+    }
+  }
+  return null;
+}
+
+function computeNPV(cf, discRate) {
+  return cf.annual.reduce((sum, f, t) => sum + f / Math.pow(1 + discRate, t), 0);
+}
+
+// ── Chart ───────────────────────────────────────────────────────────────────
+let chart = null;
+function updateChart(cumCF, horizon) {
+  const labels = Array.from({length: horizon+1}, (_, i) => 'Yr ' + i);
+  const data   = cumCF.map(v => Math.round(v));
+  const ctx    = gid('cfChart').getContext('2d');
+  if (chart) chart.destroy();
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Cumulative savings',
+          data,
+          borderColor: '#1D9E75',
+          borderWidth: 2,
+          pointRadius: 3,
+          pointBackgroundColor: '#1D9E75',
+          fill: true,
+          backgroundColor: function(ctx) {
+            const c = ctx.chart.ctx, ca = ctx.chart.chartArea;
+            if (!ca) return 'rgba(29,158,117,0.15)';
+            const g = c.createLinearGradient(0, ca.top, 0, ca.bottom);
+            g.addColorStop(0, 'rgba(29,158,117,0.25)');
+            g.addColorStop(1, 'rgba(29,158,117,0.02)');
+            return g;
+          },
+          tension: 0.35
+        },
+        {
+          label: 'Break even',
+          data: new Array(horizon+1).fill(0),
+          borderColor: 'rgba(255,255,255,0.12)',
+          borderWidth: 1,
+          borderDash: [4,4],
+          pointRadius: 0,
+          fill: false
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: {mode:'index', intersect:false},
+      plugins: {
+        legend: {display:false},
+        tooltip: {
+          backgroundColor: '#18181c',
+          borderColor: 'rgba(255,255,255,0.1)',
+          borderWidth: 1,
+          titleColor: '#888',
+          bodyColor: '#efefef',
+          titleFont: {size:11, family:'Inter'},
+          bodyFont: {size:12, family:'Inter Tight'},
+          callbacks: {
+            label: ctx => ctx.dataset.label === 'Break even' ? null : ' ' + fmt(ctx.parsed.y)
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: {color:'rgba(255,255,255,0.04)'},
+          ticks: {color:'#555', font:{size:11, family:'Inter'}}
+        },
+        y: {
+          grid: {color:'rgba(255,255,255,0.04)'},
+          ticks: {
+            color:'#555',
+            font: {size:11, family:'Inter'},
+            callback: v => (v >= 0 ? '$' : '-$') + Math.abs(v/1000).toFixed(0) + 'k'
+          }
+        }
+      }
+    }
+  });
+}
+
+// ── Main calc ───────────────────────────────────────────────────────────────
+function calc() {
+  const ti      = +gid('trailerSel').value;
+  const temp    = +gid('tempSel').value;
+  const fleet   = Math.max(1, +gid('fleetSize').value || 1);
+  const cost    = +gid('systemCost').value || 45000;
+  const horizon = Math.min(20, Math.max(1, +gid('horizon').value || 10));
+  const taxRate = (+gid('salesTax').value || 8) / 100;
+  const downPct = (+gid('downPct').value || 10) / 100;
+  const intRate = (+gid('interestRate').value || 5) / 100;
+  const finTerm = +gid('finTerm').value || 5;
+  const residual = +gid('residual').value || 12000;
+  const discRate = (+gid('discRate').value || 8) / 100;
+  const maintSav = +gid('maintSavings').value || 0;
+  const weather = gid('weatherSel').value || '4Season';
+  const wMult   = WEATHER_MULT[weather] || WEATHER_MULT['4Season'];
+
+  const s1f = +gid('s1S').value / 100;
+  const s2f = +gid('s2S').value / 100;
+  const s3f = +gid('s3S').value / 100;
+  const unl = +gid('unladenS').value / 100;
+  const mid = +gid('midS').value / 100;
+  const max = +gid('maxS').value / 100;
+
+  const t = TRAILERS[ti];
+
+  // Regen captured per driving day (kWh) — weighted by road mix and load mix
+  const regenDay = t.driveHrs * (
+    s1f * (unl*REGEN.S1.u[ti] + mid*REGEN.S1.m[ti] + max*REGEN.S1.x[ti]) +
+    s2f * (unl*REGEN.S2.u[ti] + mid*REGEN.S2.m[ti] + max*REGEN.S2.x[ti]) +
+    s3f * (unl*REGEN.S3.u[ti] + mid*REGEN.S3.m[ti] + max*REGEN.S3.x[ti])
+  );
+
+  // Weather multiplier applies to demand only
+  const weatherM   = wMult[temp];
+  const demandKwh  = (t.driveHrs + t.staticHrs) * KWH_HR[ti][temp] * weatherM;
+  const demandGal  = (t.driveHrs + t.staticHrs) * GAL_HR[ti][temp] * weatherM;
+  const baselineGal = (t.driveHrs + t.staticHrs) * GAL_HR[ti][temp];
+
+  const offset     = Math.min(regenDay / demandKwh, 1.0);
+  const galSavedYr = demandGal * offset * t.daysYr;
+  const baselineYr = baselineGal * t.daysYr;
+  const savingsYr  = galSavedYr * dieselPrice;
+  const pctFuel    = baselineYr > 0 ? galSavedYr / baselineYr : 0;
+  const co2Fleet   = galSavedYr * CO2_PER_GAL * fleet / 1000;
+
+  const cf      = buildCashFlow(savingsYr, cost, acqMode, horizon, taxRate, downPct, intRate, finTerm, residual, maintSav);
+  const payback = computePayback(cf.cumulative);
+  const npv     = computeNPV(cf, discRate) * fleet;
+
+  let upfront = 0;
+  if (acqMode === 'Cash')     upfront = cost * (1 + taxRate) * fleet;
+  else if (acqMode === 'Financed') upfront = (cost * downPct + cost * taxRate) * fleet;
+  else upfront = 14400 * (1 + taxRate) * fleet;
+
+  // KPIs
+  gid('kpiSavings').textContent    = fmt(savingsYr);
+  gid('kpiSavingsSub').textContent = fmt(savingsYr * fleet) + ' total fleet / yr';
+  gid('kpiPayback').textContent    = payback != null ? payback.toFixed(1) + ' yrs' : 'Beyond horizon';
+  gid('kpiPaybackSub').textContent = payback != null ? 'With ' + acqMode.toLowerCase() + ' acquisition' : 'Increase horizon or adjust inputs';
+  gid('kpiCO2').textContent        = co2Fleet.toFixed(1) + ' t';
+  gid('kpiCO2Sub').textContent     = '≈ ' + Math.round(co2Fleet / 4.6) + ' cars off the road';
+
+  // Offset bar
+  gid('offsetBar').style.width = Math.round(offset * 100) + '%';
+  gid('offsetPct').textContent = Math.round(offset * 100) + '% of demand offset by regen';
+  gid('offsetDetail').textContent = regenDay.toFixed(2) + ' kWh captured / day  ·  ' + demandKwh.toFixed(2) + ' kWh demand (weather-adjusted)';
+
+  // Full picture
+  gid('mFleet').textContent       = fmt(savingsYr * fleet);
+  gid('mFleetSub').textContent    = fleet + ' unit' + (fleet > 1 ? 's' : '') + ' × ' + fmt(savingsYr);
+  gid('mGallons').textContent     = Math.round(galSavedYr).toLocaleString();
+  gid('mPctFuel').textContent     = Math.round(pctFuel * 100) + '%';
+  gid('mNPV').textContent         = fmt(npv);
+  gid('mNPVSub').textContent      = horizon + '-yr fleet · ' + Math.round(discRate * 100) + '% discount';
+  gid('mUpfront').textContent     = fmt(upfront);
+  gid('mUpfrontSub').textContent  = acqMode === 'Lease' ? 'Annual lease cost (fleet)' : acqMode === 'Financed' ? 'Down + tax · ' + Math.round(downPct*100) + '% down' : 'Full purchase + tax';
+  gid('mCO2Total').textContent    = (co2Fleet * horizon).toFixed(0) + ' t';
+  gid('mCO2TotalSub').textContent = 'Over ' + horizon + '-yr horizon · fleet';
+
+  // Chart labels
+  const tName = TRAILERS[ti].name;
+  const cName = TEMP_NAMES[temp];
+  gid('chartSub').textContent    = tName + ' · ' + cName + ' · ' + acqMode;
+  gid('fullSub').textContent     = tName + ' · ' + fleet + ' unit' + (fleet > 1 ? 's' : '') + ' · ' + horizon + '-yr horizon';
+  gid('paybackBadge').textContent = payback != null ? 'Payback at ' + payback.toFixed(1) + ' yrs' : 'No payback within horizon';
+
+  updateChart(cf.cumulative, horizon);
+}
+
+// ── Event listeners ─────────────────────────────────────────────────────────
+['trailerSel','tempSel','fleetSize','systemCost','horizon',
+ 'salesTax','downPct','interestRate','finTerm','residual','discRate','maintSavings','weatherSel']
+  .forEach(id => gid(id).addEventListener('input', calc));
+
+loadPrices().then(() => calc());
+</script>
+</body>
+</html>
