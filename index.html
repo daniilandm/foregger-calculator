@@ -258,6 +258,14 @@ footer a:hover{color:var(--green)}
           <div class="field"><label>Discount rate (%)</label><input type="number" id="discRate" value="8" min="0" max="30" step="0.1"></div>
         </div>
         <div class="field"><label>Maintenance savings ($/yr per unit)</label><input type="number" id="maintSavings" value="0" min="0" step="100"></div>
+        <div style="border-top:1px solid var(--bdr);padding-top:9px;margin-top:5px">
+          <div style="font-size:10px;color:var(--muted);font-weight:500;margin-bottom:8px;letter-spacing:0.03em">Hills &amp; terrain</div>
+          <div class="r2">
+            <div class="field"><label>% time in hilly terrain</label><input type="number" id="hillsPct" value="25" min="0" max="100" step="5"></div>
+            <div class="field"><label>Altitude change (ft)</label><input type="number" id="hillsAlt" value="500" min="0" max="5000" step="100"></div>
+          </div>
+          <div style="font-size:10px;color:var(--dim);margin-top:2px">Potential energy recovery on descents · 85% capture assumed</div>
+        </div>
       </div>
     </div>
 
@@ -345,6 +353,25 @@ const TRAILERS = [
   {name:'48 ft', daysYr:300, driveHrs:6.2, staticHrs:3.0},
   {name:'53 ft', daysYr:250, driveHrs:9.0, staticHrs:2.0}
 ];
+
+// Per-trailer default slider values from spreadsheet
+const TRAILER_DEFAULTS = [
+  {s1:25,s2:30,s3:45, unl:25,mid:50,max:25}, // 24ft
+  {s1:20,s2:30,s3:50, unl:20,mid:45,max:35}, // 26ft
+  {s1: 5,s2:10,s3:85, unl:15,mid:25,max:60}, // 28ft
+  {s1:25,s2:35,s3:40, unl:20,mid:30,max:50}, // 36-38ft
+  {s1:20,s2:30,s3:50, unl:10,mid:25,max:65}, // 40ft
+  {s1:10,s2:30,s3:60, unl:15,mid:30,max:55}, // 45ft
+  {s1: 5,s2:30,s3:65, unl:10,mid:20,max:70}, // 48ft
+  {s1:30,s2:20,s3:50, unl:10,mid:15,max:75}, // 53ft
+];
+
+// Hills regen per day (kWh) by load — from Regen spreadsheet
+const HILLS_KWH = {
+  u:[5.03,5.29,6.09,6.75,7.15,7.68,8.07,8.60],
+  m:[7.55,7.94,11.65,12.64,13.50,14.16,14.63,14.89],
+  x:[10.06,10.59,17.21,18.53,19.86,20.65,21.18,21.18]
+};
 const TEMP_NAMES = ['Ambient','Cool','Chilled','Frozen'];
 const GAL_HR = [
   [0.3,0.4,0.7,2.3],[0.3,0.4,0.8,2.4],[0.3,0.4,0.8,2.6],[0.4,0.5,1.0,3.3],
@@ -422,8 +449,20 @@ async function loadPrices() {
   } catch(e) { buildStateSelect(SNAPSHOT, false); }
 }
 
-gid('stateSel').addEventListener('change', function() {
-  if (this.value) { dieselPrice = parseFloat(this.value) + DEF; calc(); }
+function setTrailerDefaults(ti) {
+  const d = TRAILER_DEFAULTS[ti];
+  gid('s1S').value = d.s1; gid('s1Val').textContent = d.s1 + '%';
+  gid('s2S').value = d.s2; gid('s2Val').textContent = d.s2 + '%';
+  gid('s3S').value = d.s3; gid('s3Val').textContent = d.s3 + '%';
+  gid('unladenS').value = d.unl; gid('unladenVal').textContent = d.unl + '%';
+  gid('midS').value     = d.mid; gid('midVal').textContent     = d.mid + '%';
+  gid('maxS').value     = d.max; gid('maxVal').textContent     = d.max + '%';
+  ['roadSum','loadSum'].forEach(id => { gid(id).textContent = 'Total: 100%'; gid(id).className = 'sum-ok'; });
+}
+
+gid('trailerSel').addEventListener('change', function() {
+  setTrailerDefaults(+this.value);
+  calc();
 });
 
 function setAcq(btn, val) {
@@ -622,15 +661,27 @@ function calc() {
   const mid = parseInt(gid('midS').value) / 100;
   const max = parseInt(gid('maxS').value) / 100;
 
+  const hillsPct = (+gid('hillsPct').value || 25) / 100;
+  const hillsAlt = +gid('hillsAlt').value || 500;
+  // Scale hills regen proportionally to altitude (spreadsheet baseline = 500ft)
+  const hillsScale = hillsAlt / 500;
+
   const t = TRAILERS[ti];
   const wm = wMult[temp];
 
-  // Regen: road mix × load mix weighted kWh/hr × drive hours per day
-  const regenDay = t.driveHrs * (
+  // Regen from braking: road mix × load mix weighted kWh/hr × drive hours per day
+  const regenBraking = t.driveHrs * (
     s1f * (unl*REGEN.S1.u[ti] + mid*REGEN.S1.m[ti] + max*REGEN.S1.x[ti]) +
     s2f * (unl*REGEN.S2.u[ti] + mid*REGEN.S2.m[ti] + max*REGEN.S2.x[ti]) +
     s3f * (unl*REGEN.S3.u[ti] + mid*REGEN.S3.m[ti] + max*REGEN.S3.x[ti])
   );
+
+  // Regen from hills: load-weighted, scaled by altitude and % hilly time
+  const hillsPerDay = hillsPct * hillsScale * (
+    unl*HILLS_KWH.u[ti] + mid*HILLS_KWH.m[ti] + max*HILLS_KWH.x[ti]
+  );
+
+  const regenDay = regenBraking + hillsPerDay;
 
   // Demand: weather multiplier on demand only, regen is fixed by physics
   const demandKwh = (t.driveHrs + t.staticHrs) * KWH_HR[ti][temp] * wm;
@@ -667,13 +718,14 @@ function calc() {
 
   // Offset
   gid('offsetBar').style.width    = Math.round(offset * 100) + '%';
-  gid('offsetBar').style.background = isCapped ? '#378ADD' : 'var(--green)';
+  gid('offsetBar').style.background = isCapped ? 'var(--blue)' : 'var(--green)';
   gid('offsetPct').textContent    = isCapped
     ? '100% — fully offset (' + (regenDay / demandKwh * 100).toFixed(0) + '% raw regen, capped)'
     : Math.round(offset * 100) + '% of demand offset by regen';
-  gid('offsetDetail').textContent = isCapped
-    ? 'Regen surplus: ' + regenDay.toFixed(2) + ' kWh captured vs ' + demandKwh.toFixed(2) + ' kWh demand — load mix won\'t change savings further in this mode'
-    : regenDay.toFixed(2) + ' kWh captured / day  ·  ' + demandKwh.toFixed(2) + ' kWh demand (weather-adjusted)';
+  gid('offsetDetail').textContent = regenDay.toFixed(2) + ' kWh/day total regen'
+    + ' (braking: ' + regenBraking.toFixed(2) + ' + hills: ' + hillsPerDay.toFixed(2) + ')'
+    + '  ·  ' + demandKwh.toFixed(2) + ' kWh demand'
+    + (isCapped ? ' — load mix at ceiling for this mode' : '');
 
   // Full picture
   gid('mFleet').textContent       = fmt(savingsYr * fleet);
@@ -698,11 +750,12 @@ function calc() {
   updateColChart(baselineCost * fleet, trueCost * fleet, savingsYr * fleet);
 }
 
-['trailerSel','tempSel','fleetSize','systemCost','horizon',
- 'salesTax','downPct','interestRate','finTerm','residual','discRate','maintSavings','weatherSel']
+['tempSel','fleetSize','systemCost','horizon',
+ 'salesTax','downPct','interestRate','finTerm','residual','discRate','maintSavings',
+ 'weatherSel','hillsPct','hillsAlt']
   .forEach(id => gid(id).addEventListener('input', calc));
 
-loadPrices().then(() => {});
+loadPrices().then(() => { setTrailerDefaults(4); }); // 40ft is default selected
 </script>
 </body>
 </html>
