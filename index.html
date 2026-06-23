@@ -206,6 +206,22 @@ footer a:hover{color:var(--green)}
         </div>
         <span id="roadSum" class="sum-ok">Total: 100%</span>
       </div>
+
+      <div class="sl-blk" style="border-top:1px solid var(--bdr);padding-top:.9rem;margin-top:.25rem">
+        <div class="sl-blk-title">Hills &amp; terrain</div>
+        <div class="r2" style="margin-bottom:4px">
+          <div class="field">
+            <label>% time in hilly terrain</label>
+            <input type="number" id="hillsPct" value="25" min="0" max="100" step="5">
+          </div>
+          <div class="field">
+            <label>Altitude change (ft)</label>
+            <input type="number" id="hillsAlt" value="500" min="0" max="5000" step="100">
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--dim)">Potential energy recovery on descents · 85% capture · default: 25% time, 500 ft</div>
+      </div>
+
       <div class="sl-blk" style="border-top:1px solid var(--bdr);padding-top:.9rem;margin-top:.25rem">
         <div class="sl-blk-title">Load mix — % of operating day</div>
         <div class="sl-row">
@@ -254,14 +270,6 @@ footer a:hover{color:var(--green)}
           <div class="field"><label>Discount rate (%)</label><input type="number" id="discRate" value="8" min="0" max="30" step="0.1"></div>
         </div>
         <div class="field"><label>Maintenance savings ($/yr per unit)</label><input type="number" id="maintSavings" value="0" min="0" step="100"></div>
-        <div style="border-top:1px solid var(--bdr);padding-top:9px;margin-top:5px">
-          <div style="font-size:10px;color:var(--muted);font-weight:500;margin-bottom:8px;letter-spacing:0.03em">Hills &amp; terrain</div>
-          <div class="r2">
-            <div class="field"><label>% time in hilly terrain</label><input type="number" id="hillsPct" value="25" min="0" max="100" step="5"></div>
-            <div class="field"><label>Altitude change (ft)</label><input type="number" id="hillsAlt" value="500" min="0" max="5000" step="100"></div>
-          </div>
-          <div style="font-size:10px;color:var(--dim);margin-top:2px">Potential energy recovery on descents · 85% capture assumed</div>
-        </div>
       </div>
     </div>
 
