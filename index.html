@@ -237,6 +237,7 @@ footer a:hover{color:var(--green)}
           <input type="range" id="maxS" min="0" max="100" step="5" value="25">
         </div>
         <span id="loadSum" class="sum-ok">Total: 100%</span>
+        <div style="font-size:10px;color:var(--dim);margin-top:6px">Heavier loads capture more regen energy. Most visible in Chilled or Frozen mode — in lighter modes regen may already fully cover demand regardless of weight.</div>
       </div>
     </div>
 
@@ -713,6 +714,8 @@ function calc() {
     ? cost * (1 + taxRate) * fleet
     : (cost * downPct + cost * taxRate) * fleet;
 
+  const cashPayback = savingsYr > 0 ? cost / savingsYr : null;
+
   const tName = TRAILERS[ti].name;
   const cName = TEMP_NAMES[temp];
 
@@ -720,7 +723,11 @@ function calc() {
   gid('kpiSavings').textContent    = fmt(savingsYr);
   gid('kpiSavingsSub').textContent = fmt(savingsYr * fleet) + ' total fleet / yr';
   gid('kpiPayback').textContent    = payback != null ? payback.toFixed(1) + ' yrs' : 'Beyond horizon';
-  gid('kpiPaybackSub').textContent = payback != null ? acqMode + ' · ' + tName : 'Adjust inputs or horizon';
+  gid('kpiPaybackSub').textContent = payback != null
+    ? (acqMode === 'Financed'
+        ? 'Financed · cash equiv. ' + (cashPayback != null ? cashPayback.toFixed(1) + ' yrs' : '—')
+        : 'Cash purchase · ' + tName)
+    : 'Adjust inputs or horizon';
   gid('kpiCO2').textContent        = co2Fleet.toFixed(1) + ' t';
   gid('kpiCO2Sub').textContent     = '≈ ' + Math.round(co2Fleet / 4.6) + ' cars off the road';
 
@@ -743,7 +750,9 @@ function calc() {
   gid('mNPV').textContent         = fmt(npv);
   gid('mNPVSub').textContent      = horizon + '-yr fleet · ' + Math.round(discRate*100) + '% discount';
   gid('mUpfront').textContent     = fmt(upfront);
-  gid('mUpfrontSub').textContent  = acqMode === 'Financed' ? 'Down + tax · ' + Math.round(downPct*100) + '% down' : 'Full purchase + tax';
+  gid('mUpfrontSub').textContent  = acqMode === 'Financed'
+    ? 'Down + tax (full cost ' + fmt(cost * fleet) + ')'
+    : 'Full purchase + tax · ' + fmt(cost * fleet) + ' base';
   gid('mCO2Total').textContent    = (co2Fleet * horizon).toFixed(0) + ' t';
   gid('mCO2TotalSub').textContent = 'Over ' + horizon + '-yr horizon · fleet';
 
