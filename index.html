@@ -253,7 +253,6 @@ footer a:hover{color:var(--green)}
         <div class="toggle-group" id="acqTg">
           <button class="toggle-btn" onclick="setAcq(this,'Cash')">Cash</button>
           <button class="toggle-btn active" onclick="setAcq(this,'Financed')">Financed</button>
-          <button class="toggle-btn" onclick="setAcq(this,'Lease')">Lease</button>
         </div>
       </div>
       <div class="field">
@@ -342,9 +341,20 @@ footer a:hover{color:var(--green)}
       </div>
     </div>
 
-    <div class="metrics-card">
-      <div class="chart-header" style="margin-bottom:.75rem">
-        <div class="chart-title">Energy offset</div>
+    <div class="chart-card">
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">Annual cost comparison — fleet</div>
+          <div class="chart-sub" id="barChartSub">—</div>
+        </div>
+        <div id="savingsBadge" style="font-size:11px;color:var(--green)"></div>
+      </div>
+      <div style="position:relative;height:240px">
+        <canvas id="barChart"></canvas>
+      </div>
+    </div>
+
+
         <span id="offsetPct" style="font-size:13px;font-weight:600;color:var(--green)">—</span>
       </div>
       <div class="offset-track"><div class="offset-fill" id="offsetBar" style="width:0%"></div></div>
@@ -636,6 +646,57 @@ function computeNPV(cf, discRate) {
 
 // ── Chart ───────────────────────────────────────────────────────────────────
 let chart = null;
+let barChart = null;
+
+function updateBarChart(baselineCostFleet, trueCostFleet, savingsFleet) {
+  const ctx = gid('barChart').getContext('2d');
+  if (barChart) barChart.destroy();
+  barChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Cost without TRUE', 'Cost with TRUE', 'Savings'],
+      datasets: [{
+        data: [Math.round(baselineCostFleet), Math.round(trueCostFleet), Math.round(savingsFleet)],
+        backgroundColor: ['rgba(224,85,85,0.75)', 'rgba(55,138,221,0.75)', 'rgba(29,158,117,0.85)'],
+        borderColor:     ['rgba(224,85,85,1)',    'rgba(55,138,221,1)',    'rgba(29,158,117,1)'],
+        borderWidth: 1,
+        borderRadius: 5,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#18181c',
+          borderColor: 'rgba(255,255,255,0.1)',
+          borderWidth: 1,
+          titleColor: '#888',
+          bodyColor: '#efefef',
+          titleFont: { size:11, family:'Inter' },
+          bodyFont: { size:12, family:'Inter Tight' },
+          callbacks: { label: ctx => ' ' + fmt(ctx.parsed.y) }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { color:'#666', font:{ size:11, family:'Inter' } }
+        },
+        y: {
+          grid: { color:'rgba(255,255,255,0.04)' },
+          ticks: {
+            color:'#555',
+            font: { size:11, family:'Inter' },
+            callback: v => '$' + (v/1000).toFixed(0) + 'k'
+          }
+        }
+      }
+    }
+  });
+}
 function updateChart(cumCF, horizon) {
   const labels = Array.from({length: horizon+1}, (_, i) => 'Yr ' + i);
   const data   = cumCF.map(v => Math.round(v));
@@ -792,14 +853,20 @@ function calc() {
   gid('mCO2Total').textContent    = (co2Fleet * horizon).toFixed(0) + ' t';
   gid('mCO2TotalSub').textContent = 'Over ' + horizon + '-yr horizon · fleet';
 
+  const baselineCostYr  = baselineYr * dieselPrice;
+  const trueCostYr      = baselineCostYr - savingsYr;
+
   // Chart labels
   const tName = TRAILERS[ti].name;
   const cName = TEMP_NAMES[temp];
   gid('chartSub').textContent    = tName + ' · ' + cName + ' · ' + acqMode;
   gid('fullSub').textContent     = tName + ' · ' + fleet + ' unit' + (fleet > 1 ? 's' : '') + ' · ' + horizon + '-yr horizon';
   gid('paybackBadge').textContent = payback != null ? 'Payback at ' + payback.toFixed(1) + ' yrs' : 'No payback within horizon';
+  gid('barChartSub').textContent  = tName + ' · ' + fleet + ' unit' + (fleet > 1 ? 's' : '') + ' · annual fuel cost';
+  gid('savingsBadge').textContent = Math.round(pctFuel * 100) + '% fuel reduction';
 
   updateChart(cf.cumulative, horizon);
+  updateBarChart(baselineCostYr * fleet, trueCostYr * fleet, savingsYr * fleet);
 }
 
 // ── Event listeners ─────────────────────────────────────────────────────────
