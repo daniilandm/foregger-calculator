@@ -234,10 +234,6 @@ footer a:hover{color:var(--green)}
         </div>
       </div>
       <div class="field">
-        <label>System cost per unit ($)</label>
-        <input type="number" id="systemCost" value="45000" min="0" step="1000">
-      </div>
-      <div class="field">
         <label>Analysis horizon (years)</label>
         <input type="number" id="horizon" value="10" min="1" max="20" step="1">
       </div>
@@ -454,6 +450,7 @@ gid('stateSel').addEventListener('change', function() {
 });
 
 function setTrailerDefaults(ti) {
+  const d = TRAILER_DEFAULTS[ti];
   gid('s1S').value = d.s1; gid('s1Val').textContent = d.s1 + '%';
   gid('s2S').value = d.s2; gid('s2Val').textContent = d.s2 + '%';
   gid('s3S').value = d.s3; gid('s3Val').textContent = d.s3 + '%';
@@ -646,7 +643,7 @@ function calc() {
   const ti      = +gid('trailerSel').value;
   const temp    = +gid('tempSel').value;
   const fleet   = Math.max(1, +gid('fleetSize').value || 1);
-  const cost    = +gid('systemCost').value || 45000;
+  const cost    = 45000;
   const horizon = Math.min(20, Math.max(1, +gid('horizon').value || 10));
   const taxRate = (+gid('salesTax').value || 8) / 100;
   const downPct = (+gid('downPct').value || 10) / 100;
@@ -753,7 +750,7 @@ function calc() {
   updateColChart(baselineCost * fleet, trueCost * fleet, savingsYr * fleet);
 }
 
-['tempSel','fleetSize','systemCost','horizon',
+['tempSel','fleetSize','horizon',
  'salesTax','downPct','interestRate','finTerm','residual','discRate','maintSavings',
  'weatherSel','hillsPct','hillsAlt']
   .forEach(id => gid(id).addEventListener('input', calc));
