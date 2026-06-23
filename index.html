@@ -277,7 +277,7 @@ footer a:hover{color:var(--green)}
       <div class="kpi">
         <div class="kpi-lbl">Annual savings · per unit</div>
         <div class="kpi-val" id="kpiSavings">—</div>
-        <div class="kpi-sub" id="kpiSavingsSub">select a state to begin</div>
+        <div class="kpi-sub" id="kpiSavingsSub">—</div>
       </div>
       <div class="kpi blue">
         <div class="kpi-lbl">Payback period</div>
@@ -420,7 +420,7 @@ const SNAPSHOT = {date:'2026-06-23',states:[
   {code:'WY',name:'Wyoming',diesel:3.587}
 ]};
 
-let dieselPrice = null;
+let dieselPrice = 3.82; // default until state is selected
 let acqMode = 'Financed';
 
 function gid(id){ return document.getElementById(id); }
@@ -449,7 +449,11 @@ async function loadPrices() {
   } catch(e) { buildStateSelect(SNAPSHOT, false); }
 }
 
-function setTrailerDefaults(ti) {
+gid('stateSel').addEventListener('change', function() {
+  if (this.value) { dieselPrice = parseFloat(this.value) + DEF; calc(); }
+});
+
+
   const d = TRAILER_DEFAULTS[ti];
   gid('s1S').value = d.s1; gid('s1Val').textContent = d.s1 + '%';
   gid('s2S').value = d.s2; gid('s2Val').textContent = d.s2 + '%';
@@ -638,7 +642,7 @@ function updateColChart(baseline, withTrue, savings) {
 }
 
 function calc() {
-  if (dieselPrice === null) return;
+  if (!dieselPrice) return;
 
   const ti      = +gid('trailerSel').value;
   const temp    = +gid('tempSel').value;
@@ -755,7 +759,7 @@ function calc() {
  'weatherSel','hillsPct','hillsAlt']
   .forEach(id => gid(id).addEventListener('input', calc));
 
-loadPrices().then(() => { setTrailerDefaults(4); }); // 40ft is default selected
+loadPrices().then(() => { setTrailerDefaults(4); calc(); });
 </script>
 </body>
 </html>
