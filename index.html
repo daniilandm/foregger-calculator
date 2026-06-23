@@ -104,6 +104,7 @@ footer a:hover{color:var(--green)}
   nav{padding:0 1rem}
   .kpi-grid{grid-template-columns:1fr 1fr}
   .metrics-grid{grid-template-columns:1fr 1fr}
+  .charts-row{grid-template-columns:1fr !important}
 }
 </style>
 </head>
@@ -328,6 +329,7 @@ footer a:hover{color:var(--green)}
       </div>
     </div>
 
+    <div class="charts-row" style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem">
     <div class="chart-card">
       <div class="chart-header">
         <div>
@@ -336,7 +338,7 @@ footer a:hover{color:var(--green)}
         </div>
         <div id="paybackBadge" style="font-size:11px;color:#378ADD"></div>
       </div>
-      <div style="position:relative;height:240px">
+      <div style="position:relative;height:200px">
         <canvas id="cfChart"></canvas>
       </div>
     </div>
@@ -349,9 +351,10 @@ footer a:hover{color:var(--green)}
         </div>
         <div id="savingsBadge" style="font-size:11px;color:var(--green)"></div>
       </div>
-      <div style="position:relative;height:240px">
+      <div style="position:relative;height:200px">
         <canvas id="barChart"></canvas>
       </div>
+    </div>
     </div>
 
 
@@ -814,10 +817,13 @@ function calc() {
 
   const offset     = Math.min(regenDay / demandKwh, 1.0);
   const galSavedYr = demandGal * offset * t.daysYr;
-  const baselineYr = baselineGal * t.daysYr;
+  const baselineYr = demandGal * t.daysYr;
   const savingsYr  = galSavedYr * dieselPrice;
-  const pctFuel    = baselineYr > 0 ? galSavedYr / baselineYr : 0;
+  const pctFuel    = Math.min(baselineYr > 0 ? galSavedYr / baselineYr : 0, 1.0);
   const co2Fleet   = galSavedYr * CO2_PER_GAL * fleet / 1000;
+
+  const baselineCostYr = baselineYr * dieselPrice;
+  const trueCostYr     = Math.max(0, baselineCostYr - savingsYr);
 
   const cf      = buildCashFlow(savingsYr, cost, acqMode, horizon, taxRate, downPct, intRate, finTerm, residual, maintSav);
   const payback = computePayback(cf.cumulative);
@@ -849,12 +855,9 @@ function calc() {
   gid('mNPV').textContent         = fmt(npv);
   gid('mNPVSub').textContent      = horizon + '-yr fleet · ' + Math.round(discRate * 100) + '% discount';
   gid('mUpfront').textContent     = fmt(upfront);
-  gid('mUpfrontSub').textContent  = acqMode === 'Lease' ? 'Annual lease cost (fleet)' : acqMode === 'Financed' ? 'Down + tax · ' + Math.round(downPct*100) + '% down' : 'Full purchase + tax';
+  gid('mUpfrontSub').textContent  = acqMode === 'Financed' ? 'Down + tax · ' + Math.round(downPct*100) + '% down' : 'Full purchase + tax';
   gid('mCO2Total').textContent    = (co2Fleet * horizon).toFixed(0) + ' t';
   gid('mCO2TotalSub').textContent = 'Over ' + horizon + '-yr horizon · fleet';
-
-  const baselineCostYr  = baselineYr * dieselPrice;
-  const trueCostYr      = baselineCostYr - savingsYr;
 
   // Chart labels
   const tName = TRAILERS[ti].name;
