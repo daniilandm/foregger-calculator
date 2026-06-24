@@ -691,8 +691,10 @@ function calc() {
   const hillsScale = hillsAlt / 500;
 
   const t        = TRAILERS[ti];
-  const driveHrs = Math.max(0, +gid('driveHrs').value || t.driveHrs);
-  const staticHrs= Math.max(0, +gid('staticHrs').value || t.staticHrs);
+  const driveHrsRaw  = gid('driveHrs').value;
+  const staticHrsRaw = gid('staticHrs').value;
+  const driveHrs  = Math.max(0, driveHrsRaw === '' ? t.driveHrs  : +driveHrsRaw);
+  const staticHrs = Math.max(0, staticHrsRaw === '' ? t.staticHrs : +staticHrsRaw);
   const wm       = wMult[temp];
 
   // Regen from braking: road mix × load mix weighted kWh/hr × drive hours per day
