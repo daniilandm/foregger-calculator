@@ -702,10 +702,10 @@ function calc() {
     s3f * (unl*REGEN.S3.u[ti] + mid*REGEN.S3.m[ti] + max*REGEN.S3.x[ti])
   );
 
-  // Regen from hills: load-weighted, scaled by altitude and % hilly time
-  const hillsPerDay = hillsPct * hillsScale * (
+  // Regen from hills: only when driving, load-weighted, scaled by altitude and % hilly time
+  const hillsPerDay = driveHrs > 0 ? hillsPct * hillsScale * (
     unl*HILLS_KWH.u[ti] + mid*HILLS_KWH.m[ti] + max*HILLS_KWH.x[ti]
-  );
+  ) : 0;
 
   const regenDay = regenBraking + hillsPerDay;
 
