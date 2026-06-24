@@ -190,6 +190,18 @@ footer a:hover{color:var(--green)}
 
     <div class="card">
       <div class="sec">03 · Route &amp; load mix</div>
+
+      <div class="r2" style="margin-bottom:1rem">
+        <div class="field">
+          <label>Driving hrs / day</label>
+          <input type="number" id="driveHrs" value="5.7" min="0" max="24" step="0.5">
+        </div>
+        <div class="field">
+          <label>Standby hrs / day</label>
+          <input type="number" id="staticHrs" value="3.5" min="0" max="24" step="0.5">
+        </div>
+      </div>
+      <div style="font-size:10px;color:var(--dim);margin-bottom:.9rem;margin-top:-6px">Auto-set by trailer type · adjust for your operation (urban delivery vs regional warehouse etc.)</div>
       <div class="sl-blk">
         <div class="sl-blk-title">Road mix — % of driving time</div>
         <div class="sl-row">
@@ -460,6 +472,9 @@ gid('stateSel').addEventListener('change', function() {
 
 function setTrailerDefaults(ti) {
   const d = TRAILER_DEFAULTS[ti];
+  const t = TRAILERS[ti];
+  gid('driveHrs').value  = t.driveHrs;
+  gid('staticHrs').value = t.staticHrs;
   gid('s1S').value = d.s1; gid('s1Val').textContent = d.s1 + '%';
   gid('s2S').value = d.s2; gid('s2Val').textContent = d.s2 + '%';
   gid('s3S').value = d.s3; gid('s3Val').textContent = d.s3 + '%';
@@ -675,11 +690,13 @@ function calc() {
   // Scale hills regen proportionally to altitude (spreadsheet baseline = 500ft)
   const hillsScale = hillsAlt / 500;
 
-  const t = TRAILERS[ti];
-  const wm = wMult[temp];
+  const t        = TRAILERS[ti];
+  const driveHrs = Math.max(0, +gid('driveHrs').value || t.driveHrs);
+  const staticHrs= Math.max(0, +gid('staticHrs').value || t.staticHrs);
+  const wm       = wMult[temp];
 
   // Regen from braking: road mix × load mix weighted kWh/hr × drive hours per day
-  const regenBraking = t.driveHrs * (
+  const regenBraking = driveHrs * (
     s1f * (unl*REGEN.S1.u[ti] + mid*REGEN.S1.m[ti] + max*REGEN.S1.x[ti]) +
     s2f * (unl*REGEN.S2.u[ti] + mid*REGEN.S2.m[ti] + max*REGEN.S2.x[ti]) +
     s3f * (unl*REGEN.S3.u[ti] + mid*REGEN.S3.m[ti] + max*REGEN.S3.x[ti])
@@ -693,8 +710,8 @@ function calc() {
   const regenDay = regenBraking + hillsPerDay;
 
   // Demand: weather multiplier on demand only, regen is fixed by physics
-  const demandKwh = (t.driveHrs + t.staticHrs) * KWH_HR[ti][temp] * wm;
-  const demandGal = (t.driveHrs + t.staticHrs) * GAL_HR[ti][temp] * wm;
+  const demandKwh = (driveHrs + staticHrs) * KWH_HR[ti][temp] * wm;
+  const demandGal = (driveHrs + staticHrs) * GAL_HR[ti][temp] * wm;
 
   const offset     = Math.min(regenDay / demandKwh, 1.0);
   const isCapped   = regenDay / demandKwh >= 1.0;
@@ -767,7 +784,7 @@ function calc() {
   updateColChart(baselineCost * fleet, trueCost * fleet, savingsYr * fleet);
 }
 
-['tempSel','fleetSize','horizon',
+['tempSel','fleetSize','horizon','driveHrs','staticHrs',
  'salesTax','downPct','interestRate','finTerm','residual','discRate','maintSavings',
  'weatherSel','hillsPct','hillsAlt']
   .forEach(id => gid(id).addEventListener('input', calc));
