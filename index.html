@@ -179,11 +179,9 @@ footer a:hover{color:var(--green)}
       <div class="field">
         <label>Weather / Season</label>
         <select id="weatherSel">
-          <option value="Hot">Summer / Hot</option>
-          <option value="Warm">Spring–Fall / Warm</option>
-          <option value="Cold">Winter / Cold</option>
-          <option value="Freezing">Winter / Freezing</option>
-          <option value="4Season" selected>4 Season average</option>
+          <option value="Summer">Summer — hot ambient (~100°F)</option>
+          <option value="SpringFall" selected>Spring / Fall — mild (~65°F)</option>
+          <option value="Winter">Winter — cold ambient (~30°F)</option>
         </select>
       </div>
     </div>
@@ -403,10 +401,52 @@ const REGEN = {
   S2:{u:[0.29,0.41,0.43,0.48,0.67,0.39,0.39,0.37],m:[0.43,0.61,0.81,0.89,1.27,0.73,0.70,0.64],x:[0.57,0.82,1.20,1.31,1.87,1.06,1.02,0.91]},
   S3:{u:[0.12,0.16,0.25,0.27,0.29,0.35,0.53,0.48],m:[0.18,0.23,0.47,0.51,0.54,0.64,0.96,0.84],x:[0.24,0.31,0.70,0.75,0.80,0.94,1.39,1.19]}
 };
-const WEATHER_MULT = {
-  Hot:[1.55,1.55,1.70,1.35], Warm:[1.25,1.25,1.30,1.15],
-  Cold:[1.00,1.00,1.00,1.00], Freezing:[0.85,0.85,0.75,0.90],
-  '4Season':[1.1625,1.1625,1.1875,1.10]
+// Seasonal absolute kWh/hr demand — from CTO's updated spreadsheet, scaled by surface area
+// Trailer order: 24ft, 26ft, 28ft, 36ft, 40ft, 45ft, 48ft, 53ft
+// Seasons: Summer (100°F avg), SpringFall (65°F avg), Winter (30°F avg)
+const KWH_HR_SEASONAL = {
+  Ambient: {
+    Summer:    [0.18928,0.20224,0.21520,0.27350,0.29294,0.32533,0.34477,0.37716],
+    SpringFall:[0.14411,0.15398,0.16384,0.20824,0.22304,0.24770,0.26250,0.28716],
+    Winter:    [0.14411,0.15398,0.16384,0.20824,0.22304,0.24770,0.26250,0.28716],
+  },
+  Cool: {
+    Summer:    [0.29063,0.31053,0.33043,0.41996,0.44980,0.49954,0.52938,0.57912],
+    SpringFall:[0.15799,0.16881,0.17962,0.22829,0.24451,0.27155,0.28778,0.31481],
+    Winter:    [0.15799,0.16881,0.17962,0.22829,0.24451,0.27155,0.28778,0.31481],
+  },
+  Chilled: {
+    Summer:    [0.57400,0.61329,0.65259,0.82941,0.88835,0.98658,1.04552,1.14376],
+    SpringFall:[0.33765,0.36076,0.38387,0.48789,0.52256,0.58034,0.61501,0.67280],
+    Winter:    [0.18547,0.19816,0.21086,0.26799,0.28704,0.31878,0.33782,0.36957],
+  },
+  Frozen: {
+    Summer:    [1.84676,1.97318,2.09961,2.66850,2.85814,3.17419,3.36382,3.67988],
+    SpringFall:[1.30812,1.39767,1.48722,1.89019,2.02451,2.24839,2.38271,2.60658],
+    Winter:    [0.76948,0.82216,0.87484,1.11188,1.19089,1.32258,1.40159,1.53328],
+  },
+};
+const GAL_HR_SEASONAL = {
+  Ambient: {
+    Summer:    [0.23017,0.24593,0.26169,0.33259,0.35623,0.39562,0.41925,0.45865],
+    SpringFall:[0.17525,0.18725,0.19924,0.25323,0.27122,0.30121,0.31921,0.34920],
+    Winter:    [0.17525,0.18725,0.19924,0.25323,0.27122,0.30121,0.31921,0.34920],
+  },
+  Cool: {
+    Summer:    [0.35342,0.37762,0.40181,0.51068,0.54698,0.60746,0.64375,0.70424],
+    SpringFall:[0.19212,0.20528,0.21843,0.27761,0.29734,0.33022,0.34995,0.38283],
+    Winter:    [0.19212,0.20528,0.21843,0.27761,0.29734,0.33022,0.34995,0.38283],
+  },
+  Chilled: {
+    Summer:    [0.69801,0.74579,0.79357,1.00860,1.08027,1.19973,1.27140,1.39086],
+    SpringFall:[0.41059,0.43870,0.46681,0.59329,0.63545,0.70572,0.74788,0.81815],
+    Winter:    [0.22554,0.24098,0.25642,0.32589,0.34905,0.38765,0.41081,0.44941],
+  },
+  Frozen: {
+    Summer:    [2.24574,2.39948,2.55321,3.24502,3.47562,3.85995,4.09055,4.47489],
+    SpringFall:[1.59073,1.69963,1.80852,2.29855,2.46190,2.73413,2.89748,3.16971],
+    Winter:    [0.93573,0.99978,1.06384,1.35209,1.44817,1.60831,1.70440,1.86454],
+  },
 };
 const SNAPSHOT = {date:'2026-06-23',states:[
   {code:'AK',name:'Alaska',diesel:4.086},{code:'AL',name:'Alabama',diesel:3.438},
@@ -676,7 +716,8 @@ function calc() {
   const residual = +gid('residual').value || 12000;
   const discRate = (+gid('discRate').value || 8) / 100;
   const maintSav = +gid('maintSavings').value || 0;
-  const wMult   = WEATHER_MULT[gid('weatherSel').value] || WEATHER_MULT['4Season'];
+  const season  = gid('weatherSel').value || 'SpringFall';
+  const tempKey = ['Ambient','Cool','Chilled','Frozen'][temp];
 
   const s1f = parseInt(gid('s1S').value) / 100;
   const s2f = parseInt(gid('s2S').value) / 100;
@@ -687,15 +728,17 @@ function calc() {
 
   const hillsPct = (+gid('hillsPct').value || 25) / 100;
   const hillsAlt = +gid('hillsAlt').value || 500;
-  // Scale hills regen proportionally to altitude (spreadsheet baseline = 500ft)
   const hillsScale = hillsAlt / 500;
 
   const t        = TRAILERS[ti];
   const driveHrsRaw  = gid('driveHrs').value;
   const staticHrsRaw = gid('staticHrs').value;
-  const driveHrs  = Math.max(0, driveHrsRaw === '' ? t.driveHrs  : +driveHrsRaw);
+  const driveHrs  = Math.max(0, driveHrsRaw  === '' ? t.driveHrs  : +driveHrsRaw);
   const staticHrs = Math.max(0, staticHrsRaw === '' ? t.staticHrs : +staticHrsRaw);
-  const wm       = wMult[temp];
+
+  // Direct seasonal demand — absolute kWh/hr and gal/hr from CTO's updated spreadsheet
+  const kwhPerHr = KWH_HR_SEASONAL[tempKey][season][ti];
+  const galPerHr = GAL_HR_SEASONAL[tempKey][season][ti];
 
   // Regen from braking: road mix × load mix weighted kWh/hr × drive hours per day
   const regenBraking = driveHrs * (
@@ -713,9 +756,9 @@ function calc() {
 
   const regenDay = regenBraking + hillsPerDay;
 
-  // Demand: weather multiplier on demand only, regen is fixed by physics
-  const demandKwh = (driveHrs + staticHrs) * KWH_HR[ti][temp] * wm;
-  const demandGal = (driveHrs + staticHrs) * GAL_HR[ti][temp] * wm;
+  // Total demand using seasonal absolute values
+  const demandKwh = (driveHrs + staticHrs) * kwhPerHr;
+  const demandGal = (driveHrs + staticHrs) * galPerHr;
 
   const offset     = Math.min(regenDay / demandKwh, 1.0);
   const isCapped   = regenDay / demandKwh >= 1.0;
@@ -760,7 +803,7 @@ function calc() {
     : Math.round(offset * 100) + '% of demand offset by regen';
   gid('offsetDetail').textContent = regenDay.toFixed(2) + ' kWh/day total regen'
     + ' (braking: ' + regenBraking.toFixed(2) + ' + hills: ' + hillsPerDay.toFixed(2) + ')'
-    + '  ·  ' + demandKwh.toFixed(2) + ' kWh demand'
+    + '  ·  ' + demandKwh.toFixed(2) + ' kWh demand (' + season + ')'
     + (isCapped ? ' — load mix at ceiling for this mode' : '');
 
   // Full picture
