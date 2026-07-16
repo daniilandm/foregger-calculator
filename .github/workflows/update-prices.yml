@@ -3,9 +3,9 @@ name: Update Prices and Deploy
 on:
   schedule:
     - cron: "0 12 * * *"   # Every day at 8am ET
-  workflow_dispatch:         # Manual trigger from Actions tab
+  workflow_dispatch:
   push:
-    branches: ["main"]       # Also deploy whenever you commit anything
+    branches: ["main"]
 
 permissions:
   contents: write
@@ -32,7 +32,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: "24"       # recommended: update from 20 to current runner default
+          node-version: "24"       # update from 20 to avoid deprecation warning
 
       - name: Scrape AAA diesel prices
         run: node scrape-prices.js
@@ -42,7 +42,7 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Ensure we're on the main branch and have latest commits
+          # Ensure we're on main and have latest remote changes
           git checkout main
           git fetch origin main
 
@@ -54,14 +54,12 @@ jobs:
           fi
           git commit -m "chore: update diesel prices $(date +%Y-%m-%d)"
 
-          # Rebase our commit on top of latest remote main to avoid non-fast-forward push
+          # Rebase our commit on top of the latest remote main to avoid non-fast-forward push.
+          # If the rebase fails due to conflicts, the job will stop and you can inspect manually.
           git rebase origin/main
 
-          # Push the rebased commit
+          # Push the rebased commit (fast-forward)
           git push origin HEAD:main
-
-          # If you'd rather force only when safe, use:
-          # git push --force-with-lease origin HEAD:main
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
