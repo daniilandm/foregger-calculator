@@ -14,7 +14,7 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true   # cancel older runs to reduce push races
 
 jobs:
   update-and-deploy:
@@ -24,35 +24,44 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0            # get full history so pulls/rebases work
-        persist-credentials: true # ensure GITHUB_TOKEN is available for git push
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0            # get full history so pulls/rebases work
+          persist-credentials: true # ensure GITHUB_TOKEN is available for git push
 
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24"       # recommended: update from 20 to current runner default
 
       - name: Scrape AAA diesel prices
         run: node scrape-prices.js
 
       - name: Commit updated prices.json
-  run: |
-    git config user.name  "github-actions[bot]"
-    git config user.email "github-actions[bot]@users.noreply.github.com"
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
-    # Ensure we're on the main branch and have latest commits
-    git checkout main
-    git fetch origin main
-    git pull --rebase origin main
+          # Ensure we're on the main branch and have latest commits
+          git checkout main
+          git fetch origin main
 
-    # Stage and commit only if there are changes
-    git add prices.json
-    git diff --staged --quiet || git commit -m "chore: update diesel prices $(date +%Y-%m-%d)"
+          # Stage and commit only if there are changes
+          git add prices.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "chore: update diesel prices $(date +%Y-%m-%d)"
 
-    # Push the new commit
-    git push origin main
+          # Rebase our commit on top of latest remote main to avoid non-fast-forward push
+          git rebase origin/main
+
+          # Push the rebased commit
+          git push origin HEAD:main
+
+          # If you'd rather force only when safe, use:
+          # git push --force-with-lease origin HEAD:main
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
