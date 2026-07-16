@@ -24,7 +24,10 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0            # get full history so pulls/rebases work
+        persist-credentials: true # ensure GITHUB_TOKEN is available for git push
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -35,12 +38,21 @@ jobs:
         run: node scrape-prices.js
 
       - name: Commit updated prices.json
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add prices.json
-          git diff --staged --quiet || git commit -m "chore: update diesel prices $(date +%Y-%m-%d)"
-          git push
+  run: |
+    git config user.name  "github-actions[bot]"
+    git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    # Ensure we're on the main branch and have latest commits
+    git checkout main
+    git fetch origin main
+    git pull --rebase origin main
+
+    # Stage and commit only if there are changes
+    git add prices.json
+    git diff --staged --quiet || git commit -m "chore: update diesel prices $(date +%Y-%m-%d)"
+
+    # Push the new commit
+    git push origin main
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
