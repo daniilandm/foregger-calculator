@@ -1,6 +1,6 @@
 {
-  "date": "2026-07-26",
-  "nationalAverage": 5.273,
+  "date": "2026-07-27",
+  "nationalAverage": 5.276,
   "source": "https://gasprices.aaa.com/state-gas-price-averages/",
   "states": [
     {
@@ -20,126 +20,126 @@
     {
       "code": "AZ",
       "name": "Arizona",
-      "diesel": 5.466,
+      "diesel": 5.469,
       "publicKwh": 0.409,
       "depotKwh": 0.18
     },
     {
       "code": "AR",
       "name": "Arkansas",
-      "diesel": 4.951,
+      "diesel": 4.941,
       "publicKwh": 0.43,
       "depotKwh": 0.1892
     },
     {
       "code": "CA",
       "name": "California",
-      "diesel": 6.87,
+      "diesel": 6.873,
       "publicKwh": 0.379,
       "depotKwh": 0.1668
     },
     {
       "code": "CO",
       "name": "Colorado",
-      "diesel": 5.04,
+      "diesel": 5.043,
       "publicKwh": 0.338,
       "depotKwh": 0.1487
     },
     {
       "code": "CT",
       "name": "Connecticut",
-      "diesel": 5.49,
+      "diesel": 5.496,
       "publicKwh": 0.371,
       "depotKwh": 0.1632
     },
     {
       "code": "DE",
       "name": "Delaware",
-      "diesel": 5.359,
+      "diesel": 5.362,
       "publicKwh": 0.318,
       "depotKwh": 0.1399
     },
     {
       "code": "DC",
       "name": "District of Columbia",
-      "diesel": 5.669,
+      "diesel": 5.56,
       "publicKwh": 0.349,
       "depotKwh": 0.1536
     },
     {
       "code": "FL",
       "name": "Florida",
-      "diesel": 5.429,
+      "diesel": 5.436,
       "publicKwh": 0.382,
       "depotKwh": 0.1681
     },
     {
       "code": "GA",
       "name": "Georgia",
-      "diesel": 5.257,
+      "diesel": 5.265,
       "publicKwh": 0.381,
       "depotKwh": 0.1676
     },
     {
       "code": "HI",
       "name": "Hawaii",
-      "diesel": 6.97,
+      "diesel": 6.945,
       "publicKwh": 0.467,
       "depotKwh": 0.2055
     },
     {
       "code": "ID",
       "name": "Idaho",
-      "diesel": 5.15,
+      "diesel": 5.152,
       "publicKwh": 0.421,
       "depotKwh": 0.1852
     },
     {
       "code": "IL",
       "name": "Illinois",
-      "diesel": 5.178,
+      "diesel": 5.177,
       "publicKwh": 0.377,
       "depotKwh": 0.1659
     },
     {
       "code": "IN",
       "name": "Indiana",
-      "diesel": 5.22,
+      "diesel": 5.257,
       "publicKwh": 0.386,
       "depotKwh": 0.1698
     },
     {
       "code": "IA",
       "name": "Iowa",
-      "diesel": 5.006,
+      "diesel": 5.023,
       "publicKwh": 0.34,
       "depotKwh": 0.1496
     },
     {
       "code": "KS",
       "name": "Kansas",
-      "diesel": 4.832,
+      "diesel": 4.845,
       "publicKwh": 0.252,
       "depotKwh": 0.1109
     },
     {
       "code": "KY",
       "name": "Kentucky",
-      "diesel": 4.874,
+      "diesel": 4.877,
       "publicKwh": 0.416,
       "depotKwh": 0.183
     },
     {
       "code": "LA",
       "name": "Louisiana",
-      "diesel": 4.991,
+      "diesel": 4.993,
       "publicKwh": 0.423,
       "depotKwh": 0.1861
     },
     {
       "code": "ME",
       "name": "Maine",
-      "diesel": 5.491,
+      "diesel": 5.506,
       "publicKwh": 0.381,
       "depotKwh": 0.1676
     },
@@ -153,105 +153,105 @@
     {
       "code": "MA",
       "name": "Massachusetts",
-      "diesel": 5.434,
+      "diesel": 5.448,
       "publicKwh": 0.35,
       "depotKwh": 0.154
     },
     {
       "code": "MI",
       "name": "Michigan",
-      "diesel": 5.221,
+      "diesel": 5.223,
       "publicKwh": 0.373,
       "depotKwh": 0.1641
     },
     {
       "code": "MN",
       "name": "Minnesota",
-      "diesel": 5.091,
+      "diesel": 5.136,
       "publicKwh": 0.376,
       "depotKwh": 0.1654
     },
     {
       "code": "MS",
       "name": "Mississippi",
-      "diesel": 4.986,
+      "diesel": 4.992,
       "publicKwh": 0.378,
       "depotKwh": 0.1663
     },
     {
       "code": "MO",
       "name": "Missouri",
-      "diesel": 4.815,
+      "diesel": 4.822,
       "publicKwh": 0.28,
       "depotKwh": 0.1232
     },
     {
       "code": "MT",
       "name": "Montana",
-      "diesel": 5.031,
+      "diesel": 5.025,
       "publicKwh": 0.428,
       "depotKwh": 0.1883
     },
     {
       "code": "NE",
       "name": "Nebraska",
-      "diesel": 4.911,
+      "diesel": 4.934,
       "publicKwh": 0.283,
       "depotKwh": 0.1245
     },
     {
       "code": "NV",
       "name": "Nevada",
-      "diesel": 5.656,
+      "diesel": 5.66,
       "publicKwh": 0.41,
       "depotKwh": 0.1804
     },
     {
       "code": "NH",
       "name": "New Hampshire",
-      "diesel": 5.38,
+      "diesel": 5.381,
       "publicKwh": 0.435,
       "depotKwh": 0.1914
     },
     {
       "code": "NJ",
       "name": "New Jersey",
-      "diesel": 5.446,
+      "diesel": 5.444,
       "publicKwh": 0.398,
       "depotKwh": 0.1751
     },
     {
       "code": "NM",
       "name": "New Mexico",
-      "diesel": 5.103,
+      "diesel": 5.095,
       "publicKwh": 0.376,
       "depotKwh": 0.1654
     },
     {
       "code": "NY",
       "name": "New York",
-      "diesel": 5.58,
+      "diesel": 5.585,
       "publicKwh": 0.355,
       "depotKwh": 0.1562
     },
     {
       "code": "NC",
       "name": "North Carolina",
-      "diesel": 5.269,
+      "diesel": 5.275,
       "publicKwh": 0.327,
       "depotKwh": 0.1439
     },
     {
       "code": "ND",
       "name": "North Dakota",
-      "diesel": 4.904,
+      "diesel": 4.909,
       "publicKwh": 0.42,
       "depotKwh": 0.1848
     },
     {
       "code": "OH",
       "name": "Ohio",
-      "diesel": 5.009,
+      "diesel": 5.007,
       "publicKwh": 0.395,
       "depotKwh": 0.1738
     },
@@ -265,7 +265,7 @@
     {
       "code": "OR",
       "name": "Oregon",
-      "diesel": 5.471,
+      "diesel": 5.464,
       "publicKwh": 0.386,
       "depotKwh": 0.1698
     },
@@ -279,21 +279,21 @@
     {
       "code": "RI",
       "name": "Rhode Island",
-      "diesel": 5.355,
+      "diesel": 5.361,
       "publicKwh": 0.353,
       "depotKwh": 0.1553
     },
     {
       "code": "SC",
       "name": "South Carolina",
-      "diesel": 5.184,
+      "diesel": 5.182,
       "publicKwh": 0.453,
       "depotKwh": 0.1993
     },
     {
       "code": "SD",
       "name": "South Dakota",
-      "diesel": 4.892,
+      "diesel": 4.91,
       "publicKwh": 0.343,
       "depotKwh": 0.1509
     },
@@ -307,56 +307,56 @@
     {
       "code": "TX",
       "name": "Texas",
-      "diesel": 4.917,
+      "diesel": 4.926,
       "publicKwh": 0.356,
       "depotKwh": 0.1566
     },
     {
       "code": "UT",
       "name": "Utah",
-      "diesel": 5.102,
+      "diesel": 5.097,
       "publicKwh": 0.289,
       "depotKwh": 0.1272
     },
     {
       "code": "VT",
       "name": "Vermont",
-      "diesel": 5.419,
+      "diesel": 5.435,
       "publicKwh": 0.326,
       "depotKwh": 0.1434
     },
     {
       "code": "VA",
       "name": "Virginia",
-      "diesel": 5.289,
+      "diesel": 5.296,
       "publicKwh": 0.342,
       "depotKwh": 0.1505
     },
     {
       "code": "WA",
       "name": "Washington",
-      "diesel": 6.11,
+      "diesel": 6.097,
       "publicKwh": 0.344,
       "depotKwh": 0.1514
     },
     {
       "code": "WV",
       "name": "West Virginia",
-      "diesel": 4.942,
+      "diesel": 4.94,
       "publicKwh": 0.478,
       "depotKwh": 0.2103
     },
     {
       "code": "WI",
       "name": "Wisconsin",
-      "diesel": 5.008,
+      "diesel": 5.055,
       "publicKwh": 0.423,
       "depotKwh": 0.1861
     },
     {
       "code": "WY",
       "name": "Wyoming",
-      "diesel": 4.991,
+      "diesel": 5.01,
       "publicKwh": 0.385,
       "depotKwh": 0.1694
     }
